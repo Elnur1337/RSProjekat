@@ -9,9 +9,17 @@ CREATE TABLE mjesto (
 CREATE TABLE lokacija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
-    id_mjesto INT NOT NULL,
     img_path VARCHAR(200) NOT NULL,
+    id_mjesto INT NOT NULL,
     FOREIGN KEY (id_mjesto) REFERENCES mjesto(id)
+);
+
+CREATE TABLE sektor (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(100) NOT NULL,
+    price_modifier INT NOT NULL,
+    id_lokacija INT NOT NULL,
+    FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
 );
 
 CREATE TABLE kategorija (
