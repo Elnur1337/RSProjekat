@@ -72,3 +72,16 @@ CREATE TABLE dogadjaj (
     FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
 );
 
+CREATE TABLE karta (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    bought TINYINT(1) NOT NULL DEFAULT 0,
+    reserved TINYINT(1) NOT NULL DEFAULT 0,
+    id_dogadjaj INT NOT NULL,
+    id_sektor INT NOT NULL,
+    id_sjedalo INT,
+    id_kupac INT NOT NULL,
+    FOREIGN KEY (id_dogadjaj) REFERENCES dogadjaj(id),
+    FOREIGN KEY (id_sektor) REFERENCES sektor(id),
+    FOREIGN KEY (id_sjedalo) REFERENCES sjedalo(id),
+    FOREIGN KEY (id_kupac) REFERENCES korisnik(id)
+);
