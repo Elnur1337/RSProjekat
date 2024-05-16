@@ -13,7 +13,15 @@ CREATE TABLE lokacija (
     FOREIGN KEY (id_mjesto) REFERENCES mjesto(id)
 );
 
-CREATE TABLE kateogrija (
+CREATE TABLE kategorija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE podkategorija (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(100) NOT NULL,
+    id_kategorija INT NOT NULL,
+    FOREIGN KEY (id_kategorija) REFERENCES kategorija(id)
+);
+
