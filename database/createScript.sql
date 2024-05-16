@@ -22,6 +22,12 @@ CREATE TABLE sektor (
     FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
 );
 
+CREATE TABLE sjedalo (
+	id INT NOT NULL PRIMARY KEY,
+    id_sektor INT NOT NULL,
+    FOREIGN KEY (id_sektor) REFERENCES sektor(id)
+);
+
 CREATE TABLE kategorija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL
