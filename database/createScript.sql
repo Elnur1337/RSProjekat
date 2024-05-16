@@ -39,3 +39,22 @@ CREATE TABLE korisnik (
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE dogadjaj (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(150) NOT NULL,
+    opis VARCHAR(500) NOT NULL,
+    img_path VARCHAR(200) NOT NULL,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP NOT NULL,
+    base_price DECIMAL(5, 2) NOT NULL,
+    available TINYINT(1) NOT NULL DEFAULT 0,
+    approved TINYINT(1) NOT NULL DEFAULT 0,
+    id_organizator INT NOT NULL,
+    id_podkategorija INT NOT NULL,
+    id_lokacija INT NOT NULL,
+	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (id_organizator) REFERENCES korisnik(id),
+    FOREIGN KEY (id_podkategorija) REFERENCES podkategorija(id),
+    FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
+);
+
