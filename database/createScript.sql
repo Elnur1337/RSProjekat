@@ -46,10 +46,10 @@ CREATE TABLE korisnik (
     prezime VARCHAR(20) NOT NULL,
     email VARCHAR(24) NOT NULL UNIQUE,
     wallet DECIMAL(6, 2) NOT NULL DEFAULT 0,
-    admin TINYINT(1) NOT NULL DEFAULT 0,
-    organizator TINYINT(1) NOT NULL DEFAULT 0,
+    admin TINYINT NOT NULL DEFAULT 0,
+    organizator TINYINT NOT NULL DEFAULT 0,
     datum_rod DATE,
-    approved TINYINT(1) NOT NULL DEFAULT 0,
+    approved TINYINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -61,8 +61,8 @@ CREATE TABLE dogadjaj (
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP NOT NULL,
     base_price DECIMAL(5, 2) NOT NULL,
-    available TINYINT(1) NOT NULL DEFAULT 0,
-    approved TINYINT(1) NOT NULL DEFAULT 0,
+    available TINYINT NOT NULL DEFAULT 0,
+    approved TINYINT NOT NULL DEFAULT 0,
     id_organizator INT NOT NULL,
     id_podkategorija INT NOT NULL,
     id_lokacija INT NOT NULL,
@@ -74,8 +74,8 @@ CREATE TABLE dogadjaj (
 
 CREATE TABLE karta (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    bought TINYINT(1) NOT NULL DEFAULT 0,
-    reserved TINYINT(1) NOT NULL DEFAULT 0,
+    bought TINYINT NOT NULL DEFAULT 0,
+    reserved TINYINT NOT NULL DEFAULT 0,
     id_dogadjaj INT NOT NULL,
     id_sektor INT NOT NULL,
     id_sjedalo INT,
