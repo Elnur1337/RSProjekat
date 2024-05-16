@@ -77,6 +77,7 @@ CREATE TABLE karta (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bought TINYINT NOT NULL DEFAULT 0,
     reserved TINYINT NOT NULL DEFAULT 0,
+    reserved_to DATE,
     id_dogadjaj INT NOT NULL,
     id_sektor INT NOT NULL,
     id_sjedalo INT,
