@@ -10,6 +10,7 @@ CREATE TABLE lokacija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
     id_mjesto INT NOT NULL,
+    img_path VARCHAR(200) NOT NULL,
     FOREIGN KEY (id_mjesto) REFERENCES mjesto(id)
 );
 
@@ -23,5 +24,17 @@ CREATE TABLE podkategorija (
     naziv VARCHAR(100) NOT NULL,
     id_kategorija INT NOT NULL,
     FOREIGN KEY (id_kategorija) REFERENCES kategorija(id)
+);
+
+CREATE TABLE korisnik (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ime VARCHAR(20) NOT NULL,
+    prezime VARCHAR(20) NOT NULL,
+    email VARCHAR(24) NOT NULL,
+    wallet DECIMAL(6, 2) NOT NULL DEFAULT 0,
+    admin TINYINT(1) NOT NULL DEFAULT 0,
+    organizator TINYINT(1) NOT NULL DEFAULT 0,
+    datum_rod DATE,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
