@@ -1,0 +1,7 @@
+CREATE DATABASE rsprojekat CHARACTER SET "utf8mb4";
+USE rsprojekat;
+
+CREATE TABLE mjesto (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    naziv VARCHAR(100) NOT NULL
+);
