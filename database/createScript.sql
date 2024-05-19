@@ -18,6 +18,7 @@ CREATE TABLE sektor (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
     price_modifier INT NOT NULL,
+    kapacitet INT NOT NULL,
     id_lokacija INT NOT NULL,
     FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
 );
