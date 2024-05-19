@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="561.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutX="7.0" layoutY="7.0" maxWidth="1.7976931348623157E308" prefHeight="38.0" prefWidth="777.0">
+         <children>
+            <ButtonBar prefHeight="50.0" prefWidth="710.0" styleClass="btnBarContainer">
+               <buttons>
+                  <Button mnemonicParsing="false" styleClass="navBtn" text="Login">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="navBtn" text="Register">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </buttons>
+            </ButtonBar>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
