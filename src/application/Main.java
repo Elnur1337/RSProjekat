@@ -1,4 +1,7 @@
 package application;
+
+import application.CurrentUser;
+import application.IndexController;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 
-
 import java.sql.*;
 import javax.sql.*;
 
@@ -15,7 +17,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("index.fxml"));
+			CurrentUser user = new CurrentUser();
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
+			Parent root = loader.load();
+			
+			IndexController indexController = loader.getController();
+			indexController.setCurrentUser(user);
+			
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
@@ -27,7 +36,7 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
-
+		/*
 		String url="jdbc:mysql://localhost:3306/rsprojekat";
 		String username="root";
 		//////////////////////////////////////////	//////////////////////////////////////////
@@ -60,5 +69,6 @@ public class Main extends Application {
 			System.out.println(e);
 			
 		}
+		*/
 	}
 }
