@@ -1,3 +1,7 @@
 .navBtn:hover {
 	-fx-background-color: #a8a29e;
 }
+
+.input:placeholder {
+	-fx-text-fill: #a8a29e;
+}
