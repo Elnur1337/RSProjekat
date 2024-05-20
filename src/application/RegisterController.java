@@ -1,7 +1,6 @@
 package application;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,5 +56,21 @@ public class RegisterController {
 		return;
 	}
 	
-	private bool validate()
+	private boolean validate() {
+		String ime = imeInput.getText();
+		if (ime.length() < 2) {
+			errorMsg = "Name must be at least 2 characters long!";
+			return false;
+		}
+		
+		
+		return true;
+	}
+	
+	public void register() {
+		if (validate()) {
+			//Registruj korisnika u bazu
+		}
+		return;
+	}
 }

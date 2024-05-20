@@ -96,7 +96,7 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </PasswordField>
-            <PasswordField fx:id="passwordRepeatinput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Repeat password" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-inner-color: #a8a29e;">
+            <PasswordField fx:id="passwordRepeatInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Repeat password" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-inner-color: #a8a29e;">
                <font>
                   <Font size="18.0" />
                </font>
