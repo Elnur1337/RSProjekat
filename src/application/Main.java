@@ -18,6 +18,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			CurrentUser user = new CurrentUser();
+			//user.setIsLoggedIn(true);
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
 			Parent root = loader.load();

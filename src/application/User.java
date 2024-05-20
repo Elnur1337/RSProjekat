@@ -1,4 +1,4 @@
-package projekat;
+/*package projekat;
 
 import java.sql.Connection;
 
@@ -94,3 +94,4 @@ public class User {
 	
 
 }
+*/
