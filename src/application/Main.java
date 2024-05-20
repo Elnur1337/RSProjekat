@@ -1,14 +1,10 @@
 package application;
-
-import application.CurrentUser;
-import application.IndexController;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
-import javafx.scene.layout.BorderPane;
 
 import java.sql.*;
 import javax.sql.*;
