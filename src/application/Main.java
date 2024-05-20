@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.Parent;
 
 import java.sql.*;
@@ -13,6 +14,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+			
 			CurrentUser user = new CurrentUser();
 			//user.setIsLoggedIn(true);
 			
