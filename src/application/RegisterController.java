@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.regex.Pattern;
@@ -157,7 +157,21 @@ public class RegisterController implements Initializable {
 			errorMsg = "Email nije u dobrom formatu!";
 			return false;
 		}
-		//Dodati validaciju da li postoji korisnik sa istim emailom
+		try {
+			Connection connection = DatabaseConnection.getInstance().getConnection();
+			PreparedStatement prepStatment = connection.prepareStatement("SELECT email FROM korisnik WHERE email = ?");
+			prepStatment.setString(1, email);
+			ResultSet res = prepStatment.executeQuery();
+			if (res.next()) {
+				connection.close();
+				errorMsg = "Korisnik sa unesenim emailom vec postoji!";
+				return false;
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+			errorMsg = "Problem sa bazom, registracija nije moguca!";
+			return false;
+		}
 		String password = passwordInput.getText();
 		if (password.length() < 8) {
 			errorMsg = "Sifra mora biti minimalno osam karaktera!";
@@ -169,21 +183,21 @@ public class RegisterController implements Initializable {
 			return false;
 		}
 		try {
-			int year = yearInput.getValue();
+			yearInput.getValue();
 			
 		} catch (NullPointerException e) {
 			errorMsg = "Niste unijeli godinu rodjenja!";
 			return false;
 		}
 		try {
-			String month = monthInput.getValue();
+			monthInput.getValue();
 			
 		} catch (NullPointerException e) {
 			errorMsg = "Niste unijeli mjesec rodjenja!";
 			return false;
 		}
 		try {
-			int day = dayInput.getValue();
+			dayInput.getValue();
 			
 		} catch (NullPointerException e) {
 			errorMsg = "Niste unijeli dan rodjenja!";
@@ -199,8 +213,7 @@ public class RegisterController implements Initializable {
 			errorMsgLabel.setText(errorMsg);			
 			try {
 				Connection connection = DatabaseConnection.getInstance().getConnection();
-				PreparedStatement prepStatment;
-				prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
+				PreparedStatement prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
 				prepStatment.setString(1, imeInput.getText());
 				prepStatment.setString(2, prezimeInput.getText());
 				prepStatment.setString(3, emailInput.getText());
@@ -241,5 +254,4 @@ public class RegisterController implements Initializable {
 		visibleErrorMsg.play();
 		return;
 	}
-
 }
