@@ -196,15 +196,10 @@ public class RegisterController implements Initializable {
 	public void register() {
 		if (validate()) {
 			errorMsgLabel.setVisible(false);
-			errorMsgLabel.setText(errorMsg);
-			
-			Connection connection;
-			PreparedStatement prepStatment;
-			
+			errorMsgLabel.setText(errorMsg);			
 			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rsprojekat", "elnurdev", "elnurdev");
-				
+				Connection connection = DatabaseConnection.getInstance().getConnection();
+				PreparedStatement prepStatment;
 				prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
 				prepStatment.setString(1, imeInput.getText());
 				prepStatment.setString(2, prezimeInput.getText());
