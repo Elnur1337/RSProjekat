@@ -1,97 +1,98 @@
-/*package projekat;
+package application;
 
-import java.sql.Connection;
-
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
 import java.sql.Date;
+
 public class User {
-	
 	private int id_;
 	private String ime_;
 	private String prezime_;
 	private String email_;
-	private String pass_;
 	private double wallet_;
-	private int admin_;
-	private int organizator_;
-	private Date datum_;
-	private int approved_;
-	private String created_at_;
+	private boolean isAdmin_;
+	private boolean isOrganizator_;
+	private Date datumRod_;
+	private Date createdAt_;
+	private boolean isLoggedIn_;
 	
-	
-	
-	public User() {}
-	public User(int id,String ime,String prezime,String email,String pass,
-			double wallet,int admin,int organizator,Date datum,int approved,String created_at) 
-	{  
-		id_=id;
-		ime_=ime;
-		prezime_=prezime;
-		email_=email;
-		pass_=pass;
-		wallet_=wallet;
-		admin_=admin;
-		organizator_=organizator;
-		datum_=datum;
-		approved_=approved;
-		created_at_=created_at;
+	public User() {
+		id_ = 0;
+		ime_ = prezime_ = email_ = "";
+		wallet_ = 0.0;
+		isAdmin_ = isOrganizator_ = false;
+		datumRod_ = createdAt_ = Date.valueOf("2000-01-01");
+		isLoggedIn_ = false;
+		return;
 	}
 	
-	public void createUser(User user) 
-	{
-		
-		String url = "jdbc:mysql://localhost:3306/rsprojekat";
-
-	String username="root";
-	//////////////////////////////////////////	//////////////////////////////////////////
-	String password=""; /// UNIJETI SIFRU
-	//////////////////////////////////////////	//////////////////////////////////////////
-	
-		String naredba="INSERT INTO Korisnik(id,ime,prezime,email,pass,wallet,admin,organizator,datum_rod,"
-				+ "approved,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-		
-		try 
-		{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection con=DriverManager.getConnection(url,username,password);
-			PreparedStatement statement=con.prepareStatement(naredba);
-			
-			
-			statement.setInt(1, id_);
-			statement.setString(2, ime_);
-			statement.setString(3, prezime_);
-			statement.setString(4, email_);
-			statement.setString(5,pass_);
-			statement.setDouble(6,wallet_);
-			statement.setInt(7,admin_);
-			statement.setInt(8,organizator_);
-			statement.setDate(9, datum_);
-			statement.setInt(10, approved_);
-			statement.setString(11, created_at_);
-			
-			
-			
-			int rowsAffected=statement.executeUpdate();
-			if(rowsAffected>0) 
-			{
-				System.out.println("Korisnik je usjpesno dodan");
-				
-				
-			}
-			
-			
-		}
-		catch(Exception e) 
-		{
-			e.printStackTrace();
-			
-		}
-		
-		
+	//Setters
+	public User setId(int id) {
+		id_ = id;
+		return this;
 	}
 	
-
+	public User setIme(String ime) {
+		ime_ = ime;
+		return this;
+	}
+	
+	public User setPrezime(String prezime) {
+		prezime_ = prezime;
+		return this;
+	}
+	
+	public User setEmail(String email) {
+		email_ = email;
+		return this;
+	}
+	
+	public User setWallet(double value) {
+		wallet_ = value;
+		return this;
+	}
+	
+	public User setIsAdmin(boolean isAdmin) {
+		isAdmin_ = isAdmin;
+		return this;
+	}
+	
+	public User setIsOrganizator(boolean isOrganizator) {
+		isOrganizator_ = isOrganizator;
+		return this;
+	}
+	
+	public User setDatumRod(Date datumRod) {
+		datumRod_ = datumRod;
+		return this;
+	}
+	
+	public User setCreatedAt(Date createdAt) {
+		createdAt_ = createdAt;
+		return this;
+	}
+	
+	public User setIsLoggedIn(boolean isLoggedIn) {
+		isLoggedIn_ = isLoggedIn;
+		return this;
+	}
+	
+	//Getters
+	public int getId() { return id_; };
+	
+	public String getIme() { return ime_; };
+	
+	public String getPrezime() { return prezime_; };
+	
+	public String getEmail() { return email_; };
+	
+	public double getWallet() { return wallet_; };
+	
+	public boolean isAdmin() { return isAdmin_; };
+	
+	public boolean isOrganizator() { return isOrganizator_; };
+	
+	public Date getDatumRod() { return datumRod_; };
+	
+	public Date getCreatedAt() { return createdAt_; };
+	
+	public boolean isLoggedIn() { return isLoggedIn_; };
 }
-*/

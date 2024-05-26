@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -48,11 +47,11 @@ public class RegisterController implements Initializable {
 	@FXML
 	private PasswordField passwordRepeatInput;
 	@FXML
-	private ChoiceBox<Integer> yearInput;
+	private ComboBox<Integer> yearInput;
 	@FXML
-	private ChoiceBox<String> monthInput;
+	private ComboBox<String> monthInput;
 	@FXML
-	private ChoiceBox<Integer> dayInput;
+	private ComboBox<Integer> dayInput;
 	@FXML
 	private CheckBox isOrganizatorInput;
 	@FXML
@@ -101,21 +100,7 @@ public class RegisterController implements Initializable {
 			yearInput.getItems().add(i);
 		}
 		
-		//Zamijeniti choicebox sa combobox jer podrzava scroll
-		//Dodati iteme u combobox za mjesec u jednoj liniji
-		
-		monthInput.getItems().add("Januar");
-		monthInput.getItems().add("Februar");
-		monthInput.getItems().add("Mart");
-		monthInput.getItems().add("April");
-		monthInput.getItems().add("Maj");
-		monthInput.getItems().add("Jun");
-		monthInput.getItems().add("Jul");
-		monthInput.getItems().add("August");
-		monthInput.getItems().add("Septembar");
-		monthInput.getItems().add("Oktobar");
-		monthInput.getItems().add("Novembar");
-		monthInput.getItems().add("Decembar");
+		monthInput.getItems().addAll("Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "August", "Septembar", "Oktobar", "Novembar", "Decembar");
 		
 		monthInput.getSelectionModel().selectedItemProperty().addListener(
 				new ChangeListener<String>() {

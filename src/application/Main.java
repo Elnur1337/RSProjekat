@@ -15,8 +15,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+			//Validating ticket icons created by surang - Flaticon - "https://www.flaticon.com/free-icons/validating-ticket"
 			
-			CurrentUser user = new CurrentUser();
+			User user = new User();
 			//user.setIsLoggedIn(true);
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));

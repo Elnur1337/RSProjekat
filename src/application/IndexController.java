@@ -12,7 +12,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class IndexController {
-	private CurrentUser user;
+	private User user;
 	
 	private Stage stage;
 	private Scene scene;
@@ -26,7 +26,7 @@ public class IndexController {
 	private Button registerBtn;
 	
 	
-	public IndexController setCurrentUser(CurrentUser second) {
+	public IndexController setCurrentUser(User second) {
 		user = second;
 		if (user.isLoggedIn()) {
 			loginBtn.setVisible(false);
