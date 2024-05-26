@@ -2,12 +2,19 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import java.util.regex.Pattern;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -24,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class RegisterController implements Initializable {
 	private String errorMsg;
@@ -120,6 +128,7 @@ public class RegisterController implements Initializable {
 		String ime = imeInput.getText();
 		if (ime.length() < 2 ||  ime.length() > 20) {
 			errorMsg = "Ime mora biti izmedju 2 i 20 karaktera!";
+			errorMsgLabel.setText(errorMsg);
 			return false;
 		}
 		if (ime.charAt(0) == ' ') {
@@ -143,24 +152,93 @@ public class RegisterController implements Initializable {
 			errorMsg = "Email nije u dobrom formatu!";
 			return false;
 		}
+		//Dodati validaciju da li postoji korisnik sa istim emailom
 		String password = passwordInput.getText();
 		if (password.length() < 8) {
 			errorMsg = "Sifra mora biti minimalno osam karaktera!";
 			return false;
 		}
 		String passwordRepeat = passwordRepeatInput.getText();
-		if (password != passwordRepeat) {
+		if (!password.equals(passwordRepeat)) {
 			errorMsg = "Ponovljena sifra se ne poklapa!";
 			return false;
 		}
+		try {
+			int year = yearInput.getValue();
+			
+		} catch (NullPointerException e) {
+			errorMsg = "Niste unijeli godinu rodjenja!";
+			return false;
+		}
+		try {
+			String month = monthInput.getValue();
+			
+		} catch (NullPointerException e) {
+			errorMsg = "Niste unijeli mjesec rodjenja!";
+			return false;
+		}
+		try {
+			int day = dayInput.getValue();
+			
+		} catch (NullPointerException e) {
+			errorMsg = "Niste unijeli dan rodjenja!";
+			return false;
+		}
+		errorMsg = "";
 		return true;
 	}
 	
 	public void register() {
 		if (validate()) {
+			errorMsgLabel.setVisible(false);
+			errorMsgLabel.setText(errorMsg);
 			
-			//Registruj korisnika u bazu
+			Connection connection;
+			PreparedStatement prepStatment;
+			
+			try {
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/rsprojekat", "elnurdev", "elnurdev");
+				
+				prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
+				prepStatment.setString(1, imeInput.getText());
+				prepStatment.setString(2, prezimeInput.getText());
+				prepStatment.setString(3, emailInput.getText());
+				//Kriptovati sifru
+				prepStatment.setString(4, passwordInput.getText());
+				if (isOrganizatorInput.isSelected()) {
+					prepStatment.setInt(5, 1);
+				} else {
+					prepStatment.setInt(5, 0);
+				}
+				prepStatment.setDate(6, Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
+				prepStatment.execute();
+				connection.close();
+				System.out.println("Sve uredu!");
+				
+			} catch (ClassNotFoundException | SQLException e) {
+				errorMsg = "Problem sa bazom, registracija nije moguca!";
+				
+				//Ispis poruke greske za bazu
+				errorMsgLabel.setText(errorMsg);
+				errorMsgLabel.setVisible(true);
+				
+				PauseTransition visibleErrorMsg = new PauseTransition();
+				visibleErrorMsg.setDuration(Duration.seconds(5));
+				visibleErrorMsg.setOnFinished(event -> errorMsgLabel.setVisible(false));
+				visibleErrorMsg.play();
+			}
+			
+			homeBtn.fire();
+			return;
 		}
+		errorMsgLabel.setText(errorMsg);
+		errorMsgLabel.setVisible(true);
+		
+		PauseTransition visibleErrorMsg = new PauseTransition();
+		visibleErrorMsg.setDuration(Duration.seconds(5));
+		visibleErrorMsg.setOnFinished(event -> errorMsgLabel.setVisible(false));
+		visibleErrorMsg.play();
 		return;
 	}
 
