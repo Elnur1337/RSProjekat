@@ -39,7 +39,7 @@ import javafx.util.Duration;
 
 
 public class RegisterController implements Initializable {
-	private String errorMsg;
+	private String msg;
 	private Map<String, Integer> monthNameNumberMap = new HashMap<>();
 	private Map<String, Integer> monthNameDaysMap = new HashMap<>();
 	
@@ -70,7 +70,7 @@ public class RegisterController implements Initializable {
 	@FXML
 	private Button registerBtn;
 	@FXML
-	private Label errorMsgLabel;
+	private Label msgLabel;
 	
 	public void switchToHomeScene(ActionEvent event) throws IOException {
 		root = FXMLLoader.load(getClass().getResource("index.fxml"));
@@ -132,21 +132,21 @@ public class RegisterController implements Initializable {
 	private boolean validate() {
 		String ime = imeInput.getText();
 		if (ime.length() < 2 ||  ime.length() > 20) {
-			errorMsg = "Ime mora biti izmedju 2 i 20 karaktera!";
-			errorMsgLabel.setText(errorMsg);
+			msg = "Ime mora biti izmedju 2 i 20 karaktera!";
+			msgLabel.setText(msg);
 			return false;
 		}
 		if (ime.charAt(0) == ' ') {
-			errorMsg = "Ime ne moze pocinjati sa praznim mjestom!";
+			msg = "Ime ne moze pocinjati sa praznim mjestom!";
 			return false;
 		}
 		String prezime = prezimeInput.getText();
 		if (prezime.length() < 2 || prezime.length() > 20) {
-			errorMsg = "Prezime mora biti izmedju 2 i 20 karaktera!";
+			msg = "Prezime mora biti izmedju 2 i 20 karaktera!";
 			return false;
 		}
 		if (prezime.charAt(0) == ' ') {
-			errorMsg = "Prezime ne moze pocinjati sa praznim mjestom!";
+			msg = "Prezime ne moze pocinjati sa praznim mjestom!";
 			return false;
 		}
 		String email = emailInput.getText();
@@ -154,7 +154,7 @@ public class RegisterController implements Initializable {
 		Pattern pattern = Pattern.compile(emailRegex);
 		Matcher matcher = pattern.matcher(email);
 		if (!matcher.matches()) {
-			errorMsg = "Email nije u dobrom formatu!";
+			msg = "Email nije u dobrom formatu!";
 			return false;
 		}
 		try {
@@ -164,53 +164,56 @@ public class RegisterController implements Initializable {
 			ResultSet res = prepStatment.executeQuery();
 			if (res.next()) {
 				connection.close();
-				errorMsg = "Korisnik sa unesenim emailom vec postoji!";
+				msg = "Korisnik sa unesenim emailom vec postoji!";
 				return false;
 			}
+			connection.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
-			errorMsg = "Problem sa bazom, registracija nije moguca!";
+			msg = "Problem sa bazom, registracija nije moguca!";
 			return false;
 		}
 		String password = passwordInput.getText();
 		if (password.length() < 8) {
-			errorMsg = "Sifra mora biti minimalno osam karaktera!";
+			msg = "Sifra mora biti minimalno osam karaktera!";
 			return false;
 		}
 		String passwordRepeat = passwordRepeatInput.getText();
 		if (!password.equals(passwordRepeat)) {
-			errorMsg = "Ponovljena sifra se ne poklapa!";
+			msg = "Ponovljena sifra se ne poklapa!";
 			return false;
 		}
 		try {
 			yearInput.getValue();
 			
 		} catch (NullPointerException e) {
-			errorMsg = "Niste unijeli godinu rodjenja!";
+			msg = "Niste unijeli godinu rodjenja!";
 			return false;
 		}
 		try {
 			monthInput.getValue();
 			
 		} catch (NullPointerException e) {
-			errorMsg = "Niste unijeli mjesec rodjenja!";
+			msg = "Niste unijeli mjesec rodjenja!";
 			return false;
 		}
 		try {
 			dayInput.getValue();
 			
 		} catch (NullPointerException e) {
-			errorMsg = "Niste unijeli dan rodjenja!";
+			msg = "Niste unijeli dan rodjenja!";
 			return false;
 		}
-		errorMsg = "";
+		msg = "";
 		return true;
 	}
 	
 	public void register() {
+		PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+		
 		if (validate()) {
-			errorMsgLabel.setVisible(false);
-			errorMsgLabel.setText(errorMsg);			
+			msgLabel.setVisible(false);
+			msgLabel.setText(msg);			
 			try {
 				Connection connection = DatabaseConnection.getInstance().getConnection();
 				PreparedStatement prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
@@ -227,31 +230,32 @@ public class RegisterController implements Initializable {
 				prepStatment.setDate(6, Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
 				prepStatment.execute();
 				connection.close();
-				System.out.println("Sve uredu!");
-				
+				msg = "Uspjesna registracija!";
+				msgLabel.setText(msg);
+				msgLabel.setStyle(msgLabel.getStyle() + " -fx-background-color: #468847;");
+				msgLabel.setVisible(true);
+				visibleMsg.setOnFinished(event -> {
+					msgLabel.setVisible(false);
+					homeBtn.fire();
+				});
+				visibleMsg.play();
 			} catch (ClassNotFoundException | SQLException e) {
-				errorMsg = "Problem sa bazom, registracija nije moguca!";
+				msg = "Problem sa bazom, registracija nije moguca!";
 				
 				//Ispis poruke greske za bazu
-				errorMsgLabel.setText(errorMsg);
-				errorMsgLabel.setVisible(true);
+				msgLabel.setText(msg);
+				msgLabel.setStyle(msgLabel.getStyle() + " -fx-background-color: #8a1313;");
+				msgLabel.setVisible(true);
+				visibleMsg.play();
 				
-				PauseTransition visibleErrorMsg = new PauseTransition();
-				visibleErrorMsg.setDuration(Duration.seconds(5));
-				visibleErrorMsg.setOnFinished(event -> errorMsgLabel.setVisible(false));
-				visibleErrorMsg.play();
 			}
-			
-			homeBtn.fire();
 			return;
 		}
-		errorMsgLabel.setText(errorMsg);
-		errorMsgLabel.setVisible(true);
-		
-		PauseTransition visibleErrorMsg = new PauseTransition();
-		visibleErrorMsg.setDuration(Duration.seconds(5));
-		visibleErrorMsg.setOnFinished(event -> errorMsgLabel.setVisible(false));
-		visibleErrorMsg.play();
+		visibleMsg.setOnFinished(event -> msgLabel.setVisible(false));
+		msgLabel.setText(msg);
+		msgLabel.setStyle(msgLabel.getStyle() + " -fx-background-color: #8a1313;");
+		msgLabel.setVisible(true);
+		visibleMsg.play();
 		return;
 	}
 }

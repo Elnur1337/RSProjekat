@@ -120,7 +120,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="yearInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                              <ComboBox fx:id="yearInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="comboBox" />
                            </children>
                            <HBox.margin>
                               <Insets right="15.0" />
@@ -133,7 +133,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="monthInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                              <ComboBox fx:id="monthInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="comboBox" />
                            </children>
                            <HBox.margin>
                               <Insets right="15.0" />
@@ -146,7 +146,7 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="dayInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                              <ComboBox fx:id="dayInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="comboBox" />
                            </children>
                         </VBox>
                      </children>
@@ -175,7 +175,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="errorMsgLabel" alignment="CENTER" prefHeight="46.0" prefWidth="507.0" style="-fx-background-color: #8a1313; -fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Error msg" textFill="WHITE" visible="false">
+            <Label fx:id="msgLabel" alignment="CENTER" prefHeight="46.0" prefWidth="507.0" style="-fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="msg" textFill="WHITE" visible="false">
                <font>
                   <Font size="20.0" />
                </font>
