@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import java.util.regex.Pattern;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.HashMap;
@@ -32,6 +35,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+
 
 public class RegisterController implements Initializable {
 	private String errorMsg;
@@ -204,8 +209,8 @@ public class RegisterController implements Initializable {
 				prepStatment.setString(1, imeInput.getText());
 				prepStatment.setString(2, prezimeInput.getText());
 				prepStatment.setString(3, emailInput.getText());
-				//Kriptovati sifru
-				prepStatment.setString(4, passwordInput.getText());
+				String hashedPassword = BCrypt.withDefaults().hashToString(10, passwordInput.getText().toCharArray());
+				prepStatment.setString(4, hashedPassword);
 				if (isOrganizatorInput.isSelected()) {
 					prepStatment.setInt(5, 1);
 				} else {
