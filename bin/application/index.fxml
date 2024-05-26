@@ -24,7 +24,7 @@
                </HBox.margin>
             </Button>
             <Region prefHeight="36.0" prefWidth="710.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="loginBtn" mnemonicParsing="false" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Prijava">
+            <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#switchToLoginScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Prijava">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
@@ -39,6 +39,20 @@
                </HBox.margin>
             </Button>
             <Button fx:id="registerBtn" mnemonicParsing="false" onAction="#switchToRegisterScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Registracija">
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4),                 dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Odjava" visible="false">
                <font>
                   <Font name="SansSerif Regular" size="18.0" />
                </font>

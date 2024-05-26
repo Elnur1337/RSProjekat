@@ -16,6 +16,7 @@ public class Main extends Application {
 			
 			User user = new User();
 			//user.setIsLoggedIn(true);
+			//Pokupiti remember me podatke ako postoje
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
 			Parent root = loader.load();

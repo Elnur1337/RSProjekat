@@ -81,6 +81,15 @@ public class RegisterController implements Initializable {
 		return;
 	}
 	
+	public void switchToLoginScene(ActionEvent event) throws IOException {
+		root = FXMLLoader.load(getClass().getResource("login.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		return;
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		monthNameNumberMap.put("Januar", 1);
@@ -232,28 +241,21 @@ public class RegisterController implements Initializable {
 				connection.close();
 				msg = "Uspjesna registracija!";
 				msgLabel.setText(msg);
-				msgLabel.setStyle(msgLabel.getStyle() + " -fx-background-color: #468847;");
+				msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
 				msgLabel.setVisible(true);
 				visibleMsg.setOnFinished(event -> {
 					msgLabel.setVisible(false);
 					homeBtn.fire();
 				});
 				visibleMsg.play();
+				return;
 			} catch (ClassNotFoundException | SQLException e) {
-				msg = "Problem sa bazom, registracija nije moguca!";
-				
-				//Ispis poruke greske za bazu
-				msgLabel.setText(msg);
-				msgLabel.setStyle(msgLabel.getStyle() + " -fx-background-color: #8a1313;");
-				msgLabel.setVisible(true);
-				visibleMsg.play();
-				
+				msg = "Problem sa bazom, registracija nije moguca!";				
 			}
-			return;
 		}
 		visibleMsg.setOnFinished(event -> msgLabel.setVisible(false));
 		msgLabel.setText(msg);
-		msgLabel.setStyle(msgLabel.getStyle() + " -fx-background-color: #8a1313;");
+		msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
 		msgLabel.setVisible(true);
 		visibleMsg.play();
 		return;

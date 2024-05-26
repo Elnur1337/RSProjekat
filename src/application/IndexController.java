@@ -1,18 +1,21 @@
 package application;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class IndexController {
-	private User user;
+public class IndexController implements Initializable {
+	private static User user = new User();
 	
 	private Stage stage;
 	private Scene scene;
@@ -24,14 +27,11 @@ public class IndexController {
 	private Button loginBtn;
 	@FXML
 	private Button registerBtn;
-	
+	@FXML
+	private Button logoutBtn;
 	
 	public IndexController setCurrentUser(User second) {
 		user = second;
-		if (user.isLoggedIn()) {
-			loginBtn.setVisible(false);
-			registerBtn.setVisible(false);
-		}
 		return this;
 	}
 	
@@ -41,6 +41,46 @@ public class IndexController {
 		scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
+		return;
+	}
+	
+	public void switchToLoginScene(ActionEvent event) throws IOException {
+		root = FXMLLoader.load(getClass().getResource("login.fxml"));
+		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		return;
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		if (user.isLoggedIn()) {
+			loginBtn.setVisible(false);
+			loginBtn.setManaged(false);
+			registerBtn.setVisible(false);
+			registerBtn.setManaged(false);
+			logoutBtn.setVisible(true);
+			logoutBtn.setManaged(true);
+		} else {
+			loginBtn.setVisible(true);
+			loginBtn.setManaged(true);
+			registerBtn.setVisible(true);
+			registerBtn.setManaged(true);
+			logoutBtn.setVisible(false);
+			logoutBtn.setManaged(false);
+		}
+		return;
+	}
+	
+	public void logout() {
+		user = new User();
+		loginBtn.setVisible(true);
+		loginBtn.setManaged(true);
+		registerBtn.setVisible(true);
+		registerBtn.setManaged(true);
+		logoutBtn.setVisible(false);
+		logoutBtn.setManaged(false);
 		return;
 	}
 }

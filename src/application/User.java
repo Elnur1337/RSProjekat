@@ -1,6 +1,7 @@
 package application;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class User {
 	private int id_;
@@ -11,7 +12,7 @@ public class User {
 	private boolean isAdmin_;
 	private boolean isOrganizator_;
 	private Date datumRod_;
-	private Date createdAt_;
+	private Timestamp createdAt_;
 	private boolean isLoggedIn_;
 	
 	public User() {
@@ -19,7 +20,8 @@ public class User {
 		ime_ = prezime_ = email_ = "";
 		wallet_ = 0.0;
 		isAdmin_ = isOrganizator_ = false;
-		datumRod_ = createdAt_ = Date.valueOf("2000-01-01");
+		datumRod_ =  Date.valueOf("2000-01-01");
+		createdAt_ = Timestamp.valueOf("2000-01-01 00:00:00");
 		isLoggedIn_ = false;
 		return;
 	}
@@ -65,7 +67,7 @@ public class User {
 		return this;
 	}
 	
-	public User setCreatedAt(Date createdAt) {
+	public User setCreatedAt(Timestamp createdAt) {
 		createdAt_ = createdAt;
 		return this;
 	}
@@ -92,7 +94,7 @@ public class User {
 	
 	public Date getDatumRod() { return datumRod_; };
 	
-	public Date getCreatedAt() { return createdAt_; };
+	public Timestamp getCreatedAt() { return createdAt_; };
 	
 	public boolean isLoggedIn() { return isLoggedIn_; };
 }
