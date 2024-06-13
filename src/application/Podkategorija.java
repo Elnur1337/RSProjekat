@@ -1,4 +1,4 @@
-package projekat;
+package application;
 
 public class Podkategorija{
 	

@@ -1,4 +1,4 @@
-package projekat;
+package application;
 import java.util.Date;
 public class Event {
 	
