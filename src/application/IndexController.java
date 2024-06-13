@@ -75,6 +75,7 @@ public class IndexController implements Initializable {
 	
 	public void logout() {
 		user = new User();
+		//Setovati nogo usera i refreshovati scenu?
 		loginBtn.setVisible(true);
 		loginBtn.setManaged(true);
 		registerBtn.setVisible(true);
