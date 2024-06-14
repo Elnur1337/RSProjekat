@@ -1,5 +1,6 @@
 package application;
 	
+import application.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -11,14 +12,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("assets/icon.png")));
 			//Validating ticket icons created by surang - Flaticon - "https://www.flaticon.com/free-icons/validating-ticket"
 			
 			User user = new User();
 			//user.setIsLoggedIn(true);
 			//Pokupiti remember me podatke ako postoje
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("view/index.fxml"));
 			Parent root = loader.load();
 			
 			IndexController indexController = loader.getController();

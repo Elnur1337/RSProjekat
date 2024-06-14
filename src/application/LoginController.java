@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import application.model.User;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import at.favre.lib.crypto.bcrypt.BCrypt.Result;
 import javafx.animation.PauseTransition;
@@ -50,7 +51,7 @@ public class LoginController {
 	private Label msgLabel;
 	
 	public void switchToHomeScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("index.fxml"));
+		root = FXMLLoader.load(getClass().getResource("view/index.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -59,7 +60,7 @@ public class LoginController {
 	}
 	
 	public void switchToRegisterScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("register.fxml"));
+		root = FXMLLoader.load(getClass().getResource("view/register.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

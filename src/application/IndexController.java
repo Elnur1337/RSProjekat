@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +37,7 @@ public class IndexController implements Initializable {
 	}
 	
 	public void switchToRegisterScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("register.fxml"));
+		root = FXMLLoader.load(getClass().getResource("view/register.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -46,7 +47,8 @@ public class IndexController implements Initializable {
 	}
 	
 	public void switchToLoginScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("login.fxml"));
+		System.out.println(getClass().getResource("view/login.fxml"));
+		root = FXMLLoader.load(getClass().getResource("/application/view/login.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

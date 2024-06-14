@@ -73,7 +73,7 @@ public class RegisterController implements Initializable {
 	private Label msgLabel;
 	
 	public void switchToHomeScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("index.fxml"));
+		root = FXMLLoader.load(getClass().getResource("view/index.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		stage.setScene(scene);
@@ -82,7 +82,7 @@ public class RegisterController implements Initializable {
 	}
 	
 	public void switchToLoginScene(ActionEvent event) throws IOException {
-		root = FXMLLoader.load(getClass().getResource("login.fxml"));
+		root = FXMLLoader.load(getClass().getResource("view/login.fxml"));
 		stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
