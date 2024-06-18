@@ -5,6 +5,7 @@ module RSProjekat {
 	requires javafx.graphics;
 	requires javafx.base;
 	requires bcrypt;
+	requires java.persistence;
 	
 	opens application to javafx.graphics, javafx.fxml;
 }

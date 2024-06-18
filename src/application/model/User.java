@@ -2,7 +2,9 @@ package application.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import javax.persistence.*;
 
+@Entity
 public class User {
 	private int id_;
 	private String ime_;
