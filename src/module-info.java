@@ -7,5 +7,5 @@ module RSProjekat {
 	requires bcrypt;
 	requires java.persistence;
 	
-	opens application to javafx.graphics, javafx.fxml;
+	opens main to javafx.graphics, javafx.fxml;
 }
