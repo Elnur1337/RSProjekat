@@ -13,8 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.Parent;
 
 public class Main extends Application {
-	private static final String PERSISTENCE_UNIT_NAME = "rsprojekat";
-	private static EntityManagerFactory emf;
+	private static final String PERSISTENCE_UNIT_NAME = "rstest";
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -23,7 +23,6 @@ public class Main extends Application {
 			
 			User user = new User();
 			
-			emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 			EntityManager em = emf.createEntityManager();
 			
 			//user.setIsLoggedIn(true);
