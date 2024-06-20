@@ -1,0 +1,20 @@
+.navBtn:hover {
+	-fx-background-color: #a8a29e;
+}
+
+.body {
+	-fx-min-width: 800px;
+}
+
+.loginImg {
+	-fx-background-image: url("./loginImg.jpg");
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center center;
+	-fx-background-size: cover;
+}
+.registerImg {
+	-fx-background-image: url("./registerImg.jpg");
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: center center;
+	-fx-background-size: cover;
+}
