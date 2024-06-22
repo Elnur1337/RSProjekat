@@ -2,30 +2,56 @@ package rs.app.rsprojekat.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "korisnik")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id_;
+
+    @Column(name = "ime", nullable = false, length = 20)
     private String ime_;
+
+    @Column(name = "prezime", nullable = false, length = 20)
     private String prezime_;
+
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email_;
+
+    @Column(name = "pass", nullable = false, length = 250)
+    private String pass_;
+
+    @Column(name = "wallet", nullable = false)
     private double wallet_;
+
+    @Column(name = "admin", nullable = false)
     private boolean isAdmin_;
+
+    @Column(name = "organizator", nullable = false)
     private boolean isOrganizator_;
+
+    @Column(name = "datum_rod")
     private Date datumRod_;
+
+    @Column(name = "approved", nullable = false)
+    private boolean approved_;
+
+    @Column(name = "created_at", nullable = false)
     private Timestamp createdAt_;
+
     private boolean isLoggedIn_;
 
     public User() {
         id_ = 0;
-        ime_ = prezime_ = email_ = "";
+        ime_ = prezime_ = email_ = pass_ = "";
         wallet_ = 0.0;
-        isAdmin_ = isOrganizator_ = false;
+        isAdmin_ = isOrganizator_ = approved_ = false;
         datumRod_ =  Date.valueOf("2000-01-01");
         createdAt_ = Timestamp.valueOf("2000-01-01 00:00:00");
         isLoggedIn_ = false;
-        return;
     }
 
     //Setters
@@ -49,6 +75,11 @@ public class User {
         return this;
     }
 
+    public User setPass(String pass) {
+        pass_ = pass;
+        return this;
+    }
+
     public User setWallet(double value) {
         wallet_ = value;
         return this;
@@ -66,6 +97,11 @@ public class User {
 
     public User setDatumRod(Date datumRod) {
         datumRod_ = datumRod;
+        return this;
+    }
+
+    public User setIsApproved(boolean isApproved) {
+        approved_ = isApproved;
         return this;
     }
 
@@ -95,6 +131,8 @@ public class User {
     public boolean isOrganizator() { return isOrganizator_; };
 
     public Date getDatumRod() { return datumRod_; };
+
+    public boolean isApproved() { return approved_; };
 
     public Timestamp getCreatedAt() { return createdAt_; };
 

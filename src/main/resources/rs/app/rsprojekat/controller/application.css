@@ -8,12 +8,14 @@
 
 .loginImg {
 	-fx-background-image: url("./loginImg.jpg");
+	/*Photo by cottonbro studio: https://www.pexels.com/photo/person-holding-a-ticket-8261585/*/
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center center;
 	-fx-background-size: cover;
 }
 .registerImg {
 	-fx-background-image: url("./registerImg.jpg");
+	/*Photo by cottonbro studio: https://www.pexels.com/photo/a-person-in-long-sleeve-shirt-holding-movie-tickets-8261581/*/
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center center;
 	-fx-background-size: cover;

@@ -9,10 +9,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import rs.app.rsprojekat.model.User;
@@ -61,17 +63,23 @@ public class IndexController implements Initializable {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (user.isLoggedIn()) {
+            HBox.setMargin(loginBtn, Insets.EMPTY);
             loginBtn.setVisible(false);
             loginBtn.setManaged(false);
+            HBox.setMargin(registerBtn, Insets.EMPTY);
             registerBtn.setVisible(false);
             registerBtn.setManaged(false);
+            HBox.setMargin(logoutBtn, Insets.EMPTY);
             logoutBtn.setVisible(true);
             logoutBtn.setManaged(true);
         } else {
+            HBox.setMargin(loginBtn, new Insets(0, 10, 0, 0));
             loginBtn.setVisible(true);
             loginBtn.setManaged(true);
+            HBox.setMargin(registerBtn, Insets.EMPTY);
             registerBtn.setVisible(true);
             registerBtn.setManaged(true);
+            HBox.setMargin(logoutBtn, Insets.EMPTY);
             logoutBtn.setVisible(false);
             logoutBtn.setManaged(false);
         }

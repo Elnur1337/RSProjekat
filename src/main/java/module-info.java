@@ -11,7 +11,7 @@ module rs.app.rsprojekat {
     requires bcrypt;
 
     opens rs.app.rsprojekat to javafx.fxml;
+    opens rs.app.rsprojekat.controller to javafx.fxml;
     exports rs.app.rsprojekat;
     exports rs.app.rsprojekat.controller;
-    opens rs.app.rsprojekat.controller to javafx.fxml;
 }

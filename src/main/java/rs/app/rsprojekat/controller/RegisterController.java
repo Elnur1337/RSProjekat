@@ -1,23 +1,26 @@
 package rs.app.rsprojekat.controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
+//SQL Imports
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.util.regex.Pattern;
-
+//Bcrypt Imports
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
+//Util Imports
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.io.IOException;
 
+//JavaFX Imports
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -37,7 +40,16 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+//JPA Imports
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
 import rs.app.rsprojekat.DatabaseConnection;
+
+//Model Imports
+import rs.app.rsprojekat.model.User;
 
 
 
@@ -130,14 +142,14 @@ public class RegisterController implements Initializable {
 
         monthInput.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<String>() {
-                    @Override
-                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                        dayInput.getItems().clear();
-                        for (int i = 1; i <= monthNameDaysMap.get(newValue); ++i) {
-                            dayInput.getItems().add(i);
-                        }
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    dayInput.getItems().clear();
+                    for (int i = 1; i <= monthNameDaysMap.get(newValue); ++i) {
+                        dayInput.getItems().add(i);
                     }
                 }
+            }
         );
     }
 
@@ -225,22 +237,44 @@ public class RegisterController implements Initializable {
         if (validate()) {
             msgLabel.setVisible(false);
             msgLabel.setText(msg);
+
+            final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+            final EntityManager entityManager = entityManagerFactory.createEntityManager();
+            EntityTransaction entityTransaction = null;
+
             try {
-                Connection connection = DatabaseConnection.getInstance().getConnection();
-                PreparedStatement prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
-                prepStatment.setString(1, imeInput.getText());
-                prepStatment.setString(2, prezimeInput.getText());
-                prepStatment.setString(3, emailInput.getText());
+                User user = new User();
                 String hashedPassword = BCrypt.withDefaults().hashToString(10, passwordInput.getText().toCharArray());
-                prepStatment.setString(4, hashedPassword);
+                user.setIme(imeInput.getText());
+                user.setPrezime(prezimeInput.getText());
+                user.setEmail(emailInput.getText());
+                user.setPass(hashedPassword);
                 if (isOrganizatorInput.isSelected()) {
-                    prepStatment.setInt(5, 1);
-                } else {
-                    prepStatment.setInt(5, 0);
+                    user.setIsOrganizator(true);
                 }
-                prepStatment.setDate(6, Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
-                prepStatment.execute();
-                connection.close();
+                user.setDatumRod(Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
+
+                entityTransaction = entityManager.getTransaction();
+                entityTransaction.begin();
+                entityManager.persist(user);
+                entityTransaction.commit();
+                entityManager.close();
+
+//                Connection connection = DatabaseConnection.getInstance().getConnection();
+//                PreparedStatement prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
+//                prepStatment.setString(1, imeInput.getText());
+//                prepStatment.setString(2, prezimeInput.getText());
+//                prepStatment.setString(3, emailInput.getText());
+//                //String hashedPassword = BCrypt.withDefaults().hashToString(10, passwordInput.getText().toCharArray());
+//                prepStatment.setString(4, hashedPassword);
+//                if (isOrganizatorInput.isSelected()) {
+//                    prepStatment.setInt(5, 1);
+//                } else {
+//                    prepStatment.setInt(5, 0);
+//                }
+//                prepStatment.setDate(6, Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
+//                prepStatment.execute();
+//                connection.close();
                 msg = "Uspjesna registracija!";
                 msgLabel.setText(msg);
                 msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
@@ -251,7 +285,7 @@ public class RegisterController implements Initializable {
                 });
                 visibleMsg.play();
                 return;
-            } catch (ClassNotFoundException | SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 msg = "Problem sa bazom, registracija nije moguca!";
             }
