@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,15 +44,11 @@ public class LoginController {
     @FXML
     private Button homeBtn;
     @FXML
-    private Button registerBtn;
-    @FXML
     private TextField emailInput;
     @FXML
     private PasswordField passwordInput;
     @FXML
     private CheckBox rememberMeInput;
-    @FXML
-    private Button loginBtn;
     @FXML
     private Label msgLabel;
 
@@ -62,7 +59,6 @@ public class LoginController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        return;
     }
 
     public void switchToRegisterScene(ActionEvent event) throws IOException {
@@ -70,14 +66,14 @@ public class LoginController {
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
 
     private boolean validate() {
         String email = emailInput.getText();
-        final String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        final String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
@@ -131,7 +127,7 @@ public class LoginController {
 
                     IndexController indexController = loader.getController();
                     indexController.setCurrentUser(user);
-                    msg = "Uspjesna prijava!";
+                    msg = "Uspješna prijava!";
                     msgLabel.setText(msg);
                     msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
                     msgLabel.setVisible(true);
@@ -144,7 +140,6 @@ public class LoginController {
                 }
                 msg = "Pogrešna šifra!";
             } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
                 msg = "Problem sa bazom, registracija nije moguca!";
             }
         }

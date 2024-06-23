@@ -98,8 +98,7 @@ public class User {
     }
 
     public void setPass(String pass) {
-        String hashedPassword = BCrypt.withDefaults().hashToString(10, pass.toCharArray());
-        this.pass = hashedPassword;
+        this.pass = BCrypt.withDefaults().hashToString(10, pass.toCharArray());
     }
 
     public double getWallet() {

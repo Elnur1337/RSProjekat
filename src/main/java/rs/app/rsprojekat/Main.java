@@ -14,13 +14,16 @@ import rs.app.rsprojekat.model.User;
 //Controller Imports
 import rs.app.rsprojekat.controller.IndexController;
 
+import java.util.Objects;
+
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
-            //Validating ticket icons created by surang - Flaticon - "https://www.flaticon.com/free-icons/validating-ticket"
-
+            if (getClass().getResourceAsStream("icon.png") != null) {
+                primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png"))));
+                //Validating ticket icons created by surang - Flaticon - "https://www.flaticon.com/free-icons/validating-ticket"
+            }
             User user = new User();
 
             //user.setIsLoggedIn(true);

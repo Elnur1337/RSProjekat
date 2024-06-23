@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 //Util Imports
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.HashMap;
@@ -19,8 +20,6 @@ import java.io.IOException;
 
 //JavaFX Imports
 import javafx.animation.PauseTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -80,8 +79,6 @@ public class RegisterController implements Initializable {
     @FXML
     private CheckBox isOrganizatorInput;
     @FXML
-    private Button registerBtn;
-    @FXML
     private Label msgLabel;
 
     public void switchToHomeScene(ActionEvent event) throws IOException {
@@ -98,7 +95,7 @@ public class RegisterController implements Initializable {
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
@@ -138,15 +135,12 @@ public class RegisterController implements Initializable {
         monthInput.getItems().addAll("Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "August", "Septembar", "Oktobar", "Novembar", "Decembar");
 
         monthInput.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                (observable, oldValue, newValue) -> {
                     dayInput.getItems().clear();
                     for (int i = 1; i <= monthNameDaysMap.get(newValue); ++i) {
                         dayInput.getItems().add(i);
                     }
                 }
-            }
         );
     }
 
@@ -171,7 +165,7 @@ public class RegisterController implements Initializable {
             return false;
         }
         String email = emailInput.getText();
-        final String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        final String emailRegex = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
@@ -237,7 +231,7 @@ public class RegisterController implements Initializable {
 
             final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
-            EntityTransaction entityTransaction = null;
+            EntityTransaction entityTransaction;
 
             try {
                 User user = new User();
@@ -268,7 +262,6 @@ public class RegisterController implements Initializable {
                 visibleMsg.play();
                 return;
             } catch (Exception e) {
-                e.printStackTrace();
                 msg = "Problem sa bazom, registracija nije moguća!";
             }
         }

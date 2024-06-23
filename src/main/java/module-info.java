@@ -17,4 +17,5 @@ module rs.app.rsprojekat {
 
     exports rs.app.rsprojekat;
     exports rs.app.rsprojekat.controller;
+    exports rs.app.rsprojekat.model;
 }

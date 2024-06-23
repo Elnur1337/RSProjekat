@@ -3,6 +3,7 @@ package rs.app.rsprojekat.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -27,17 +28,14 @@ public class IndexController implements Initializable {
     private Parent root;
 
     @FXML
-    private Button homeBtn;
-    @FXML
     private Button loginBtn;
     @FXML
     private Button registerBtn;
     @FXML
     private Button logoutBtn;
 
-    public IndexController setCurrentUser(User second) {
+    public void setCurrentUser(User second) {
         user = second;
-        return this;
     }
 
     public void switchToRegisterScene(ActionEvent event) throws IOException {
@@ -45,7 +43,7 @@ public class IndexController implements Initializable {
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
@@ -55,7 +53,7 @@ public class IndexController implements Initializable {
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
