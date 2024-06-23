@@ -1,7 +1,14 @@
 package rs.app.rsprojekat.model;
 
+//Bcrypt Imports
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
+//SQL Imports
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+//JPA Imports
 import javax.persistence.*;
 
 @Entity
@@ -10,131 +17,144 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id_;
+    private int id;
 
     @Column(name = "ime", nullable = false, length = 20)
-    private String ime_;
+    private String ime;
 
     @Column(name = "prezime", nullable = false, length = 20)
-    private String prezime_;
+    private String prezime;
 
     @Column(name = "email", nullable = false, length = 50, unique = true)
-    private String email_;
+    private String email;
 
     @Column(name = "pass", nullable = false, length = 250)
-    private String pass_;
+    private String pass;
 
     @Column(name = "wallet", nullable = false)
-    private double wallet_;
+    private double wallet;
 
     @Column(name = "admin", nullable = false)
-    private boolean isAdmin_;
+    private boolean admin;
 
     @Column(name = "organizator", nullable = false)
-    private boolean isOrganizator_;
+    private boolean organizator;
 
     @Column(name = "datum_rod")
-    private Date datumRod_;
+    private Date datumRod;
 
     @Column(name = "approved", nullable = false)
-    private boolean approved_;
+    private boolean approved;
 
     @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt_;
+    private Timestamp createdAt;
 
-    private boolean isLoggedIn_;
+    private boolean isLoggedIn;
 
     public User() {
-        id_ = 0;
-        ime_ = prezime_ = email_ = pass_ = "";
-        wallet_ = 0.0;
-        isAdmin_ = isOrganizator_ = approved_ = false;
-        datumRod_ =  Date.valueOf("2000-01-01");
-        createdAt_ = Timestamp.valueOf("2000-01-01 00:00:00");
-        isLoggedIn_ = false;
+        id = 0;
+        ime = prezime = email = pass = "";
+        wallet = 0.0;
+        admin = organizator = approved = false;
+        datumRod = Date.valueOf("2000-01-01");
+        createdAt = Timestamp.valueOf(LocalDateTime.now());
+        isLoggedIn = false;
     }
 
-    //Setters
-    public User setId(int id) {
-        id_ = id;
-        return this;
+    public int getId() {
+        return id;
     }
 
-    public User setIme(String ime) {
-        ime_ = ime;
-        return this;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public User setPrezime(String prezime) {
-        prezime_ = prezime;
-        return this;
+    public String getIme() {
+        return ime;
     }
 
-    public User setEmail(String email) {
-        email_ = email;
-        return this;
+    public void setIme(String ime) {
+        this.ime = ime;
     }
 
-    public User setPass(String pass) {
-        pass_ = pass;
-        return this;
+    public String getPrezime() {
+        return prezime;
     }
 
-    public User setWallet(double value) {
-        wallet_ = value;
-        return this;
+    public void setPrezime(String prezime) {
+        this.prezime = prezime;
     }
 
-    public User setIsAdmin(boolean isAdmin) {
-        isAdmin_ = isAdmin;
-        return this;
+    public String getEmail() {
+        return email;
     }
 
-    public User setIsOrganizator(boolean isOrganizator) {
-        isOrganizator_ = isOrganizator;
-        return this;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public User setDatumRod(Date datumRod) {
-        datumRod_ = datumRod;
-        return this;
+    public String getPass() {
+        return pass;
     }
 
-    public User setIsApproved(boolean isApproved) {
-        approved_ = isApproved;
-        return this;
+    public void setPass(String pass) {
+        String hashedPassword = BCrypt.withDefaults().hashToString(10, pass.toCharArray());
+        this.pass = hashedPassword;
     }
 
-    public User setCreatedAt(Timestamp createdAt) {
-        createdAt_ = createdAt;
-        return this;
+    public double getWallet() {
+        return wallet;
     }
 
-    public User setIsLoggedIn(boolean isLoggedIn) {
-        isLoggedIn_ = isLoggedIn;
-        return this;
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
     }
 
-    //Getters
-    public int getId() { return id_; };
+    public boolean isOrganizator() {
+        return organizator;
+    }
 
-    public String getIme() { return ime_; };
+    public void setOrganizator(boolean organizator) {
+        this.organizator = organizator;
+    }
 
-    public String getPrezime() { return prezime_; };
+    public boolean isAdmin() {
+        return admin;
+    }
 
-    public String getEmail() { return email_; };
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
-    public double getWallet() { return wallet_; };
+    public Date getDatumRod() {
+        return datumRod;
+    }
 
-    public boolean isAdmin() { return isAdmin_; };
+    public void setDatumRod(Date datumRod) {
+        this.datumRod = datumRod;
+    }
 
-    public boolean isOrganizator() { return isOrganizator_; };
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
 
-    public Date getDatumRod() { return datumRod_; };
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public boolean isApproved() { return approved_; };
+    public boolean isApproved() {
+        return approved;
+    }
 
-    public Timestamp getCreatedAt() { return createdAt_; };
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 
-    public boolean isLoggedIn() { return isLoggedIn_; };
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
 }

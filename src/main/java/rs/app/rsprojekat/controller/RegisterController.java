@@ -7,9 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-//Bcrypt Imports
-import at.favre.lib.crypto.bcrypt.BCrypt;
-
 //Util Imports
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -55,8 +52,8 @@ import rs.app.rsprojekat.model.User;
 
 public class RegisterController implements Initializable {
     private String msg;
-    private Map<String, Integer> monthNameNumberMap = new HashMap<>();
-    private Map<String, Integer> monthNameDaysMap = new HashMap<>();
+    private final Map<String, Integer> monthNameNumberMap = new HashMap<>();
+    private final Map<String, Integer> monthNameDaysMap = new HashMap<>();
 
     private Stage stage;
     private Scene scene;
@@ -244,13 +241,12 @@ public class RegisterController implements Initializable {
 
             try {
                 User user = new User();
-                String hashedPassword = BCrypt.withDefaults().hashToString(10, passwordInput.getText().toCharArray());
                 user.setIme(imeInput.getText());
                 user.setPrezime(prezimeInput.getText());
                 user.setEmail(emailInput.getText());
-                user.setPass(hashedPassword);
+                user.setPass(passwordInput.getText());
                 if (isOrganizatorInput.isSelected()) {
-                    user.setIsOrganizator(true);
+                    user.setOrganizator(true);
                 }
                 user.setDatumRod(Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
 
@@ -259,23 +255,9 @@ public class RegisterController implements Initializable {
                 entityManager.persist(user);
                 entityTransaction.commit();
                 entityManager.close();
+                entityManagerFactory.close();
 
-//                Connection connection = DatabaseConnection.getInstance().getConnection();
-//                PreparedStatement prepStatment = connection.prepareStatement("INSERT INTO korisnik (ime, prezime, email, pass, organizator, datum_rod) VALUES (?, ?, ?, ?, ?, ?)");
-//                prepStatment.setString(1, imeInput.getText());
-//                prepStatment.setString(2, prezimeInput.getText());
-//                prepStatment.setString(3, emailInput.getText());
-//                //String hashedPassword = BCrypt.withDefaults().hashToString(10, passwordInput.getText().toCharArray());
-//                prepStatment.setString(4, hashedPassword);
-//                if (isOrganizatorInput.isSelected()) {
-//                    prepStatment.setInt(5, 1);
-//                } else {
-//                    prepStatment.setInt(5, 0);
-//                }
-//                prepStatment.setDate(6, Date.valueOf(yearInput.getValue() + "-" + monthNameNumberMap.get(monthInput.getValue()) + "-" + dayInput.getValue()));
-//                prepStatment.execute();
-//                connection.close();
-                msg = "Uspjesna registracija!";
+                msg = "Uspješna registracija!";
                 msgLabel.setText(msg);
                 msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
                 msgLabel.setVisible(true);
@@ -287,7 +269,7 @@ public class RegisterController implements Initializable {
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
-                msg = "Problem sa bazom, registracija nije moguca!";
+                msg = "Problem sa bazom, registracija nije moguća!";
             }
         }
         visibleMsg.setOnFinished(event -> msgLabel.setVisible(false));

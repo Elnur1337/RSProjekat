@@ -123,7 +123,7 @@ public class LoginController {
                     user.setWallet(res.getDouble("wallet"));
                     user.setDatumRod(res.getDate("datum_rod"));
                     user.setCreatedAt(res.getTimestamp("created_at"));
-                    user.setIsLoggedIn(true);
+                    user.setLoggedIn(true);
                     connection.close();
                     final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/index.fxml").toUri().toURL();
                     FXMLLoader loader = new FXMLLoader(url);
