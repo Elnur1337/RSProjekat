@@ -1,5 +1,8 @@
 package rs.app.rsprojekat;
 
+//Java Util Imports
+import java.util.Objects;
+
 //JavaFX Imports
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,14 +10,6 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.Parent;
-
-//Model Imports
-import rs.app.rsprojekat.model.User;
-
-//Controller Imports
-import rs.app.rsprojekat.controller.IndexController;
-
-import java.util.Objects;
 
 public class Main extends Application {
     @Override
@@ -24,17 +19,9 @@ public class Main extends Application {
                 primaryStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("icon.png"))));
                 //Validating ticket icons created by surang - Flaticon - "https://www.flaticon.com/free-icons/validating-ticket"
             }
-            User user = new User();
-
-            //user.setIsLoggedIn(true);
-            //Pokupiti remember me podatke ako postoje
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
             Parent root = loader.load();
-
-            IndexController indexController = loader.getController();
-            indexController.setCurrentUser(user);
-
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.show();

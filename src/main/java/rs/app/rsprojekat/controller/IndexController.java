@@ -1,6 +1,6 @@
 package rs.app.rsprojekat.controller;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -19,6 +19,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import rs.app.rsprojekat.model.User;
+
+import javax.persistence.*;
 
 public class IndexController implements Initializable {
     private static User user = new User();
@@ -60,6 +62,35 @@ public class IndexController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        try {
+            FileReader rememberMeReader = new FileReader("rememberMe.txt");
+            int i;
+            StringBuilder data = new StringBuilder();
+            while ((i = rememberMeReader.read()) != -1) {
+                data.append((char)i);
+            }
+            if (!data.isEmpty()) {
+                final int separatorIndex = data.indexOf(" | ");
+
+                final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+                final EntityManager entityManager = entityManagerFactory.createEntityManager();
+                TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE email = :emailInput AND pass = :passInput", User.class);
+                query.setParameter("emailInput", data.subSequence(0, separatorIndex));
+                query.setParameter("passInput", data.subSequence(separatorIndex + 3, data.length()));
+
+                user = query.getSingleResult();
+                entityManager.close();
+                entityManagerFactory.close();
+                user.setLoggedIn(true);
+            }
+        } catch (NoResultException e) {
+            try {
+                FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
+                rememberMeWriter.write("");
+                rememberMeWriter.close();
+            } catch (IOException ignored) {}
+        } catch (IOException ignored) {}
+
         if (user.isLoggedIn()) {
             HBox.setMargin(loginBtn, Insets.EMPTY);
             loginBtn.setVisible(false);
@@ -85,6 +116,9 @@ public class IndexController implements Initializable {
 
     public void logout(ActionEvent event) throws IOException {
         user = new User();
+        FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
+        rememberMeWriter.write("");
+        rememberMeWriter.close();
         final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/index.fxml").toUri().toURL();
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();

@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.File;
+import java.io.FileWriter;
 
 //BCrypt Imports
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -148,6 +150,17 @@ public class LoginController {
                     homeBtn.fire();
                 });
                 visibleMsg.play();
+
+                //Remember me logic
+                if (!rememberMeInput.isSelected()) {
+                    return;
+                }
+                File rememberMeFile = new File("rememberMe.txt");
+                rememberMeFile.createNewFile();
+                FileWriter rememberMeWriter = new FileWriter(rememberMeFile);
+                rememberMeWriter.write("");
+                rememberMeWriter.write(user.getEmail() + " | " + user.getPass());
+                rememberMeWriter.close();
                 return;
             }
             msg = "Pogrešna šifra!";
