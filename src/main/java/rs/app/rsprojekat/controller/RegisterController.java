@@ -166,6 +166,7 @@ public class RegisterController implements Initializable {
         }
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
         Query query = entityManager.createQuery("SELECT email FROM User WHERE email = :emailInput");
         query.setParameter("emailInput", email);
         try {
@@ -178,7 +179,9 @@ public class RegisterController implements Initializable {
             }
             entityManager.close();
             entityManagerFactory.close();
-        } catch(Exception e) {
+        } catch(NoResultException ignored) {
+
+        } catch (Exception e) {
             msg = "Problem sa bazom, registracija nije moguca!";
             return false;
         }
