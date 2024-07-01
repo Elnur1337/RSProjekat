@@ -14,13 +14,8 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane
-        maxHeight="-Infinity"
-        maxWidth="-Infinity"
-        minHeight="-Infinity"
-        minWidth="-Infinity"
         prefHeight="800.0"
         prefWidth="1200.0"
-        styleClass="indexWrapper"
         xmlns="http://javafx.com/javafx/17"
         xmlns:fx="http://javafx.com/fxml/1"
         fx:controller="rs.app.rsprojekat.controller.LoginController">

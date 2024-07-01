@@ -82,7 +82,7 @@ public class LoginController {
         }
         String password = passwordInput.getText();
         if (password.length() < 8) {
-            msg = "Sifra mora biti minimalno osam karaktera!";
+            msg = "Šifra mora biti minimalno osam karaktera!";
             return false;
         }
         msg = "";

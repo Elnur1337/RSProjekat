@@ -1,11 +1,8 @@
 package rs.app.rsprojekat.controller;
 
 //SQL Imports
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 //Util Imports
 import java.util.Objects;
@@ -37,12 +34,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 //JPA Imports
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
-import rs.app.rsprojekat.DatabaseConnection;
+import javax.persistence.*;
 
 //Model Imports
 import rs.app.rsprojekat.model.User;
@@ -172,18 +164,21 @@ public class RegisterController implements Initializable {
             msg = "Email nije u dobrom formatu!";
             return false;
         }
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Query query = entityManager.createQuery("SELECT email FROM User WHERE email = :emailInput");
+        query.setParameter("emailInput", email);
         try {
-            Connection connection = DatabaseConnection.getInstance().getConnection();
-            PreparedStatement prepStatment = connection.prepareStatement("SELECT email FROM korisnik WHERE email = ?");
-            prepStatment.setString(1, email);
-            ResultSet res = prepStatment.executeQuery();
-            if (res.next()) {
-                connection.close();
+            String res = (String)query.getSingleResult();
+            if (!res.isEmpty()) {
                 msg = "Korisnik sa unesenim emailom vec postoji!";
+                entityManager.close();
+                entityManagerFactory.close();
                 return false;
             }
-            connection.close();
-        } catch (ClassNotFoundException | SQLException e) {
+            entityManager.close();
+            entityManagerFactory.close();
+        } catch(Exception e) {
             msg = "Problem sa bazom, registracija nije moguca!";
             return false;
         }
