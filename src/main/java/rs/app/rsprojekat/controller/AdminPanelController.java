@@ -46,6 +46,10 @@ public class AdminPanelController implements Initializable {
         stage.show();
     }
 
+    public void test() {
+        System.out.println("test");
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         //Nije potrebno?
