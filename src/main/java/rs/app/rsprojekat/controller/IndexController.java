@@ -30,6 +30,10 @@ public class IndexController implements Initializable {
     private Parent root;
 
     @FXML
+    private Button homeBtn;
+    @FXML
+    private Button adminPanelBtn;
+    @FXML
     private Button loginBtn;
     @FXML
     private Button registerBtn;
@@ -38,6 +42,10 @@ public class IndexController implements Initializable {
 
     public void setCurrentUser(User second) {
         user = second;
+    }
+
+    public User getCurrentUser() {
+        return user;
     }
 
     public void switchToRegisterScene(ActionEvent event) throws IOException {
@@ -52,6 +60,16 @@ public class IndexController implements Initializable {
 
     public void switchToLoginScene(ActionEvent event) throws IOException {
         final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/login.fxml").toUri().toURL();
+        root = FXMLLoader.load(url);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void switchToAdminPanelScene(ActionEvent event) throws IOException {
+        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/adminPanel.fxml").toUri().toURL();
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -101,6 +119,15 @@ public class IndexController implements Initializable {
             HBox.setMargin(logoutBtn, Insets.EMPTY);
             logoutBtn.setVisible(true);
             logoutBtn.setManaged(true);
+            if (user.isAdmin()) {
+                HBox.setMargin(homeBtn, new Insets(0, 10, 0, 0));
+                adminPanelBtn.setVisible(true);
+                adminPanelBtn.setManaged(true);
+            } else {
+                HBox.setMargin(homeBtn, Insets.EMPTY);
+                adminPanelBtn.setVisible(false);
+                adminPanelBtn.setManaged(false);
+            }
         } else {
             HBox.setMargin(loginBtn, new Insets(0, 10, 0, 0));
             loginBtn.setVisible(true);
@@ -111,6 +138,10 @@ public class IndexController implements Initializable {
             HBox.setMargin(logoutBtn, Insets.EMPTY);
             logoutBtn.setVisible(false);
             logoutBtn.setManaged(false);
+
+            HBox.setMargin(homeBtn, Insets.EMPTY);
+            adminPanelBtn.setVisible(false);
+            adminPanelBtn.setManaged(false);
         }
     }
 

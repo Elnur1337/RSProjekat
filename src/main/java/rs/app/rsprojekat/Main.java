@@ -26,7 +26,7 @@ public class Main extends Application {
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch(Exception e) {
-            System.out.println("Aplikacija se ne moze pokrenuti!");
+            System.out.println("Aplikacija se ne može pokrenuti!");
         }
     }
 
