@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -41,27 +43,30 @@
     </HBox>
    <VBox layoutY="56.0" prefHeight="744.0" prefWidth="263.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #999; -fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="56.0">
       <children>
-         <HBox alignment="CENTER" onMouseClicked="#test" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+         <HBox alignment="CENTER" onMouseClicked="#showUserPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
             <children>
-               <Label text="Icon">
-                  <font>
-                     <Font name="SansSerif Regular" size="18.0" />
-                  </font>
-               </Label>
+               <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@user-solid.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
                <Label text="Korisnici">
                   <font>
                      <Font name="SansSerif Regular" size="18.0" />
                   </font>
                </Label>
                <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
-               <Label text="10">
+               <Label alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
                   <font>
-                     <Font name="SansSerif Regular" size="18.0" />
+                     <Font name="SansSerif Bold" size="16.0" />
                   </font>
                </Label>
             </children>
          </HBox>
       </children>
    </VBox>
-   <Pagination layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
+   <Pagination fx:id="usersPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
 </AnchorPane>
