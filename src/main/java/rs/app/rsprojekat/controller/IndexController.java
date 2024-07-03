@@ -39,6 +39,29 @@ public class IndexController implements Initializable {
     private Button registerBtn;
     @FXML
     private Button logoutBtn;
+    @FXML
+    private Button musicBtn;
+    @FXML
+    private Button sportBtn;
+    @FXML
+    private Button cultureBtn;
+    @FXML
+    private Button cinemaBtn;
+    @FXML
+    private Button miscBtn;
+
+    private void setButtonVisibility(boolean visibility) {
+        musicBtn.setVisible(visibility);
+        musicBtn.setManaged(visibility);
+        sportBtn.setVisible(visibility);
+        sportBtn.setManaged(visibility);
+        cultureBtn.setVisible(visibility);
+        cultureBtn.setManaged(visibility);
+        cinemaBtn.setVisible(visibility);
+        cinemaBtn.setManaged(visibility);
+        miscBtn.setVisible(visibility);
+        miscBtn.setManaged(visibility);
+    }
 
     public void setCurrentUser(User second) {
         user = second;
@@ -78,6 +101,61 @@ public class IndexController implements Initializable {
         stage.show();
     }
 
+    public void switchToMusicScene(ActionEvent event) throws IOException {
+//        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/music.fxml").toUri().toURL();
+//        root = FXMLLoader.load(url);
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+//        stage.setScene(scene);
+//        stage.show();
+        System.out.println("Music scene!");
+    }
+
+    public void switchToSportScene(ActionEvent event) throws IOException {
+//        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/sport.fxml").toUri().toURL();
+//        root = FXMLLoader.load(url);
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+//        stage.setScene(scene);
+//        stage.show();
+        System.out.println("Sport scene!");
+    }
+
+    public void switchToCultureScene(ActionEvent event) throws IOException {
+//        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/culture.fxml").toUri().toURL();
+//        root = FXMLLoader.load(url);
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+//        stage.setScene(scene);
+//        stage.show();
+        System.out.println("Culture scene!");
+    }
+
+    public void switchToCinemaScene(ActionEvent event) throws IOException {
+//        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/cinema.fxml").toUri().toURL();
+//        root = FXMLLoader.load(url);
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+//        stage.setScene(scene);
+//        stage.show();
+        System.out.println("Cinema scene!");
+    }
+
+    public void switchToMiscScene(ActionEvent event) throws IOException {
+//        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/misc.fxml").toUri().toURL();
+//        root = FXMLLoader.load(url);
+//        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+//        scene = new Scene(root);
+//        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+//        stage.setScene(scene);
+//        stage.show();
+        System.out.println("Misc scene!");
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         try {
@@ -102,6 +180,8 @@ public class IndexController implements Initializable {
                 user.setLoggedIn(true);
             }
         } catch (NoResultException e) {
+            System.out.println("Exception at IndexController-initialize");
+            System.out.println(e.getMessage());
             try {
                 FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
                 rememberMeWriter.write("");
@@ -128,6 +208,7 @@ public class IndexController implements Initializable {
                 adminPanelBtn.setVisible(false);
                 adminPanelBtn.setManaged(false);
             }
+            setButtonVisibility(true);
         } else {
             HBox.setMargin(loginBtn, new Insets(0, 10, 0, 0));
             loginBtn.setVisible(true);
@@ -142,6 +223,8 @@ public class IndexController implements Initializable {
             HBox.setMargin(homeBtn, Insets.EMPTY);
             adminPanelBtn.setVisible(false);
             adminPanelBtn.setManaged(false);
+
+            setButtonVisibility(false);
         }
     }
 

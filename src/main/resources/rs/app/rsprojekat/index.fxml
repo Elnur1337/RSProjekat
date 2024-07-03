@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -8,37 +14,13 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane
-        prefHeight="800.0"
-        prefWidth="1200.0"
-        xmlns="http://javafx.com/javafx/17"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="rs.app.rsprojekat.controller.IndexController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.IndexController">
     <children>
-        <HBox
-                alignment="CENTER_RIGHT"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="56.0"
-                prefWidth="1200.0"
-                style="-fx-background-color: #666; -fx-padding: 10px;"
-                styleClass="navBar"
-                AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
+        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Button
-                        fx:id="homeBtn"
-                        mnemonicParsing="false"
-                        style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                        styleClass="navBtn"
-                        text="Početna">
+                <Button fx:id="homeBtn" mnemonicParsing="false" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Početna">
                     <font>
-                        <Font
-                                name="SansSerif Regular"
-                                size="18.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                     </font>
                     <cursor>
                         <Cursor fx:constant="HAND" />
@@ -47,41 +29,18 @@
                         <Insets right="10.0" />
                     </HBox.margin>
                 </Button>
-                <Button
-                        fx:id="adminPanelBtn"
-                        mnemonicParsing="false"
-                        onAction="#switchToAdminPanelScene"
-                        prefHeight="33.0"
-                        prefWidth="130.0"
-                        style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                        styleClass="navBtn"
-                        text="Admin Panel">
+                <Button fx:id="adminPanelBtn" mnemonicParsing="false" onAction="#switchToAdminPanelScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Admin Panel">
                     <font>
-                        <Font
-                                name="SansSerif Regular"
-                                size="18.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                     </font>
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Region
-                        maxHeight="1.7976931348623157E308"
-                        maxWidth="1.7976931348623157E308"
-                        prefHeight="36.0"
-                        prefWidth="630.0"
-                        HBox.hgrow="ALWAYS" />
-                <Button
-                        fx:id="loginBtn"
-                        mnemonicParsing="false"
-                        onAction="#switchToLoginScene"
-                        style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                        styleClass="navBtn"
-                        text="Prijava">
+                <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="36.0" prefWidth="630.0" HBox.hgrow="ALWAYS" />
+                <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#switchToLoginScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Prijava">
                     <font>
-                        <Font
-                                name="SansSerif Regular"
-                                size="18.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                     </font>
                     <cursor>
                         <Cursor fx:constant="HAND" />
@@ -93,17 +52,9 @@
                         <Insets right="10.0" />
                     </HBox.margin>
                 </Button>
-                <Button
-                        fx:id="registerBtn"
-                        mnemonicParsing="false"
-                        onAction="#switchToRegisterScene"
-                        style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                        styleClass="navBtn"
-                        text="Registracija">
+                <Button fx:id="registerBtn" mnemonicParsing="false" onAction="#switchToRegisterScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Registracija">
                     <font>
-                        <Font
-                                name="SansSerif Regular"
-                                size="18.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                     </font>
                     <cursor>
                         <Cursor fx:constant="HAND" />
@@ -115,17 +66,9 @@
                         <Insets />
                     </HBox.margin>
                 </Button>
-                <Button
-                        fx:id="logoutBtn"
-                        mnemonicParsing="false"
-                        onAction="#logout"
-                        style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                        styleClass="navBtn"
-                        text="Odjava">
+                <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Odjava">
                     <font>
-                        <Font
-                                name="SansSerif Regular"
-                                size="18.0" />
+                        <Font name="SansSerif Regular" size="18.0" />
                     </font>
                     <cursor>
                         <Cursor fx:constant="HAND" />
@@ -136,5 +79,61 @@
                 </Button>
             </children>
         </HBox>
+      <VBox fx:id="centralBox" alignment="CENTER" layoutX="520.0" layoutY="150.0" prefHeight="200.0" prefWidth="160.0" AnchorPane.topAnchor="150.0">
+         <children>
+            <Button fx:id="musicBtn" mnemonicParsing="false" onAction="#switchToMusicScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Muzika">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="sportBtn" mnemonicParsing="false" onAction="#switchToSportScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Sport">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="cultureBtn" mnemonicParsing="false" onAction="#switchToCultureScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Kultura">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="cinemaBtn" mnemonicParsing="false" onAction="#switchToCinemaScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Kino">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="miscBtn" mnemonicParsing="false" onAction="#switchToMiscScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Ostalo">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="22.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

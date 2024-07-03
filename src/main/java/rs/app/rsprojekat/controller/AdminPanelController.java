@@ -38,6 +38,7 @@ public class AdminPanelController implements Initializable {
         FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
         rememberMeWriter.write("");
         rememberMeWriter.close();
+        // switchToHomeScene()?
         final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/index.fxml").toUri().toURL();
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
