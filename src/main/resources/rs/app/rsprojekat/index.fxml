@@ -37,6 +37,14 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
+            <Button fx:id="eventsBtn" mnemonicParsing="false" onAction="#switchToOrganizerScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Događaji" visible="false">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Button>
                 <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="36.0" prefWidth="630.0" HBox.hgrow="ALWAYS" />
                 <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#switchToLoginScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Prijava">
                     <font>

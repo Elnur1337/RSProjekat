@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.OrganizerController">
+   <children>
+       <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <children>
+               <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#switchToHomeScene" style="-fx-background-color: white;                               -fx-background-radius: 50px;                               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Početna">
+                   <font>
+                       <Font name="SansSerif Regular" size="18.0" />
+                   </font>
+                   <cursor>
+                       <Cursor fx:constant="HAND" />
+                   </cursor>
+                   <HBox.margin>
+                       <Insets />
+                   </HBox.margin>
+               </Button>
+               <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="36.0" prefWidth="630.0" HBox.hgrow="ALWAYS" />
+               <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: white;                               -fx-background-radius: 50px;                               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Odjava">
+                   <font>
+                       <Font name="SansSerif Regular" size="18.0" />
+                   </font>
+                   <cursor>
+                       <Cursor fx:constant="HAND" />
+                   </cursor>
+                   <opaqueInsets>
+                       <Insets />
+                   </opaqueInsets>
+               </Button>
+           </children>
+       </HBox>
+      <VBox layoutY="56.0" prefHeight="744.0" prefWidth="263.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #999; -fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="56.0">
+         <children>
+            <HBox fx:id="myEventsBtn" alignment="CENTER" onMouseClicked="#showMyEvents" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@events.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label text="Moji događaji">
+                     <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                     </font>
+                  </Label>
+                  <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin></Region>
+                  <Label fx:id="eventsNumber" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox fx:id="newEventBtn"
+                  alignment="CENTER"
+                  onMouseClicked="#makeNewEvent"
+                  prefHeight="54.0"
+                  prefWidth="263.0"
+                  style="-fx-background-color: white;
+                         -fx-padding: 10;
+                         -fx-background-radius: 50;
+                         -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@events.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label text="Kreiraj novi događaj">
+                     <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Pagination fx:id="eventsPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
+      <VBox layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="100.0" prefWidth="406.0">
+                     <children>
+                        <HBox prefHeight="33.0" prefWidth="470.0">
+                           <children>
+                              <Label minWidth="125.0" text="Kategorija">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <ChoiceBox fx:id="categoryBox" minWidth="125.0" prefWidth="150.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="470.0">
+                           <children>
+                              <Label minWidth="175.0" text="Podkategorija">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="25.0" />
+                                 </padding>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <ChoiceBox fx:id="subCategoryBox" minWidth="125.0" prefWidth="150.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

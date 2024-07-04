@@ -15,7 +15,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import rs.app.rsprojekat.model.User;
@@ -33,6 +36,8 @@ public class IndexController implements Initializable {
     private Button homeBtn;
     @FXML
     private Button adminPanelBtn;
+    @FXML
+    private Button eventsBtn;
     @FXML
     private Button loginBtn;
     @FXML
@@ -156,6 +161,16 @@ public class IndexController implements Initializable {
         System.out.println("Misc scene!");
     }
 
+    public void switchToOrganizerScene(ActionEvent event) throws IOException {
+        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/organizer.fxml").toUri().toURL();
+        root = FXMLLoader.load(url);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         try {
@@ -203,6 +218,14 @@ public class IndexController implements Initializable {
                 HBox.setMargin(homeBtn, new Insets(0, 10, 0, 0));
                 adminPanelBtn.setVisible(true);
                 adminPanelBtn.setManaged(true);
+                eventsBtn.setVisible(false);
+                eventsBtn.setManaged(false);
+            } else if (user.isOrganizator()) {
+                HBox.setMargin(homeBtn, new Insets(0, 10, 0, 0));
+                eventsBtn.setVisible(true);
+                eventsBtn.setManaged(true);
+                adminPanelBtn.setVisible(false);
+                adminPanelBtn.setManaged(false);
             } else {
                 HBox.setMargin(homeBtn, Insets.EMPTY);
                 adminPanelBtn.setVisible(false);
@@ -223,6 +246,8 @@ public class IndexController implements Initializable {
             HBox.setMargin(homeBtn, Insets.EMPTY);
             adminPanelBtn.setVisible(false);
             adminPanelBtn.setManaged(false);
+            eventsBtn.setVisible(false);
+            eventsBtn.setManaged(false);
 
             setButtonVisibility(false);
         }
