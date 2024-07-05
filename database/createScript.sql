@@ -3,7 +3,7 @@ USE rsprojekat;
 
 CREATE TABLE mjesto (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    naziv VARCHAR(100) NOT NULL
+    naziv VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE lokacija (

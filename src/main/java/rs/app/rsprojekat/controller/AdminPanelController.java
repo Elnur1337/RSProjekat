@@ -1,5 +1,6 @@
 package rs.app.rsprojekat.controller;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -20,6 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import rs.app.rsprojekat.model.Place;
 import rs.app.rsprojekat.model.User;
 
 import javax.persistence.*;
@@ -32,15 +36,38 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminPanelController implements Initializable {
+    private String msg;
+
     private Stage stage;
     private Scene scene;
     private Parent root;
 
-    @FXML
-    private Pagination usersPagination;
+    @FXML Button homeBtn;
 
     @FXML
+    private Pagination usersPagination;
+    @FXML
     private Label usersReqNumber;
+    private Long usersReqNumberLong;
+
+    @FXML
+    private VBox placePanel;
+    @FXML
+    private TextField nazivPlaceInput;
+    @FXML
+    private Label msgLabelPlace;
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(u) FROM User u WHERE approved = 0", Long.class);
+        usersReqNumberLong = query.getSingleResult();
+
+        entityManager.close();
+        entityManagerFactory.close();
+        showUserPanel();
+    }
 
     public void switchToHomeScene(ActionEvent event) throws IOException {
         final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/index.fxml").toUri().toURL();
@@ -51,38 +78,14 @@ public class AdminPanelController implements Initializable {
         stage.show();
     }
 
-    public void logout(ActionEvent event) throws IOException {
+    public void logout(ActionEvent ignoredEvent) throws IOException {
         final IndexController indexController = new IndexController();
         indexController.setCurrentUser(new User());
 
         FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
         rememberMeWriter.write("");
         rememberMeWriter.close();
-        // switchToHomeScene()?
-        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/index.fxml").toUri().toURL();
-        root = FXMLLoader.load(url);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public void showUserPanel() {
-        usersPagination.setPageFactory(this::getUserPanel);
-        //Posle dodati da se ovaj prikaze a svi ostali sakriju
-    }
-
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(u) FROM User u WHERE approved = 0", Long.class);
-        usersReqNumber.setText(query.getSingleResult().toString());
-        usersPagination.setPageCount(query.getSingleResult().intValue() / 5 + 1);
-
-        //Posle zatvoriti entityManager i factory
-
-        usersPagination.setPageFactory(this::getUserPanel);
+        homeBtn.fire();
     }
 
     private VBox getUserPanel(int pageIndex) {
@@ -180,19 +183,8 @@ public class AdminPanelController implements Initializable {
                 entityTransaction.begin();
                 user.setApproved(true);
                 entityTransaction.commit();
-                //I ova opcija radi ali ne dobijamo uvijek 5 novih na prvoj stranici ako ima vise od 5 nego se samo brisu
-                //Ovo je vise optimizovano nego rjesenje ispod ali ne daje lijep efekat
-//                userBox.setVisible(false);
-//                userBox.setManaged(false);
-
-                try {
-                    final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/adminPanel.fxml").toUri().toURL();
-                    root = FXMLLoader.load(url);
-                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException ignored) {}
+                --usersReqNumberLong;
+                refreshUsersPagination();
             });
 
             Region buttonsRegion = new Region();
@@ -212,14 +204,7 @@ public class AdminPanelController implements Initializable {
                 entityTransaction.begin();
                 entityManager.remove(user);
                 entityTransaction.commit();
-                try {
-                    final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/adminPanel.fxml").toUri().toURL();
-                    root = FXMLLoader.load(url);
-                    stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                    scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException ignored) {}
+                refreshUsersPagination();
             });
 
             buttonsVBox.getChildren().addAll(approveBtn, buttonsRegion, rejectBtn);
@@ -228,5 +213,58 @@ public class AdminPanelController implements Initializable {
             page.getChildren().add(userBox);
         }
         return page;
+    }
+
+    private void refreshUsersPagination() {
+        usersReqNumber.setText(usersReqNumberLong.toString());
+        usersPagination.setPageCount(usersReqNumberLong.intValue() / 6 + 1);
+        usersPagination.setPageFactory(this::getUserPanel);
+    }
+
+    public void showUserPanel() {
+        placePanel.setVisible(false);
+        placePanel.setManaged(false);
+        usersPagination.setVisible(true);
+        usersPagination.setManaged(true);
+        refreshUsersPagination();
+    }
+
+    public void showPlacePanel() {
+        usersPagination.setVisible(false);
+        usersPagination.setManaged(false);
+        placePanel.setVisible(true);
+        placePanel.setManaged(true);
+    }
+
+    public void addPlace() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelPlace.setVisible(false));
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(p) FROM Place p WHERE naziv = :nazivInput", Long.class);
+        query.setParameter("nazivInput", nazivPlaceInput.getText());
+        if (query.getSingleResult().intValue() > 0) {
+            msg = "Mjesto sa tim nazivom već postoji!";
+            msgLabelPlace.setText(msg);
+            msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelPlace.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+        Place place = new Place();
+        place.setNaziv(nazivPlaceInput.getText());
+        final EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(place);
+        entityTransaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        msg = "Mjesto uspješno dodano!";
+        msgLabelPlace.setText(msg);
+        msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelPlace.setVisible(true);
+        visibleMsg.play();
     }
 }

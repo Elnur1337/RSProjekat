@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -65,8 +66,74 @@
                   </font>
                </Label>
             </children>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </HBox>
+         <HBox alignment="CENTER" onMouseClicked="#showPlacePanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <children>
+               <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@map-location-solid.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <Label text="Dodaj mjesto">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+               </Label>
+               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+            </children>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
          </HBox>
       </children>
    </VBox>
    <Pagination fx:id="usersPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
+   <VBox fx:id="placePanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false">
+      <children>
+         <Label text="Dodavanje mjesta">
+            <font>
+               <Font name="SansSerif Regular" size="46.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="30.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="nazivPlaceInput" maxWidth="275.0" prefHeight="36.0" prefWidth="275.0" promptText="Naziv" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" VBox.vgrow="NEVER">
+            <font>
+               <Font name="SansSerif Regular" size="18.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="30.0" />
+            </VBox.margin>
+         </TextField>
+         <Button mnemonicParsing="false" onAction="#addPlace" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Dodaj" textFill="WHITE">
+            <font>
+               <Font name="SansSerif Regular" size="18.0" />
+            </font>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+            <VBox.margin>
+               <Insets bottom="30.0" />
+            </VBox.margin>
+         </Button>
+         <Label fx:id="msgLabelPlace" alignment="CENTER" prefHeight="46.0" prefWidth="507.0" style="-fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="msg" textFill="WHITE" visible="false">
+            <font>
+               <Font name="SansSerif Regular" size="18.0" />
+            </font>
+         </Label>
+      </children>
+   </VBox>
 </AnchorPane>

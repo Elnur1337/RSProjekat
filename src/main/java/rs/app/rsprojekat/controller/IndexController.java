@@ -195,8 +195,6 @@ public class IndexController implements Initializable {
                 user.setLoggedIn(true);
             }
         } catch (NoResultException e) {
-            System.out.println("Exception at IndexController-initialize");
-            System.out.println(e.getMessage());
             try {
                 FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
                 rememberMeWriter.write("");
@@ -218,8 +216,8 @@ public class IndexController implements Initializable {
                 HBox.setMargin(homeBtn, new Insets(0, 10, 0, 0));
                 adminPanelBtn.setVisible(true);
                 adminPanelBtn.setManaged(true);
-                eventsBtn.setVisible(false);
-                eventsBtn.setManaged(false);
+                eventsBtn.setVisible(true);
+                eventsBtn.setManaged(true);
             } else if (user.isOrganizator()) {
                 HBox.setMargin(homeBtn, new Insets(0, 10, 0, 0));
                 eventsBtn.setVisible(true);
