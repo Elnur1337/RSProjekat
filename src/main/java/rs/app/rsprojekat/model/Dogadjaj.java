@@ -39,6 +39,15 @@ public class Dogadjaj {
     @Column(name = "approved", nullable = false)
     private boolean approved;
 
+    @Column(name = "id_organizator", nullable = false)
+    private int idOrganizator;
+
+    @Column(name = "id_podkategorija", nullable = false)
+    private int idPodkategorija;
+
+    @Column(name = "id_lokacija", nullable = false)
+    private int idLokacija;
+
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 

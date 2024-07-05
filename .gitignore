@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+rememberMe.txt
+/src/main/resources/META-INF/persistence.xml
