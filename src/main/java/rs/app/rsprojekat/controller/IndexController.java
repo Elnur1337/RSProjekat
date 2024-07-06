@@ -72,7 +72,7 @@ public class IndexController implements Initializable {
         user = second;
     }
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return user;
     }
 

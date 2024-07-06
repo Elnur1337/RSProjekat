@@ -39,14 +39,17 @@ public class Dogadjaj {
     @Column(name = "approved", nullable = false)
     private boolean approved;
 
-    @Column(name = "id_organizator", nullable = false)
-    private int idOrganizator;
+    @ManyToOne
+    @JoinColumn(name = "id_organizator", referencedColumnName = "id")
+    private User organizator;
 
-    @Column(name = "id_podkategorija", nullable = false)
-    private int idPodkategorija;
+    @ManyToOne
+    @JoinColumn(name = "id_podkategorija", referencedColumnName = "id")
+    private Subcategory podkategorija;
 
-    @Column(name = "id_lokacija", nullable = false)
-    private int idLokacija;
+    @ManyToOne
+    @JoinColumn(name = "id_lokacija", referencedColumnName = "id")
+    private Location lokacija;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -60,10 +63,6 @@ public class Dogadjaj {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNaziv() { return naziv; }
@@ -105,4 +104,8 @@ public class Dogadjaj {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
+    public void setOrganizator(User organizator) { this.organizator = organizator; }
+    public void setPodkategorija(Subcategory podkategorija) { this.podkategorija = podkategorija; }
+    public void setLokacija(Location lokacija) { this.lokacija = lokacija; }
 }
