@@ -11,11 +11,14 @@ public class Location {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "naziv", nullable = false, length = 100)
+    @Column(name = "naziv", nullable = false, length = 100, unique = true)
     private String naziv;
 
     @Column(name = "img_path", nullable = false, length = 200)
     private String imgPath;
+
+    @Column(name = "adresa", nullable = false, length = 100)
+    private String adresa;
 
     @ManyToOne
     @JoinColumn(name = "id_mjesto", referencedColumnName = "id")
@@ -23,7 +26,7 @@ public class Location {
 
     public Location() {
         id = 0;
-        naziv = imgPath = "";
+        naziv = imgPath = adresa = "";
     }
 
     public int getId() { return id; }
@@ -35,4 +38,12 @@ public class Location {
     public String getImgPath() { return imgPath; }
 
     public void setImgPath(String imgPath) { this.imgPath = imgPath; }
+
+    public String getAdresa() { return adresa; }
+
+    public void setAdresa(String adresaInput) { adresa = adresaInput; }
+
+    public Place getMjesto() { return mjesto; }
+
+    public void setMjesto(Place mjestoInput) { mjesto = mjestoInput; }
 }

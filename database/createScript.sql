@@ -10,6 +10,7 @@ CREATE TABLE lokacija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
     img_path VARCHAR(200) NOT NULL,
+    adresa VARCHAR(100) NOT NULL,
     id_mjesto INT NOT NULL,
     FOREIGN KEY (id_mjesto) REFERENCES mjesto(id)
 );

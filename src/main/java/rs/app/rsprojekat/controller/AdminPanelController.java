@@ -11,22 +11,23 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import rs.app.rsprojekat.model.Location;
 import rs.app.rsprojekat.model.Place;
 import rs.app.rsprojekat.model.User;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
@@ -57,6 +58,19 @@ public class AdminPanelController implements Initializable {
     private TextField nazivPlaceInput;
     @FXML
     private Label msgLabelPlace;
+
+    @FXML
+    private VBox locationPanel;
+    @FXML
+    private ComboBox<String> placeInput;
+    @FXML
+    private TextField nazivLocationInput;
+    @FXML
+    private TextField adresaLocationInput;
+    @FXML
+    private TextField imgPathLocationInput;
+    @FXML
+    private Label msgLabelLocation;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -222,9 +236,35 @@ public class AdminPanelController implements Initializable {
         usersPagination.setPageFactory(this::getUserPanel);
     }
 
+    private void getPlacesNames () {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        List<String> placesList = new ArrayList<>();
+
+        TypedQuery<String> query = entityManager.createQuery("SELECT p.naziv FROM Place p", String.class);
+        try {
+            placesList = query.getResultList();
+        } catch (NoResultException e) {
+            msg = "Prvo morate dodati mjesto!";
+            msgLabelLocation.setText(msg);
+            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelLocation.setVisible(true);
+            visibleMsg.play();
+        }
+        placeInput.getItems().addAll(placesList);
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
     public void showUserPanel() {
         placePanel.setVisible(false);
         placePanel.setManaged(false);
+        locationPanel.setVisible(false);
+        locationPanel.setManaged(false);
         usersPagination.setVisible(true);
         usersPagination.setManaged(true);
         refreshUsersPagination();
@@ -233,8 +273,22 @@ public class AdminPanelController implements Initializable {
     public void showPlacePanel() {
         usersPagination.setVisible(false);
         usersPagination.setManaged(false);
+        locationPanel.setVisible(false);
+        locationPanel.setManaged(false);
         placePanel.setVisible(true);
         placePanel.setManaged(true);
+    }
+
+    public void showLocationPanel() {
+        usersPagination.setVisible(false);
+        usersPagination.setManaged(false);
+        placePanel.setVisible(false);
+        placePanel.setManaged(false);
+        locationPanel.setVisible(true);
+        locationPanel.setManaged(true);
+        if (placeInput.getItems().isEmpty()) {
+            getPlacesNames();
+        }
     }
 
     public void addPlace() {
@@ -277,5 +331,93 @@ public class AdminPanelController implements Initializable {
         msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
         msgLabelPlace.setVisible(true);
         visibleMsg.play();
+        nazivPlaceInput.setText("");
+    }
+
+    public void addImgPath() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Odaberite sliku lokacije");
+
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.jpeg"));
+
+        final File selectedLocationImg = fileChooser.showOpenDialog(null);
+
+        if (selectedLocationImg != null) {
+            imgPathLocationInput.setText(selectedLocationImg.toURI().toString());
+        }
+    }
+
+    public void addLocation() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
+
+        if (nazivLocationInput.getText().length() < 2 || nazivLocationInput.getText().length() > 100) {
+            msg = "Naziv mora biti između 2 i 100 karaktera!";
+            msgLabelLocation.setText(msg);
+            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelLocation.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+        if (adresaLocationInput.getText().length() < 2 || adresaLocationInput.getText().length() > 100) {
+            msg = "Adresa mora biti između 2 i 100 karaktera!";
+            msgLabelLocation.setText(msg);
+            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelLocation.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+        if (imgPathLocationInput.getText().equals("Slika lokacije")) {
+            msg = "Slika lokacije je obavezna!";
+            msgLabelLocation.setText(msg);
+            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelLocation.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Place> queryPlace = entityManager.createQuery("SELECT p FROM Place p WHERE naziv = :nazivInput", Place.class);
+        queryPlace.setParameter("nazivInput", placeInput.getValue());
+        final Place place = queryPlace.getSingleResult();
+
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(l) FROM Location l WHERE naziv = :nazivInput AND mjesto = :mjestoInput", Long.class);
+        query.setParameter("nazivInput", nazivLocationInput.getText());
+        query.setParameter("mjestoInput", place);
+        System.out.println(query.getSingleResult().intValue());
+
+        if (query.getSingleResult().intValue() > 0) {
+            msg = "Lokacija sa tim nazivom već postoji!";
+            msgLabelLocation.setText(msg);
+            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelLocation.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
+        Location location = new Location();
+        location.setNaziv(nazivLocationInput.getText());
+        location.setImgPath(imgPathLocationInput.getText());
+        location.setAdresa(adresaLocationInput.getText());
+        location.setMjesto(place);
+
+        final EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(location);
+        entityTransaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        msg = "Lokacija uspješno dodana!";
+        msgLabelLocation.setText(msg);
+        msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelLocation.setVisible(true);
+        visibleMsg.play();
+        placeInput.setValue("");
+        nazivLocationInput.setText("");
+        adresaLocationInput.setText("");
+        imgPathLocationInput.setText("");
     }
 }
