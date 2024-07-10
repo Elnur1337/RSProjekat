@@ -42,7 +42,8 @@ public class AdminPanelController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    @FXML Button homeBtn;
+    @FXML
+    private Button homeBtn;
 
     @FXML
     private Pagination usersPagination;
