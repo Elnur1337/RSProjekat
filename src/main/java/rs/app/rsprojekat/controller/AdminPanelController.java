@@ -240,6 +240,16 @@ public class AdminPanelController implements Initializable {
     public void addPlace() {
         PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
         visibleMsg.setOnFinished(event -> msgLabelPlace.setVisible(false));
+
+        if (nazivPlaceInput.getText().length() < 2) {
+            msg = "Naziv mora imate vise od 2 karaktera!";
+            msgLabelPlace.setText(msg);
+            msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelPlace.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
