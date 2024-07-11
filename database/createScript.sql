@@ -8,7 +8,7 @@ CREATE TABLE mjesto (
 
 CREATE TABLE lokacija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    naziv VARCHAR(100) NOT NULL,
+    naziv VARCHAR(100) NOT NULL UNIQUE,
     img_path VARCHAR(200) NOT NULL,
     adresa VARCHAR(100) NOT NULL,
     id_mjesto INT NOT NULL,
@@ -26,6 +26,7 @@ CREATE TABLE sektor (
 
 CREATE TABLE sjedalo (
 	id INT NOT NULL PRIMARY KEY,
+    broj_sjedala INT NOT NULL,
     id_sektor INT NOT NULL,
     FOREIGN KEY (id_sektor) REFERENCES sektor(id)
 );

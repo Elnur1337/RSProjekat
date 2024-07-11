@@ -18,7 +18,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -71,6 +70,9 @@ public class AdminPanelController implements Initializable {
     private TextField imgPathLocationInput;
     @FXML
     private Label msgLabelLocation;
+
+    @FXML
+    private VBox sectorPanel;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -265,6 +267,8 @@ public class AdminPanelController implements Initializable {
         placePanel.setManaged(false);
         locationPanel.setVisible(false);
         locationPanel.setManaged(false);
+        sectorPanel.setVisible(false);
+        sectorPanel.setManaged(false);
         usersPagination.setVisible(true);
         usersPagination.setManaged(true);
         refreshUsersPagination();
@@ -275,6 +279,8 @@ public class AdminPanelController implements Initializable {
         usersPagination.setManaged(false);
         locationPanel.setVisible(false);
         locationPanel.setManaged(false);
+        sectorPanel.setVisible(false);
+        sectorPanel.setManaged(false);
         placePanel.setVisible(true);
         placePanel.setManaged(true);
     }
@@ -284,11 +290,24 @@ public class AdminPanelController implements Initializable {
         usersPagination.setManaged(false);
         placePanel.setVisible(false);
         placePanel.setManaged(false);
+        sectorPanel.setVisible(false);
+        sectorPanel.setManaged(false);
         locationPanel.setVisible(true);
         locationPanel.setManaged(true);
         if (placeInput.getItems().isEmpty()) {
             getPlacesNames();
         }
+    }
+
+    public void showSectorPanel() {
+        usersPagination.setVisible(false);
+        usersPagination.setManaged(false);
+        placePanel.setVisible(false);
+        placePanel.setManaged(false);
+        locationPanel.setVisible(false);
+        locationPanel.setManaged(false);
+        sectorPanel.setVisible(true);
+        sectorPanel.setManaged(true);
     }
 
     public void addPlace() {

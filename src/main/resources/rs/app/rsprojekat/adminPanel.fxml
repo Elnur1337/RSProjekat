@@ -118,11 +118,35 @@
             <cursor>
                <Cursor fx:constant="HAND" />
             </cursor>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+         </HBox>
+         <HBox alignment="CENTER" onMouseClicked="#showSectorPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <children>
+               <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@layer-group-solid.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <Label text="Dodaj sektor">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+               </Label>
+               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+            </children>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
          </HBox>
       </children>
    </VBox>
    <Pagination fx:id="usersPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
-   <VBox fx:id="placePanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false">
+   <VBox fx:id="placePanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
       <children>
          <Label text="Dodavanje mjesta">
             <font>
@@ -158,7 +182,7 @@
          </Label>
       </children>
    </VBox>
-   <VBox fx:id="locationPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;">
+   <VBox fx:id="locationPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
       <children>
          <Label text="Dodavanje lokacije">
             <font>
@@ -218,7 +242,7 @@
                      <Cursor fx:constant="HAND" />
                   </cursor>
                   <HBox.margin>
-                     <Insets />
+                     <Insets bottom="1.5" />
                   </HBox.margin>
                </Button>
             </children>
@@ -238,6 +262,211 @@
             </VBox.margin>
          </Button>
          <Label fx:id="msgLabelLocation" alignment="CENTER" prefHeight="46.0" prefWidth="507.0" style="-fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="msg" textFill="WHITE" visible="false">
+            <font>
+               <Font name="SansSerif Regular" size="18.0" />
+            </font>
+         </Label>
+      </children>
+   </VBox>
+   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+      <children>
+         <Label text="Dodavanje sektora">
+            <font>
+               <Font name="SansSerif Regular" size="46.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="30.0" />
+            </VBox.margin>
+         </Label>
+         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="443.0">
+            <children>
+               <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="184.0">
+                  <children>
+                     <Label text="Odaberite mjesto:">
+                        <font>
+                           <Font name="SansSerif Regular" size="18.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets bottom="15.0" />
+                        </VBox.margin>
+                     </Label>
+                     <ComboBox fx:id="sectorPlaceInput" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                  </children>
+                  <padding>
+                     <Insets bottom="15.0" />
+                  </padding>
+               </VBox>
+               <Region prefHeight="200.0" prefWidth="200.0" />
+               <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="184.0">
+                  <children>
+                     <Label text="Odaberite lokaciju:">
+                        <font>
+                           <Font name="SansSerif Regular" size="18.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets bottom="15.0" />
+                        </VBox.margin>
+                     </Label>
+                     <ComboBox fx:id="sectorLocationInput" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                  </children>
+                  <padding>
+                     <Insets bottom="15.0" />
+                  </padding>
+               </VBox>
+            </children>
+            <VBox.margin>
+               <Insets bottom="15.0" />
+            </VBox.margin>
+         </HBox>
+         <VBox fx:id="sectorContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="255.0" prefWidth="386.0" style="-fx-padding: 10;">
+            <VBox.margin>
+               <Insets bottom="15.0" />
+            </VBox.margin>
+            <children>
+               <HBox prefHeight="30.0" prefWidth="366.0">
+                  <children>
+                     <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" text="Naziv sektora">
+                        <font>
+                           <Font name="SansSerif Regular" size="18.0" />
+                        </font>
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                     </Label>
+                     <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="80.0" text="Kapacitet">
+                        <font>
+                           <Font name="SansSerif Regular" size="18.0" />
+                        </font>
+                     </Label>
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin>
+               </HBox>
+               <HBox prefHeight="43.0" prefWidth="367.0">
+                  <children>
+                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font name="SansSerif Regular" size="12.0" />
+                        </font>
+                     </TextField>
+                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font name="SansSerif Regular" size="12.0" />
+                        </font>
+                     </TextField>
+                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="57.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;">
+                        <children>
+                           <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@trash-can-solid.png" />
+                              </image>
+                           </ImageView>
+                        </children>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </HBox>
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin>
+               </HBox>
+               <HBox prefHeight="43.0" prefWidth="367.0">
+                  <children>
+                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font name="SansSerif Regular" size="12.0" />
+                        </font>
+                     </TextField>
+                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font name="SansSerif Regular" size="12.0" />
+                        </font>
+                     </TextField>
+                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="57.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;">
+                        <children>
+                           <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@trash-can-solid.png" />
+                              </image>
+                           </ImageView>
+                        </children>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </HBox>
+                  </children>
+                  <VBox.margin>
+                     <Insets bottom="5.0" />
+                  </VBox.margin>
+               </HBox>
+               <HBox prefHeight="43.0" prefWidth="367.0">
+                  <children>
+                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font name="SansSerif Regular" size="12.0" />
+                        </font>
+                     </TextField>
+                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
+                        <HBox.margin>
+                           <Insets right="15.0" />
+                        </HBox.margin>
+                        <font>
+                           <Font name="SansSerif Regular" size="12.0" />
+                        </font>
+                     </TextField>
+                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="57.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;">
+                        <children>
+                           <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@trash-can-solid.png" />
+                              </image>
+                           </ImageView>
+                        </children>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </HBox>
+                  </children>
+               </HBox>
+               <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="+ Dodaj sektor" textFill="WHITE">
+                  <font>
+                     <Font name="SansSerif Bold" size="18.0" />
+                  </font>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>
+            </children>
+         </VBox>
+         <Button mnemonicParsing="false" onAction="#addSector" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Dodaj" textFill="WHITE">
+            <font>
+               <Font name="SansSerif Regular" size="18.0" />
+            </font>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+            <VBox.margin>
+               <Insets bottom="30.0" />
+            </VBox.margin>
+         </Button>
+         <Label fx:id="msgLabelLocation1" alignment="CENTER" prefHeight="46.0" prefWidth="507.0" style="-fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="msg" textFill="WHITE" visible="false">
             <font>
                <Font name="SansSerif Regular" size="18.0" />
             </font>
