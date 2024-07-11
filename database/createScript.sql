@@ -18,7 +18,6 @@ CREATE TABLE lokacija (
 CREATE TABLE sektor (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
-    price_modifier INT NOT NULL,
     kapacitet INT NOT NULL,
     id_lokacija INT NOT NULL,
     FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
@@ -81,6 +80,7 @@ CREATE TABLE karta (
     bought TINYINT NOT NULL DEFAULT 0,
     reserved TINYINT NOT NULL DEFAULT 0,
     reserved_to DATE,
+    price_modifire INT NOT NULL,
     id_dogadjaj INT NOT NULL,
     id_sektor INT NOT NULL,
     id_sjedalo INT,

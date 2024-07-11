@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import rs.app.rsprojekat.model.Location;
 import rs.app.rsprojekat.model.Place;
+import rs.app.rsprojekat.model.Sector;
 import rs.app.rsprojekat.model.User;
 
 import javax.persistence.*;
@@ -73,6 +74,10 @@ public class AdminPanelController implements Initializable {
 
     @FXML
     private VBox sectorPanel;
+    @FXML
+    private ComboBox<String> sectorPlaceInput;
+    @FXML
+    private ComboBox<String> sectorLocationInput;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -238,7 +243,7 @@ public class AdminPanelController implements Initializable {
         usersPagination.setPageFactory(this::getUserPanel);
     }
 
-    private void getPlacesNames () {
+    private void getPlacesNames (ComboBox<String> placeInput) {
         PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
         visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
 
@@ -295,7 +300,7 @@ public class AdminPanelController implements Initializable {
         locationPanel.setVisible(true);
         locationPanel.setManaged(true);
         if (placeInput.getItems().isEmpty()) {
-            getPlacesNames();
+            getPlacesNames(placeInput);
         }
     }
 
@@ -308,6 +313,9 @@ public class AdminPanelController implements Initializable {
         locationPanel.setManaged(false);
         sectorPanel.setVisible(true);
         sectorPanel.setManaged(true);
+        if (sectorPlaceInput.getItems().isEmpty()) {
+            getPlacesNames(sectorPlaceInput);
+        }
     }
 
     public void addPlace() {
@@ -405,7 +413,6 @@ public class AdminPanelController implements Initializable {
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(l) FROM Location l WHERE naziv = :nazivInput AND mjesto = :mjestoInput", Long.class);
         query.setParameter("nazivInput", nazivLocationInput.getText());
         query.setParameter("mjestoInput", place);
-        System.out.println(query.getSingleResult().intValue());
 
         if (query.getSingleResult().intValue() > 0) {
             msg = "Lokacija sa tim nazivom već postoji!";
@@ -437,6 +444,47 @@ public class AdminPanelController implements Initializable {
         placeInput.setValue("");
         nazivLocationInput.setText("");
         adresaLocationInput.setText("");
-        imgPathLocationInput.setText("");
+        imgPathLocationInput.setText("Slika lokacije");
+    }
+
+    public void getSectorLocations() {
+        sectorLocationInput.getItems().clear();
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<String> query = entityManager.createQuery("SELECT l.naziv FROM Location l WHERE l.mjesto.naziv = :nazivInput", String.class);
+        query.setParameter("nazivInput", sectorPlaceInput.getValue());
+
+        List<String> locationsList = new ArrayList<>();
+        try {
+            locationsList = query.getResultList();
+        } catch (NoResultException ignored) {
+            System.out.println("Nema lokacija u ovom mjestu");
+        }
+        entityManager.close();
+        entityManagerFactory.close();
+        sectorLocationInput.getItems().addAll(locationsList);
+    }
+
+    public void getSectors() {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Location> locationQuery = entityManager.createQuery("SELECT l FROM Location l WHERE l.naziv = :lokacijaNazivInput AND l.mjesto.naziv = :mjestoNazivInput", Location.class);
+        locationQuery.setParameter("lokacijaNazivInput", sectorLocationInput.getValue());
+        locationQuery.setParameter("mjestoNazivInput", sectorPlaceInput.getValue());
+
+        TypedQuery<Sector> sectorQuery = entityManager.createQuery("SELECT s FROM Sector s WHERE s.lokacija = :lokacijaInput", Sector.class);
+        sectorQuery.setParameter("lokacijaInput", locationQuery.getSingleResult());
+
+        List<Sector> sectorList;
+        sectorList = sectorQuery.getResultList();
+        for (Sector s : sectorList) {
+            System.out.println(s.getNaziv());
+        }
+    }
+
+    public void addSector() {
+
     }
 }

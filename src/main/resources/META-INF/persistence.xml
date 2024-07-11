@@ -11,6 +11,7 @@
         <class>rs.app.rsprojekat.model.Dogadjaj</class>
         <class>rs.app.rsprojekat.model.Place</class>
         <class>rs.app.rsprojekat.model.Location</class>
+        <class>rs.app.rsprojekat.model.Sector</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

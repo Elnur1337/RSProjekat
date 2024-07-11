@@ -290,7 +290,7 @@
                            <Insets bottom="15.0" />
                         </VBox.margin>
                      </Label>
-                     <ComboBox fx:id="sectorPlaceInput" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                     <ComboBox fx:id="sectorPlaceInput" onAction="#getSectorLocations" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
                   </children>
                   <padding>
                      <Insets bottom="15.0" />
@@ -307,7 +307,7 @@
                            <Insets bottom="15.0" />
                         </VBox.margin>
                      </Label>
-                     <ComboBox fx:id="sectorLocationInput" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
+                     <ComboBox fx:id="sectorLocationInput" onAction="#getSectors" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" />
                   </children>
                   <padding>
                      <Insets bottom="15.0" />
