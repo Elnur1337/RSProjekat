@@ -136,10 +136,23 @@ public class OrganizerController implements Initializable {
         homeBtn.fire();
     }
 
-    private void refreshEventsPagination() {
+    private void refreshEventsNumber() {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d WHERE organizator = :korisnik", Long.class);
+        query.setParameter("korisnik", IndexController.getCurrentUser());
+        eventsNumberLong = query.getSingleResult();
+
         eventsNumber.setText(eventsNumberLong.toString());
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private void refreshEventsPagination() {
+        refreshEventsNumber();
         eventsPagination.setPageCount(eventsNumberLong.intValue() / 6 + 1);
-        eventsPagination.setPageFactory(this::getEventsPanel);
+        eventsPagination.setPageFactory(this::loadMyEvents);
     }
 
     public void showMyEvents() {
@@ -150,7 +163,7 @@ public class OrganizerController implements Initializable {
         refreshEventsPagination();
     }
 
-    private VBox getEventsPanel(int pageIndex) {
+    public VBox loadMyEvents(int pageIndex) {
         System.out.println("Events panel!");
         return null;
     }
@@ -382,6 +395,7 @@ public class OrganizerController implements Initializable {
 
             message = "Zahtjev za organizacijom događaja poslan.";
             printMessage(true);
+            refreshEventsNumber();
         } else {
             System.out.println("Nevalidan unos podataka.");
             printMessage(false);

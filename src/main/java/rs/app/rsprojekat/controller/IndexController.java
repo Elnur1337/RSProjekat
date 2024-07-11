@@ -57,6 +57,8 @@ public class IndexController implements Initializable {
     @FXML
     private Button miscBtn;
     @FXML
+    private Button walletBtn;
+    @FXML
     private TextField pretragaTextField;
 
     @FXML
@@ -79,6 +81,8 @@ public class IndexController implements Initializable {
         cinemaBtn.setManaged(visibility);
         miscBtn.setVisible(visibility);
         miscBtn.setManaged(visibility);
+        walletBtn.setVisible(visibility);
+        walletBtn.setManaged(visibility);
     }
 
     public void setCurrentUser(User second) {
@@ -184,6 +188,20 @@ public class IndexController implements Initializable {
         stage.show();
     }
 
+    public void switchToWalletScene(ActionEvent event) throws IOException {
+        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/wallet.fxml").toUri().toURL();
+        root = FXMLLoader.load(url);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("application.css")).toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void refreshWallet() {
+        walletBtn.setText("Račun: " + user.getWallet() + "KM");
+    }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         try {
@@ -243,6 +261,7 @@ public class IndexController implements Initializable {
                 adminPanelBtn.setManaged(false);
             }
             setButtonVisibility(true);
+            refreshWallet();
         } else {
             HBox.setMargin(loginBtn, new Insets(0, 10, 0, 0));
             loginBtn.setVisible(true);
