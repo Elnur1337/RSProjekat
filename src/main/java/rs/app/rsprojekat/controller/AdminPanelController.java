@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -34,6 +36,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AdminPanelController implements Initializable {
@@ -78,6 +81,10 @@ public class AdminPanelController implements Initializable {
     private ComboBox<String> sectorPlaceInput;
     @FXML
     private ComboBox<String> sectorLocationInput;
+    @FXML
+    private VBox sectorContainer;
+    @FXML
+    private Button addSectorBtn;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -479,12 +486,110 @@ public class AdminPanelController implements Initializable {
 
         List<Sector> sectorList;
         sectorList = sectorQuery.getResultList();
+//        entityManager.close();
+//        entityManagerFactory.close();
         for (Sector s : sectorList) {
-            System.out.println(s.getNaziv());
+            int addSectorBtnIndex = sectorContainer.getChildren().indexOf(addSectorBtn);
+
+            HBox sectorHBox = new HBox();
+            sectorHBox.setPrefHeight(43.0);
+            sectorHBox.setPrefWidth(367.0);
+
+            VBox.setMargin(sectorHBox, new Insets(0, 0, 5, 0));
+
+            TextField sectorName = new TextField();
+            sectorName.setPrefHeight(36);
+            sectorName.setPrefWidth(200.0);
+            sectorName.setStyle("-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            HBox.setMargin(sectorName, new Insets(0, 15, 0, 0));
+            sectorName.setFont(Font.font("SansSerif Regular", 18.0));
+            sectorName.setText(s.getNaziv());
+
+            TextField sectorCapacity = new TextField();
+            sectorCapacity.setPrefHeight(36.0);
+            sectorCapacity.setPrefWidth(80.0);
+            sectorCapacity.setStyle("-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            HBox.setMargin(sectorCapacity, new Insets(0, 15, 0, 0));
+            sectorCapacity.setFont(Font.font("SansSerif Regular", 18.0));
+            sectorCapacity.setText(Integer.toString(s.getKapacitet()));
+
+            HBox sectorImgContainer = new HBox();
+            sectorImgContainer.setPrefHeight(36.0);
+            sectorImgContainer.setPrefWidth(57.0);
+            sectorImgContainer.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;");
+            sectorImgContainer.setAlignment(Pos.CENTER);
+            sectorImgContainer.setCursor(Cursor.HAND);
+            sectorImgContainer.setOnMouseClicked(event -> {
+                sectorContainer.getChildren().remove(sectorHBox);
+                //Obrisati sektor iz baze i iz liste
+            });
+
+
+            ImageView sectorDeleteIcon = new ImageView();
+            sectorDeleteIcon.setFitHeight(23.0);
+            sectorDeleteIcon.setFitWidth(20.0);
+            sectorDeleteIcon.setPreserveRatio(true);
+            sectorDeleteIcon.setPickOnBounds(true);
+            sectorDeleteIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("trash-can-solid.png"))));
+
+            sectorImgContainer.getChildren().add(sectorDeleteIcon);
+
+            sectorHBox.getChildren().addAll(sectorName, sectorCapacity, sectorImgContainer);
+
+            sectorContainer.getChildren().add(addSectorBtnIndex, sectorHBox);
+
         }
     }
 
     public void addSector() {
+        int addSectorBtnIndex = sectorContainer.getChildren().indexOf(addSectorBtn);
 
+        HBox sectorHBox = new HBox();
+        sectorHBox.setPrefHeight(43.0);
+        sectorHBox.setPrefWidth(367.0);
+
+        VBox.setMargin(sectorHBox, new Insets(0, 0, 5, 0));
+
+        TextField sectorName = new TextField();
+        sectorName.setPrefHeight(36);
+        sectorName.setPrefWidth(200.0);
+        sectorName.setStyle("-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+        HBox.setMargin(sectorName, new Insets(0, 15, 0, 0));
+        sectorName.setFont(Font.font("SansSerif Regular", 18.0));
+
+        TextField sectorCapacity = new TextField();
+        sectorCapacity.setPrefHeight(36.0);
+        sectorCapacity.setPrefWidth(80.0);
+        sectorCapacity.setStyle("-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+        HBox.setMargin(sectorCapacity, new Insets(0, 15, 0, 0));
+        sectorCapacity.setFont(Font.font("SansSerif Regular", 18.0));
+
+        HBox sectorImgContainer = new HBox();
+        sectorImgContainer.setPrefHeight(36.0);
+        sectorImgContainer.setPrefWidth(57.0);
+        sectorImgContainer.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;");
+        sectorImgContainer.setAlignment(Pos.CENTER);
+        sectorImgContainer.setCursor(Cursor.HAND);
+        sectorImgContainer.setOnMouseClicked(event -> {
+            sectorContainer.getChildren().remove(sectorHBox);
+        });
+
+
+        ImageView sectorDeleteIcon = new ImageView();
+        sectorDeleteIcon.setFitHeight(23.0);
+        sectorDeleteIcon.setFitWidth(20.0);
+        sectorDeleteIcon.setPreserveRatio(true);
+        sectorDeleteIcon.setPickOnBounds(true);
+        sectorDeleteIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("trash-can-solid.png"))));
+
+        sectorImgContainer.getChildren().add(sectorDeleteIcon);
+
+        sectorHBox.getChildren().addAll(sectorName, sectorCapacity, sectorImgContainer);
+
+        sectorContainer.getChildren().add(addSectorBtnIndex, sectorHBox);
+    }
+
+    public void saveSectors() {
+        //Snimiti nove sektore u bazu
     }
 }
