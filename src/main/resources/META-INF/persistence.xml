@@ -10,14 +10,16 @@
         <class>rs.app.rsprojekat.model.User</class>
         <class>rs.app.rsprojekat.model.Dogadjaj</class>
         <class>rs.app.rsprojekat.model.Place</class>
+        <class>rs.app.rsprojekat.model.Location</class>
+        <class>rs.app.rsprojekat.model.Sector</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.id.new_generator_mappings" value="false" />
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/rsprojekat"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="root"/>
+            <property name="javax.persistence.jdbc.user" value="elnurdev"/>
+            <property name="javax.persistence.jdbc.password" value="elnurdev"/>
         </properties>
     </persistence-unit>
 </persistence>

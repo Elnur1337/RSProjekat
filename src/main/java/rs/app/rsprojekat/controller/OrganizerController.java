@@ -126,15 +126,14 @@ public class OrganizerController implements Initializable {
         stage.show();
     }
 
-    public void logout(ActionEvent event) throws IOException {
+    public void logout(ActionEvent ignoredEvent) throws IOException {
         final IndexController indexController = new IndexController();
         indexController.setCurrentUser(new User());
 
         FileWriter rememberMeWriter = new FileWriter("rememberMe.txt");
         rememberMeWriter.write("");
         rememberMeWriter.close();
-
-        switchToHomeScene(new ActionEvent());
+        homeBtn.fire();
     }
 
     private void refreshEventsNumber() {

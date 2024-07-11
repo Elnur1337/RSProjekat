@@ -8,8 +8,9 @@ CREATE TABLE mjesto (
 
 CREATE TABLE lokacija (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    naziv VARCHAR(100) NOT NULL,
+    naziv VARCHAR(100) NOT NULL UNIQUE,
     img_path VARCHAR(200) NOT NULL,
+    adresa VARCHAR(100) NOT NULL,
     id_mjesto INT NOT NULL,
     FOREIGN KEY (id_mjesto) REFERENCES mjesto(id)
 );
@@ -17,7 +18,6 @@ CREATE TABLE lokacija (
 CREATE TABLE sektor (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     naziv VARCHAR(100) NOT NULL,
-    price_modifier INT NOT NULL,
     kapacitet INT NOT NULL,
     id_lokacija INT NOT NULL,
     FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)
@@ -25,6 +25,7 @@ CREATE TABLE sektor (
 
 CREATE TABLE sjedalo (
 	id INT NOT NULL PRIMARY KEY,
+    broj_sjedala INT NOT NULL,
     id_sektor INT NOT NULL,
     FOREIGN KEY (id_sektor) REFERENCES sektor(id)
 );
@@ -79,6 +80,7 @@ CREATE TABLE karta (
     bought TINYINT NOT NULL DEFAULT 0,
     reserved TINYINT NOT NULL DEFAULT 0,
     reserved_to DATE,
+    price_modifire INT NOT NULL,
     id_dogadjaj INT NOT NULL,
     id_sektor INT NOT NULL,
     id_sjedalo INT,

@@ -20,7 +20,7 @@ public class Main extends Application {
                 //Validating ticket icons created by surang - Flaticon - "https://www.flaticon.com/free-icons/validating-ticket"
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("index.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
