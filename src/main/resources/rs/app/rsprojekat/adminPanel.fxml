@@ -318,7 +318,7 @@
                <Insets bottom="15.0" />
             </VBox.margin>
          </HBox>
-         <VBox fx:id="sectorContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="255.0" prefWidth="386.0" style="-fx-padding: 10;">
+         <VBox fx:id="sectorContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="386.0" style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
             <VBox.margin>
                <Insets bottom="15.0" />
             </VBox.margin>
@@ -343,109 +343,7 @@
                      <Insets bottom="5.0" />
                   </VBox.margin>
                </HBox>
-               <HBox prefHeight="43.0" prefWidth="367.0">
-                  <children>
-                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                        <font>
-                           <Font name="SansSerif Regular" size="12.0" />
-                        </font>
-                     </TextField>
-                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                        <font>
-                           <Font name="SansSerif Regular" size="12.0" />
-                        </font>
-                     </TextField>
-                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="57.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;">
-                        <children>
-                           <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@trash-can-solid.png" />
-                              </image>
-                           </ImageView>
-                        </children>
-                        <cursor>
-                           <Cursor fx:constant="HAND" />
-                        </cursor>
-                     </HBox>
-                  </children>
-                  <VBox.margin>
-                     <Insets bottom="5.0" />
-                  </VBox.margin>
-               </HBox>
-               <HBox prefHeight="43.0" prefWidth="367.0">
-                  <children>
-                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                        <font>
-                           <Font name="SansSerif Regular" size="12.0" />
-                        </font>
-                     </TextField>
-                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                        <font>
-                           <Font name="SansSerif Regular" size="12.0" />
-                        </font>
-                     </TextField>
-                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="57.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;">
-                        <children>
-                           <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@trash-can-solid.png" />
-                              </image>
-                           </ImageView>
-                        </children>
-                        <cursor>
-                           <Cursor fx:constant="HAND" />
-                        </cursor>
-                     </HBox>
-                  </children>
-                  <VBox.margin>
-                     <Insets bottom="5.0" />
-                  </VBox.margin>
-               </HBox>
-               <HBox prefHeight="43.0" prefWidth="367.0">
-                  <children>
-                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                        <font>
-                           <Font name="SansSerif Regular" size="12.0" />
-                        </font>
-                     </TextField>
-                     <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="80.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                        <font>
-                           <Font name="SansSerif Regular" size="12.0" />
-                        </font>
-                     </TextField>
-                     <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="57.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-radius: 50; -fx-border-color: #666; -fx-border-radius: 50;">
-                        <children>
-                           <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@trash-can-solid.png" />
-                              </image>
-                           </ImageView>
-                        </children>
-                        <cursor>
-                           <Cursor fx:constant="HAND" />
-                        </cursor>
-                     </HBox>
-                  </children>
-               </HBox>
-               <Button alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="+ Dodaj sektor" textFill="WHITE">
+               <Button fx:id="addSectorBtn" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addSector" prefHeight="36.0" prefWidth="200.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="+ Dodaj sektor" textFill="WHITE">
                   <font>
                      <Font name="SansSerif Bold" size="18.0" />
                   </font>
@@ -455,7 +353,7 @@
                </Button>
             </children>
          </VBox>
-         <Button mnemonicParsing="false" onAction="#addSector" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Dodaj" textFill="WHITE">
+         <Button mnemonicParsing="false" onAction="#saveSectors" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Sačuvaj" textFill="WHITE">
             <font>
                <Font name="SansSerif Regular" size="18.0" />
             </font>
