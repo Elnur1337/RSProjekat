@@ -92,94 +92,64 @@
                 </Button>
             </children>
         </HBox>
-
-
-
-        <VBox fx:id="centralBox" alignment="CENTER_LEFT" layoutX="270.0" layoutY="120.0" prefHeight="200.0" prefWidth="160.0" AnchorPane.topAnchor="150.0">
-            <children>
-                <Button fx:id="musicBtn" mnemonicParsing="false" onAction="#switchToMusicScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Muzika">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <font>
-                        <Font name="SansSerif Regular" size="22.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </Button>
-                <Button fx:id="sportBtn" mnemonicParsing="false" onAction="#switchToSportScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Sport">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <font>
-                        <Font name="SansSerif Regular" size="22.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </Button>
-                <Button fx:id="cultureBtn" mnemonicParsing="false" onAction="#switchToCultureScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Kultura">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <font>
-                        <Font name="SansSerif Regular" size="22.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </Button>
-                <Button fx:id="cinemaBtn" mnemonicParsing="false" onAction="#switchToCinemaScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Kino">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <font>
-                        <Font name="SansSerif Regular" size="22.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </Button>
-                <Button fx:id="miscBtn" mnemonicParsing="false" onAction="#switchToMiscScene" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white;                            -fx-background-radius: 50px;                            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Ostalo">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                    <font>
-                        <Font name="SansSerif Regular" size="22.0" />
-                    </font>
-                </Button>
-            </children>
-        </VBox>
-        <!-- TextField for text input -->
-        <TextField fx:id="pretragaTextField" layoutX="414.0" layoutY="80.0" prefWidth="300.0" promptText="Unesite tekst za pretragu..." scaleY="1.2">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </TextField>
-
-        <!-- ComboBox for search criteria selection -->
-        <ComboBox fx:id="criteriaComboBox" layoutX="40.0" layoutY="86.0" prefWidth="180.0">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="all" />
-                    <String fx:value="Naziv" />
-                </FXCollections>
-            </items>
-        </ComboBox>
-
-        <!-- Button for starting the search -->
-        <Button fx:id="pretragaButton" layoutX="741.0" layoutY="80.0" mnemonicParsing="false" onAction="#pretraga" scaleY="1.3" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Pretraži događaje">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Button>
-        <Text layoutX="40.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kriterij pretrage">
-            <font>
-                <Font size="16.0" />
-            </font>
-        </Text>
-        <VBox fx:id="resultsBox" layoutX="220.0" layoutY="150.0" prefHeight="200.0" prefWidth="160.0" AnchorPane.topAnchor="150.0">
-        </VBox>
+      <HBox layoutY="56.0" prefHeight="46.0" prefWidth="1200.0" spacing="10.0">
+         <children>
+            <ComboBox fx:id="categoryBox" onAction="#changedCategory" prefWidth="150.0" promptText="Kategorija" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin></ComboBox>
+            <ComboBox fx:id="subCategoryBox" prefWidth="150.0" promptText="Podkategorija" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+              <!-- TextField for text input -->
+              <TextField fx:id="searchInput" prefWidth="300.0" promptText="Unesite tekst za pretragu...">
+                  <font>
+                      <Font size="14.0" />
+                  </font>
+              </TextField>
+            <Button fx:id="searchBtn" mnemonicParsing="false" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Pretraži">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="16.0" />
+               </font>
+            </Button>
+            <Separator prefHeight="41.0" prefWidth="272.0" />
+            <Button fx:id="filtersBtn" mnemonicParsing="false" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Filteri">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <Pagination fx:id="eventsPagination" layoutX="14.0" layoutY="102.0" prefHeight="687.0" prefWidth="1171.0" />
+      <Pane fx:id="coverPane" layoutX="14.0" layoutY="102.0" onMouseClicked="#hideMenu" opacity="0.2" prefHeight="687.0" prefWidth="900.0" style="-fx-background-color: #e9e9e9;" />
+      <VBox fx:id="filtersBox" alignment="TOP_CENTER" layoutX="886.0" layoutY="102.0" prefHeight="687.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #dadada;" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="886.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="102.0">
+         <children>
+            <ComboBox fx:id="placeBox" onAction="#loadLocations" prefHeight="25.0" prefWidth="300.0" promptText="Mjesto" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+            <ComboBox fx:id="locationBox" prefHeight="25.0" prefWidth="300.0" promptText="Lokacija" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+            <HBox prefHeight="30.0" prefWidth="300.0" spacing="10.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="56.0" text="Cijena">
+                     <font>
+                        <Font name="SansSerif Regular" size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="bottomPriceInput" prefHeight="25.0" prefWidth="100.0" promptText="od" />
+                  <TextField fx:id="upperPriceInput" prefHeight="25.0" prefWidth="100.0" promptText="do" />
+               </children>
+            </HBox>
+            <Button fx:id="applyFiltersBtn" mnemonicParsing="false" onAction="#applyFilters" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Pretraga">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

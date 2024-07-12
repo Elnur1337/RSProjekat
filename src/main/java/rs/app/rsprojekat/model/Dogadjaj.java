@@ -106,6 +106,19 @@ public class Dogadjaj {
     }
 
     public void setOrganizator(User organizator) { this.organizator = organizator; }
+
+    public User getOrganizator() { return organizator; }
+
     public void setPodkategorija(Subcategory podkategorija) { this.podkategorija = podkategorija; }
+
+    public Subcategory getPodkategorija() { return podkategorija; }
+
     public void setLokacija(Location lokacija) { this.lokacija = lokacija; }
+
+    public Location getLokacija() { return lokacija; }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + "\nNaziv: " + naziv + "\nMjesto: " + lokacija.getMjesto().getNaziv() + "\nLokacija: " + lokacija.getNaziv();
+    }
 }
