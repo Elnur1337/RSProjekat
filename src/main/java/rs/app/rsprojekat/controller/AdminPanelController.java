@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -34,6 +36,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AdminPanelController implements Initializable {
@@ -78,6 +81,8 @@ public class AdminPanelController implements Initializable {
     private ComboBox<String> sectorPlaceInput;
     @FXML
     private ComboBox<String> sectorLocationInput;
+    @FXML
+    private VBox sectorContainer;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -477,14 +482,65 @@ public class AdminPanelController implements Initializable {
         TypedQuery<Sector> sectorQuery = entityManager.createQuery("SELECT s FROM Sector s WHERE s.lokacija = :lokacijaInput", Sector.class);
         sectorQuery.setParameter("lokacijaInput", locationQuery.getSingleResult());
 
-        List<Sector> sectorList;
-        sectorList = sectorQuery.getResultList();
-        for (Sector s : sectorList) {
-            System.out.println(s.getNaziv());
+        List<Sector> sectorsList = sectorQuery.getResultList();
+
+        for (Sector sector : sectorsList) {
+            HBox sectorHBox = new HBox();
+            sectorHBox.setAlignment(Pos.CENTER_LEFT);
+            sectorHBox.setPrefHeight(50.0);
+
+            Label nazivLabel = new Label();
+            nazivLabel.setPrefWidth(200.0);
+            nazivLabel.setPrefHeight(29.0);
+            nazivLabel.setFont(Font.font("SansSerif Regular", 18));
+            nazivLabel.setStyle("-fx-padding: 5; -fx-border-color: #666; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            HBox.setMargin(nazivLabel, new Insets(0, 15, 0, 0));
+            nazivLabel.setText(sector.getNaziv());
+
+            Label kapacitetLabel = new Label();
+            kapacitetLabel.setPrefWidth(80.0);
+            kapacitetLabel.setPrefHeight(29.0);
+            kapacitetLabel.setFont(Font.font("SansSerif Regular", 18));
+            kapacitetLabel.setStyle("-fx-padding: 5; -fx-border-color: #666; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            HBox.setMargin(kapacitetLabel, new Insets(0, 15, 0, 0));
+            kapacitetLabel.setText(Integer.toString(sector.getKapacitet()));
+
+            HBox iconHBox = new HBox();
+            iconHBox.setPrefWidth(60.0);
+            iconHBox.setPrefHeight(39.0);
+            iconHBox.setMaxHeight(39.0);
+            iconHBox.setAlignment(Pos.CENTER);
+            iconHBox.setStyle("-fx-padding: 5; -fx-border-color: #666; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            iconHBox.setCursor(Cursor.HAND);
+            iconHBox.setOnMouseClicked(event -> {
+                EntityTransaction entityTransaction = entityManager.getTransaction();
+                entityTransaction.begin();
+                entityManager.remove(sector);
+                entityTransaction.commit();
+                sectorContainer.getChildren().remove(sectorHBox);
+            });
+
+            ImageView trashCanIcon = new ImageView();
+            trashCanIcon.setPickOnBounds(true);
+            trashCanIcon.setPreserveRatio(true);
+            trashCanIcon.setFitWidth(18.0);
+            trashCanIcon.setFitHeight(21.0);
+            trashCanIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("trash-can-solid.png"))));
+
+            iconHBox.getChildren().add(trashCanIcon);
+            sectorHBox.getChildren().addAll(nazivLabel, kapacitetLabel, iconHBox);
+            sectorContainer.getChildren().add(sectorHBox);
         }
     }
 
     public void addSector() {
 
     }
+
+        //NAPRAVITI PROMJENE ZA SEKTOR NAPRAVITI DVA INPUTA NA DNU I DA SE TAKO DODAJE NOVI A GORE PROMIJENITI U LABELE I NA KLIK KANTE DA SE BRISE
+        //Takodjer nakon promjene mjesta i lokacije ocistiti polje
+        //Odraditi refactor koda (kreirati funkciju za message display)
+        //Odraditi refactor koda (jedan objekat za insets a ne vise njih za svaki)
+        //Prebaciti style u application.css? Ako bude radilo
+
 }
