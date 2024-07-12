@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.IndexController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.IndexController">
     <children>
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -98,14 +98,14 @@
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin></ComboBox>
-            <ComboBox fx:id="subCategoryBox" prefWidth="150.0" promptText="Podkategorija" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+            <ComboBox fx:id="subCategoryBox" onAction="#changedSubCategory" prefWidth="150.0" promptText="Podkategorija" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
               <!-- TextField for text input -->
               <TextField fx:id="searchInput" prefWidth="300.0" promptText="Unesite tekst za pretragu...">
                   <font>
                       <Font size="14.0" />
                   </font>
               </TextField>
-            <Button fx:id="searchBtn" mnemonicParsing="false" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Pretraži">
+            <Button fx:id="searchBtn" mnemonicParsing="false" onAction="#searchEvents" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Pretraži">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -142,6 +142,14 @@
                </children>
             </HBox>
             <Button fx:id="applyFiltersBtn" mnemonicParsing="false" onAction="#applyFilters" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Pretraga">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="clearFiltersBtn" mnemonicParsing="false" onAction="#clearFilters" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: #eaeaea; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Očisti filtere" visible="false">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

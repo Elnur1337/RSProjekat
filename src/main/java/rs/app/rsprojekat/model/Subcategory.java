@@ -32,4 +32,6 @@ public class Subcategory {
     public String getNaziv() { return naziv; }
 
     public void setNaziv(String naziv) { this.naziv = naziv; }
+
+    public Category getKategorija() { return kategorija; }
 }

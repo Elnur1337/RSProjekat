@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +48,11 @@ public class IndexController implements Initializable {
     private Parent root;
 
     private Long numOfEvents;
+    private String selektovanoMjesto;
+    private String selektovanaLokacija;
+
+    private List<Dogadjaj> eventsList = new ArrayList<>();
+    private List<Dogadjaj> showList = new ArrayList<>();
 
     @FXML
     private Button homeBtn;
@@ -63,6 +70,8 @@ public class IndexController implements Initializable {
     private Button walletBtn;
     @FXML
     private Button filtersBtn;
+    @FXML
+    private Button clearFiltersBtn;
 
     @FXML
     private Pagination eventsPagination;
@@ -88,6 +97,12 @@ public class IndexController implements Initializable {
 
     @FXML
     private TextField pretragaTextField;
+    @FXML
+    private TextField bottomPriceInput;
+    @FXML
+    private TextField upperPriceInput;
+    @FXML
+    private TextField searchInput;
 
 
     private void setButtonVisibility(boolean visibility) {
@@ -236,6 +251,32 @@ public class IndexController implements Initializable {
 
             setButtonVisibility(false);
         }
+
+        bottomPriceInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    bottomPriceInput.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        upperPriceInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    upperPriceInput.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        eventsList = new ArrayList<>();
+        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true", Dogadjaj.class);
+        try  {
+            eventsList = query.getResultList();
+        } catch (NoResultException ignored) {}
 
         filtersBox.setTranslateX(320);
         coverPane.setTranslateX(-950);
@@ -410,19 +451,14 @@ public class IndexController implements Initializable {
 //    }
 
     private VBox getEvents(int pageIndex) {
-        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Dogadjaj> dogadjajList = new ArrayList<>();
-        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true", Dogadjaj.class).setFirstResult(pageIndex * 5).setMaxResults(5);
-        try  {
-            dogadjajList = query.getResultList();
-        } catch (NoResultException ignored) {}
-
         VBox page = new VBox();
         page.setPrefWidth(eventsPagination.getPrefWidth());
         page.setStyle("-fx-padding: 10;");
 
-        for (Dogadjaj d : dogadjajList) {
+        int fromIndex = pageIndex * 5;
+        int toIndex = Math.min(fromIndex + 5, showList.size());
+
+        for (Dogadjaj d : showList.subList(fromIndex, toIndex)) {
             System.out.println(d);
             HBox dogadjajBox = new HBox();
             dogadjajBox.setAlignment(Pos.CENTER_LEFT);
@@ -511,6 +547,25 @@ public class IndexController implements Initializable {
         slide = new TranslateTransition(Duration.millis(300), coverPane);
         slide.setToX(0);
         slide.play();
+
+        System.out.println("Selektovano mjesto: " + selektovanoMjesto);
+        System.out.println("Selektovana lokacija: " + selektovanaLokacija);
+
+        if(selektovanoMjesto == null)
+            placeBox.setPromptText("Mjesto");
+        else
+            placeBox.setValue(selektovanoMjesto);
+
+        if(selektovanaLokacija == null)
+            locationBox.setPromptText("Lokacija");
+        else
+            locationBox.setValue(selektovanaLokacija);
+
+        if(bottomPriceInput.getText().isEmpty())
+            bottomPriceInput.setPromptText("od");
+
+        if(upperPriceInput.getText().isEmpty())
+            upperPriceInput.setPromptText("do");
     }
 
     private void hideMenu(VBox menu) {
@@ -527,11 +582,98 @@ public class IndexController implements Initializable {
     }
 
     public void applyFilters(ActionEvent actionEvent) {
+        if(categoryBox.getSelectionModel().getSelectedItem() == null)
+            showList = eventsList.stream().toList();
+        else if(subCategoryBox.getSelectionModel().getSelectedItem() != null)
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getNaziv().equals(subCategoryBox.getSelectionModel().getSelectedItem())).toList();
+        else
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(categoryBox.getSelectionModel().getSelectedItem())).toList();
 
+        String selectedPlace = placeBox.getSelectionModel().getSelectedItem();
+        if(selectedPlace != null) {
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getLokacija().getMjesto().getNaziv().equals(selectedPlace)).toList();
+            selektovanoMjesto = selectedPlace;
+        }
+
+        String selectedLocation = locationBox.getSelectionModel().getSelectedItem();
+        if(selectedLocation != null) {
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getLokacija().getNaziv().equals(selectedLocation)).toList();
+            selektovanaLokacija = selectedLocation;
+        }
+
+        if(!bottomPriceInput.getText().isEmpty()) {
+            Double bottomPrice = Double.parseDouble(bottomPriceInput.getText());
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getBasePrice() >= bottomPrice).toList();
+        }
+
+        if(!upperPriceInput.getText().isEmpty()) {
+            Double upperPrice = Double.parseDouble(upperPriceInput.getText());
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getBasePrice() <= upperPrice).toList();
+        }
+
+        hideMenu(filtersBox);
+        clearFiltersBtn.setVisible(true);
+        refreshEventsPagination();
+    }
+
+    public void clearFilters(ActionEvent actionEvent) {
+        selektovanoMjesto = selektovanaLokacija = null;
+
+        placeBox.getSelectionModel().clearSelection();
+        placeBox.setPromptText("Mjesto");
+        locationBox.getSelectionModel().clearSelection();
+        locationBox.setPromptText("Lokacija");
+        bottomPriceInput.clear();
+        bottomPriceInput.setPromptText("od");
+        upperPriceInput.clear();
+        upperPriceInput.setPromptText("do");
+
+        if(categoryBox.getSelectionModel().getSelectedItem() == null)
+            showList = new ArrayList<>();
+        else if(subCategoryBox.getSelectionModel().getSelectedItem() != null)
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getNaziv().equals(subCategoryBox.getSelectionModel().getSelectedItem())).toList();
+        else
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(categoryBox.getSelectionModel().getSelectedItem())).toList();
+
+        hideMenu(filtersBox);
+        clearFiltersBtn.setVisible(false);
+        refreshEventsPagination();
     }
 
     public void changedCategory(ActionEvent actionEvent) {
         loadSubCategoryBox();
+
+        String item = categoryBox.getSelectionModel().getSelectedItem();
+        if(item != null)
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(item)).toList();
+
+        placeBox.setPromptText("Mjesto");
+        locationBox.setPromptText("Lokacija");
+        bottomPriceInput.setPromptText("od");
+        upperPriceInput.setPromptText("do");
+
+        refreshEventsPagination();
+    }
+
+    public void changedSubCategory(ActionEvent actionEvent) {
+        String item = subCategoryBox.getSelectionModel().getSelectedItem();
+        if(item != null)
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getNaziv().equals(item)).toList();
+
+        placeBox.setPromptText("Mjesto");
+        locationBox.setPromptText("Lokacija");
+        bottomPriceInput.setPromptText("od");
+        upperPriceInput.setPromptText("do");
+
+        refreshEventsPagination();
+    }
+
+    public void searchEvents(ActionEvent actionEvent) {
+        if(!showList.isEmpty())
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getNaziv().contains(searchInput.getText())).toList();
+        else
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getNaziv().contains(searchInput.getText())).toList();
+
         refreshEventsPagination();
     }
 }
