@@ -43,6 +43,8 @@ public class AdminPanelController implements Initializable {
     private Scene scene;
     private Parent root;
 
+    private Location currSectorLocation;
+
     @FXML
     private Button homeBtn;
 
@@ -94,6 +96,12 @@ public class AdminPanelController implements Initializable {
     private ComboBox<String> sectorLocationInput;
     @FXML
     private VBox sectorContainer;
+    @FXML
+    private TextField sectorNameInput;
+    @FXML
+    private TextField sectorCapacityInput;
+    @FXML
+    private Label msgLabelSector;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -530,6 +538,7 @@ public class AdminPanelController implements Initializable {
 
     public void getSectorLocations() {
         sectorLocationInput.getItems().clear();
+        sectorContainer.getChildren().clear();
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -555,8 +564,10 @@ public class AdminPanelController implements Initializable {
         locationQuery.setParameter("lokacijaNazivInput", sectorLocationInput.getValue());
         locationQuery.setParameter("mjestoNazivInput", sectorPlaceInput.getValue());
 
+        currSectorLocation = locationQuery.getSingleResult();
+
         TypedQuery<Sector> sectorQuery = entityManager.createQuery("SELECT s FROM Sector s WHERE s.lokacija = :lokacijaInput", Sector.class);
-        sectorQuery.setParameter("lokacijaInput", locationQuery.getSingleResult());
+        sectorQuery.setParameter("lokacijaInput", currSectorLocation);
 
         List<Sector> sectorsList = sectorQuery.getResultList();
 
@@ -711,10 +722,95 @@ public class AdminPanelController implements Initializable {
         nazivCategoryInput.setText("");
     }
 
-
-
     public void addSector() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelSector.setVisible(false));
 
+        if (sectorNameInput.getText().length() < 2) {
+            msg = "Naziv mora imate vise od 2 karaktera!";
+            msgLabelSector.setText(msg);
+            msgLabelSector.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelSector.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
+        int sectorCapacity;
+        try {
+            sectorCapacity = Integer.parseInt(sectorCapacityInput.getText());
+        } catch (NumberFormatException e) {
+            msg = "Kapacitet mora biti cijeli broj!";
+            msgLabelSector.setText(msg);
+            msgLabelSector.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelSector.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        Sector sector = new Sector();
+        sector.setNaziv(sectorNameInput.getText());
+        sector.setKapacitet(sectorCapacity);
+        sector.setLokacija(currSectorLocation);
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(sector);
+        entityTransaction.commit();
+
+        HBox sectorHBox = new HBox();
+        sectorHBox.setAlignment(Pos.CENTER_LEFT);
+        sectorHBox.setPrefHeight(50.0);
+
+        Label nazivLabel = new Label();
+        nazivLabel.setPrefWidth(200.0);
+        nazivLabel.setPrefHeight(29.0);
+        nazivLabel.setFont(Font.font("SansSerif Regular", 18));
+        nazivLabel.setStyle("-fx-padding: 5; -fx-border-color: #666; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+        HBox.setMargin(nazivLabel, new Insets(0, 15, 0, 0));
+        nazivLabel.setText(sector.getNaziv());
+
+        Label kapacitetLabel = new Label();
+        kapacitetLabel.setPrefWidth(80.0);
+        kapacitetLabel.setPrefHeight(29.0);
+        kapacitetLabel.setFont(Font.font("SansSerif Regular", 18));
+        kapacitetLabel.setStyle("-fx-padding: 5; -fx-border-color: #666; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+        HBox.setMargin(kapacitetLabel, new Insets(0, 15, 0, 0));
+        kapacitetLabel.setText(Integer.toString(sector.getKapacitet()));
+
+        HBox iconHBox = new HBox();
+        iconHBox.setPrefWidth(60.0);
+        iconHBox.setPrefHeight(39.0);
+        iconHBox.setMaxHeight(39.0);
+        iconHBox.setAlignment(Pos.CENTER);
+        iconHBox.setStyle("-fx-padding: 5; -fx-border-color: #666; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+        iconHBox.setCursor(Cursor.HAND);
+        iconHBox.setOnMouseClicked(event -> {
+            entityTransaction.begin();
+            entityManager.remove(sector);
+            entityTransaction.commit();
+            sectorContainer.getChildren().remove(sectorHBox);
+        });
+
+        ImageView trashCanIcon = new ImageView();
+        trashCanIcon.setPickOnBounds(true);
+        trashCanIcon.setPreserveRatio(true);
+        trashCanIcon.setFitWidth(18.0);
+        trashCanIcon.setFitHeight(21.0);
+        trashCanIcon.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("trash-can-solid.png"))));
+
+        iconHBox.getChildren().add(trashCanIcon);
+        sectorHBox.getChildren().addAll(nazivLabel, kapacitetLabel, iconHBox);
+        sectorContainer.getChildren().add(sectorHBox);
+
+        msg = "Sektor uspješno dodan!";
+        msgLabelSector.setText(msg);
+        msgLabelSector.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelSector.setVisible(true);
+        visibleMsg.play();
+        sectorNameInput.setText("");
+        sectorCapacityInput.setText("");
     }
 
         //NAPRAVITI PROMJENE ZA SEKTOR NAPRAVITI DVA INPUTA NA DNU I DA SE TAKO DODAJE NOVI A GORE PROMIJENITI U LABELE I NA KLIK KANTE DA SE BRISE

@@ -424,7 +424,7 @@
    </VBox>
 
 
-   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
       <children>
          <Label text="Dodavanje sektora">
             <font>
@@ -474,36 +474,34 @@
                <Insets bottom="15.0" />
             </VBox.margin>
          </HBox>
+         <HBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="366.0">
+            <children>
+               <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" text="Naziv sektora">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets right="15.0" />
+                  </HBox.margin>
+               </Label>
+               <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="80.0" text="Kapacitet">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+            <VBox.margin>
+               <Insets bottom="5.0" />
+            </VBox.margin>
+         </HBox>
          <VBox fx:id="sectorContainer" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="386.0" style="-fx-padding: 10;" VBox.vgrow="ALWAYS">
             <VBox.margin>
                <Insets bottom="15.0" />
             </VBox.margin>
-            <children>
-               <HBox prefHeight="30.0" prefWidth="366.0">
-                  <children>
-                     <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" text="Naziv sektora">
-                        <font>
-                           <Font name="SansSerif Regular" size="18.0" />
-                        </font>
-                        <HBox.margin>
-                           <Insets right="15.0" />
-                        </HBox.margin>
-                     </Label>
-                     <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="80.0" text="Kapacitet">
-                        <font>
-                           <Font name="SansSerif Regular" size="18.0" />
-                        </font>
-                     </Label>
-                  </children>
-                  <VBox.margin>
-                     <Insets bottom="5.0" />
-                  </VBox.margin>
-               </HBox>
-            </children>
          </VBox>
          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="407.0" style="-fx-padding: 10;">
             <children>
-               <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="178.0" promptText="Naziv sektora" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+               <TextField fx:id="sectorNameInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="178.0" promptText="Naziv sektora" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                   <HBox.margin>
                      <Insets right="15.0" />
                   </HBox.margin>
@@ -511,7 +509,7 @@
                      <Font name="SansSerif Regular" size="18.0" />
                   </font>
                </TextField>
-               <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="101.0" promptText="Kapacitet" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+               <TextField fx:id="sectorCapacityInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="101.0" promptText="Kapacitet" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                   <HBox.margin>
                      <Insets right="15.0" />
                   </HBox.margin>
