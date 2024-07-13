@@ -245,8 +245,10 @@ public class IndexController implements Initializable {
             HBox.setMargin(logoutBtn, Insets.EMPTY);
             logoutBtn.setVisible(true);
             logoutBtn.setManaged(true);
+            HBox.setMargin(walletBtn, new Insets(0, 10, 0, 0));
             if (user.isAdmin()) {
                 HBox.setMargin(homeBtn, new Insets(0, 10, 0, 0));
+                HBox.setMargin(adminPanelBtn, new Insets(0, 10, 0, 0));
                 adminPanelBtn.setVisible(true);
                 adminPanelBtn.setManaged(true);
                 eventsBtn.setVisible(true);
