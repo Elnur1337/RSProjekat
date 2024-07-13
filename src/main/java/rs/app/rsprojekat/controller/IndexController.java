@@ -72,6 +72,10 @@ public class IndexController implements Initializable {
     private Button filtersBtn;
     @FXML
     private Button clearFiltersBtn;
+    @FXML
+    private Button rezervacijaBtn;
+    @FXML
+    private Button kupovinaBtn;
 
     @FXML
     private Pagination eventsPagination;
@@ -132,6 +136,10 @@ public class IndexController implements Initializable {
     private void setButtonVisibility(boolean visibility) {
         walletBtn.setVisible(visibility);
         walletBtn.setManaged(visibility);
+        rezervacijaBtn.setVisible(visibility);
+        rezervacijaBtn.setManaged(visibility);
+        kupovinaBtn.setVisible(visibility);
+        kupovinaBtn.setManaged(visibility);
     }
 
     public void setCurrentUser(User second) {

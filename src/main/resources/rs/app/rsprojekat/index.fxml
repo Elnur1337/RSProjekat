@@ -298,7 +298,7 @@
                   </TextField>
                </children>
             </VBox>
-            <Button fx:id="rezervacijaBtn" layoutX="330.0" layoutY="554.0" mnemonicParsing="false" onAction="#rezervacija" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Rezerviši">
+            <Button fx:id="rezervacijaBtn" layoutX="330.0" layoutY="554.0" mnemonicParsing="false" onAction="#rezervacija" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Rezerviši" visible="false">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -306,7 +306,7 @@
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="kupovinaBtn" layoutX="330.0" layoutY="601.0" mnemonicParsing="false" onAction="#kupovina" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Kupi">
+            <Button fx:id="kupovinaBtn" layoutX="330.0" layoutY="601.0" mnemonicParsing="false" onAction="#kupovina" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Kupi" visible="false">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
