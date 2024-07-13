@@ -77,16 +77,15 @@ CREATE TABLE dogadjaj (
 
 CREATE TABLE karta (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    price DECIMAL(6, 2) NOT NULL,
     bought TINYINT NOT NULL DEFAULT 0,
     reserved TINYINT NOT NULL DEFAULT 0,
     reserved_to DATE,
     price_modifire INT NOT NULL,
     id_dogadjaj INT NOT NULL,
-    id_sektor INT NOT NULL,
     id_sjedalo INT,
     id_kupac INT NOT NULL,
     FOREIGN KEY (id_dogadjaj) REFERENCES dogadjaj(id),
-    FOREIGN KEY (id_sektor) REFERENCES sektor(id),
     FOREIGN KEY (id_sjedalo) REFERENCES sjedalo(id),
     FOREIGN KEY (id_kupac) REFERENCES korisnik(id)
 );
