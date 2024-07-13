@@ -27,7 +27,7 @@ public class Main extends Application {
             primaryStage.show();
         } catch(Exception e) {
             System.out.println("Aplikacija se ne može pokrenuti!");
-            System.out.println("Razlog: " + e.getMessage() + "\nStack trace:'n");
+            System.out.println("Razlog: " + e.getMessage());
             e.printStackTrace();
         }
     }

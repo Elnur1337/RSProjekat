@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.AdminPanelController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.AdminPanelController">
    <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
          <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#switchToHomeScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Početna">
@@ -74,7 +74,7 @@
                <Cursor fx:constant="HAND" />
             </cursor>
          </HBox>
-         <HBox alignment="CENTER" onMouseClicked="#showPlacePanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+         <HBox alignment="CENTER_LEFT" onMouseClicked="#showPlacePanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
@@ -89,7 +89,6 @@
                      <Font name="SansSerif Regular" size="18.0" />
                   </font>
                </Label>
-               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
             </children>
             <VBox.margin>
                <Insets bottom="10.0" />
@@ -100,25 +99,7 @@
          </HBox>
 
 
-         <HBox alignment="CENTER" onMouseClicked="#showCategoryPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
-            <children>
-               <Label text="Dodaj kategoriju">
-                  <font>
-                     <Font name="SansSerif Regular" size="18.0" />
-                  </font>
-               </Label>
-               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
-            </children>
-            <VBox.margin>
-               <Insets bottom="10.0" />
-            </VBox.margin>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-         </HBox>
-
-
-         <HBox alignment="CENTER" onMouseClicked="#showLocationPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+         <HBox alignment="CENTER_LEFT" onMouseClicked="#showLocationPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
@@ -133,26 +114,6 @@
                      <Font name="SansSerif Regular" size="18.0" />
                   </font>
                </Label>
-               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
-            </children>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-            <VBox.margin>
-               <Insets bottom="10.0" />
-            </VBox.margin>
-         </HBox>
-
-
-
-         <HBox alignment="CENTER" onMouseClicked="#showSubcategoryPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
-            <children>
-               <Label text="Dodaj podkategoriju">
-                  <font>
-                     <Font name="SansSerif Regular" size="18.0" />
-                  </font>
-               </Label>
-               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
             </children>
             <cursor>
                <Cursor fx:constant="HAND" />
@@ -165,7 +126,7 @@
 
 
 
-         <HBox alignment="CENTER" onMouseClicked="#showSectorPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+         <HBox alignment="CENTER_LEFT" onMouseClicked="#showSectorPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
@@ -180,11 +141,64 @@
                      <Font name="SansSerif Regular" size="18.0" />
                   </font>
                </Label>
-               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
             </children>
             <cursor>
                <Cursor fx:constant="HAND" />
             </cursor>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+         </HBox>
+
+
+         <HBox alignment="CENTER_LEFT" onMouseClicked="#showCategoryPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <children>
+               <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@icons-solid.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <Label text="Dodaj kategoriju">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </HBox>
+
+
+
+         <HBox alignment="CENTER_LEFT" onMouseClicked="#showSubcategoryPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <children>
+               <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@list-solid.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <Label text="Dodaj podkategoriju">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
          </HBox>
       </children>
    </VBox>
@@ -381,7 +395,7 @@
                <Insets bottom="15.0" />
             </padding>
          </VBox>
-         <TextField fx:id="nazivSubcategoryInput" maxWidth="275.0" prefHeight="36.0" prefWidth="275.0" promptText="Naziv subkategorije" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" VBox.vgrow="NEVER">
+         <TextField fx:id="nazivSubcategoryInput" maxWidth="275.0" prefHeight="36.0" prefWidth="275.0" promptText="Naziv podkategorije" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" VBox.vgrow="NEVER">
             <font>
                <Font name="SansSerif Regular" size="18.0" />
             </font>
@@ -410,7 +424,7 @@
    </VBox>
 
 
-   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
       <children>
          <Label text="Dodavanje sektora">
             <font>
