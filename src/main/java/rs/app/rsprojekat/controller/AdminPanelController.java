@@ -23,10 +23,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import rs.app.rsprojekat.model.Location;
-import rs.app.rsprojekat.model.Place;
-import rs.app.rsprojekat.model.Sector;
-import rs.app.rsprojekat.model.User;
+import rs.app.rsprojekat.model.*;
 
 import javax.persistence.*;
 import java.io.File;
@@ -58,16 +55,28 @@ public class AdminPanelController implements Initializable {
     @FXML
     private VBox placePanel;
     @FXML
+    private VBox subcategoryPanel;
+    @FXML
+    private VBox categoryPanel;
+    @FXML
     private TextField nazivPlaceInput;
     @FXML
     private Label msgLabelPlace;
-
+    @FXML
+    private Label msgLabelSubcategory;
+    @FXML
+    private Label msgLabelCategory;
     @FXML
     private VBox locationPanel;
     @FXML
     private ComboBox<String> placeInput;
     @FXML
     private TextField nazivLocationInput;
+    @FXML
+    private TextField nazivSubcategoryInput;
+    @FXML
+    private TextField nazivCategoryInput;
+
     @FXML
     private TextField adresaLocationInput;
     @FXML
@@ -79,6 +88,8 @@ public class AdminPanelController implements Initializable {
     private VBox sectorPanel;
     @FXML
     private ComboBox<String> sectorPlaceInput;
+    @FXML
+    private ComboBox<String> categoryInput;
     @FXML
     private ComboBox<String> sectorLocationInput;
     @FXML
@@ -271,6 +282,29 @@ public class AdminPanelController implements Initializable {
         entityManager.close();
         entityManagerFactory.close();
     }
+    private void getCategoryNames (ComboBox<String> categoryInput) {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelCategory.setVisible(false));
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        List<String> categoriesList = new ArrayList<>();
+
+        TypedQuery<String> query = entityManager.createQuery("SELECT c.naziv FROM Category c", String.class);
+        try {
+            categoriesList = query.getResultList();
+        } catch (NoResultException e) {
+            msg = "Prvo morate dodati kategoriju!";
+            msgLabelLocation.setText(msg);
+            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelLocation.setVisible(true);
+            visibleMsg.play();
+        }
+        categoryInput.getItems().addAll(categoriesList);
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 
     public void showUserPanel() {
         placePanel.setVisible(false);
@@ -281,6 +315,10 @@ public class AdminPanelController implements Initializable {
         sectorPanel.setManaged(false);
         usersPagination.setVisible(true);
         usersPagination.setManaged(true);
+        categoryPanel.setVisible(false);
+        categoryPanel.setManaged(false);
+        subcategoryPanel.setVisible(false);
+        subcategoryPanel.setManaged(false);
         refreshUsersPagination();
     }
 
@@ -293,6 +331,43 @@ public class AdminPanelController implements Initializable {
         sectorPanel.setManaged(false);
         placePanel.setVisible(true);
         placePanel.setManaged(true);
+        categoryPanel.setVisible(false);
+        categoryPanel.setManaged(false);
+        subcategoryPanel.setVisible(false);
+        subcategoryPanel.setManaged(false);
+    }
+    public void showCategoryPanel() {
+        usersPagination.setVisible(false);
+        usersPagination.setManaged(false);
+        locationPanel.setVisible(false);
+        locationPanel.setManaged(false);
+        sectorPanel.setVisible(false);
+        sectorPanel.setManaged(false);
+        placePanel.setVisible(false);
+        placePanel.setManaged(false);
+        categoryPanel.setVisible(true);
+        categoryPanel.setManaged(true);
+        subcategoryPanel.setVisible(false);
+        subcategoryPanel.setManaged(false);
+    }
+
+    public void showSubcategoryPanel() {
+        usersPagination.setVisible(false);
+        usersPagination.setManaged(false);
+        locationPanel.setVisible(false);
+        locationPanel.setManaged(false);
+        sectorPanel.setVisible(false);
+        sectorPanel.setManaged(false);
+        placePanel.setVisible(false);
+        placePanel.setManaged(false);
+        categoryPanel.setVisible(false);
+        categoryPanel.setManaged(false);
+        subcategoryPanel.setVisible(true);
+        subcategoryPanel.setManaged(true);
+        if (categoryInput.getItems().isEmpty()) {
+            getCategoryNames(categoryInput);
+        }
+
     }
 
     public void showLocationPanel() {
@@ -304,6 +379,10 @@ public class AdminPanelController implements Initializable {
         sectorPanel.setManaged(false);
         locationPanel.setVisible(true);
         locationPanel.setManaged(true);
+        categoryPanel.setVisible(false);
+        categoryPanel.setManaged(false);
+        subcategoryPanel.setVisible(false);
+        subcategoryPanel.setManaged(false);
         if (placeInput.getItems().isEmpty()) {
             getPlacesNames(placeInput);
         }
@@ -318,6 +397,10 @@ public class AdminPanelController implements Initializable {
         locationPanel.setManaged(false);
         sectorPanel.setVisible(true);
         sectorPanel.setManaged(true);
+        categoryPanel.setVisible(false);
+        categoryPanel.setManaged(false);
+        subcategoryPanel.setVisible(false);
+        subcategoryPanel.setManaged(false);
         if (sectorPlaceInput.getItems().isEmpty()) {
             getPlacesNames(sectorPlaceInput);
         }
@@ -532,6 +615,109 @@ public class AdminPanelController implements Initializable {
             sectorContainer.getChildren().add(sectorHBox);
         }
     }
+
+
+    public void addSubcategory() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelSubcategory.setVisible(false));
+
+        if (nazivSubcategoryInput.getText().length() < 2) {
+            msg = "Naziv mora imate vise od 2 karaktera!";
+            msgLabelSubcategory.setText(msg);
+            msgLabelSubcategory.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelSubcategory.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        //  TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Subcategory s WHERE naziv = :nazivInput", Long.class);
+        //   query.setParameter("nazivInput", nazivSubcategoryInput.getText());
+
+        TypedQuery<Category> queryCategory = entityManager.createQuery("SELECT c FROM Category c WHERE naziv = :nazivInput", Category.class);
+        queryCategory.setParameter("nazivInput", categoryInput.getValue());
+        final Category category = queryCategory.getSingleResult();
+
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Subcategory s WHERE naziv = :nazivInput AND kategorija = :categoryInput", Long.class);
+        query.setParameter("nazivInput", nazivSubcategoryInput.getText());
+        query.setParameter("categoryInput", category);
+
+        TypedQuery<Long> queryQ = entityManager.createQuery("SELECT COUNT(s) FROM Subcategory s WHERE naziv = :nazivInput ", Long.class);
+        queryQ.setParameter("nazivInput", nazivSubcategoryInput.getText());
+
+        if (queryQ.getSingleResult().intValue() > 0) {
+            msg = "Podkategorija sa tim nazivom već postoji!";
+            msgLabelSubcategory.setText(msg);
+            msgLabelSubcategory.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelSubcategory.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
+        Subcategory c = new Subcategory();
+        c.setNaziv(nazivSubcategoryInput.getText());
+        c.setCategory(category);
+        final EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(c);
+        entityTransaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        msg = "Kategorija uspješno dodana!";
+        msgLabelPlace.setText(msg);
+        msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelPlace.setVisible(true);
+        visibleMsg.play();
+        nazivPlaceInput.setText("");
+    }
+
+    public void addCategory() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabelCategory.setVisible(false));
+
+        if (nazivCategoryInput.getText().length() < 2) {
+            msg = "Naziv mora imate vise od 2 karaktera!";
+            msgLabelPlace.setText(msg);
+            msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelPlace.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(c) FROM Category c WHERE naziv = :nazivInput", Long.class);
+        query.setParameter("nazivInput", nazivCategoryInput.getText());
+        if (query.getSingleResult().intValue() > 0) {
+            msg = "Kategorija sa tim nazivom već postoji!";
+            msgLabelCategory.setText(msg);
+            msgLabelCategory.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelCategory.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+        Category c = new Category();
+        c.setNaziv(nazivCategoryInput.getText());
+        final EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(c);
+        entityTransaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        msg = "Kategorija uspješno dodana!";
+        msgLabelPlace.setText(msg);
+        msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelPlace.setVisible(true);
+        visibleMsg.play();
+        nazivPlaceInput.setText("");
+    }
+
+
 
     public void addSector() {
 
