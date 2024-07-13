@@ -364,10 +364,7 @@ public class AdminPanelController implements Initializable {
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(true);
         subcategoryPanel.setManaged(true);
-        if (categoryInput.getItems().isEmpty()) {
-            getCategoryNames(categoryInput);
-        }
-
+        getCategoryNames(categoryInput);
     }
 
     public void showLocationPanel() {
@@ -383,9 +380,7 @@ public class AdminPanelController implements Initializable {
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
-        if (placeInput.getItems().isEmpty()) {
-            getPlacesNames(placeInput);
-        }
+        getPlacesNames(placeInput);
     }
 
     public void showSectorPanel() {
@@ -401,9 +396,7 @@ public class AdminPanelController implements Initializable {
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
-        if (sectorPlaceInput.getItems().isEmpty()) {
-            getPlacesNames(sectorPlaceInput);
-        }
+        getPlacesNames(sectorPlaceInput);
     }
 
     public void addPlace() {
@@ -666,12 +659,13 @@ public class AdminPanelController implements Initializable {
         entityManager.close();
         entityManagerFactory.close();
 
-        msg = "Kategorija uspješno dodana!";
-        msgLabelPlace.setText(msg);
-        msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
-        msgLabelPlace.setVisible(true);
+        msg = "Podkategorija uspješno dodana!";
+        msgLabelSubcategory.setText(msg);
+        msgLabelSubcategory.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelSubcategory.setVisible(true);
         visibleMsg.play();
-        nazivPlaceInput.setText("");
+        nazivSubcategoryInput.setText("");
+        categoryInput.setValue("");
     }
 
     public void addCategory() {
@@ -680,9 +674,9 @@ public class AdminPanelController implements Initializable {
 
         if (nazivCategoryInput.getText().length() < 2) {
             msg = "Naziv mora imate vise od 2 karaktera!";
-            msgLabelPlace.setText(msg);
-            msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
-            msgLabelPlace.setVisible(true);
+            msgLabelCategory.setText(msg);
+            msgLabelCategory.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabelCategory.setVisible(true);
             visibleMsg.play();
             return;
         }
@@ -710,11 +704,11 @@ public class AdminPanelController implements Initializable {
         entityManagerFactory.close();
 
         msg = "Kategorija uspješno dodana!";
-        msgLabelPlace.setText(msg);
-        msgLabelPlace.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
-        msgLabelPlace.setVisible(true);
+        msgLabelCategory.setText(msg);
+        msgLabelCategory.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabelCategory.setVisible(true);
         visibleMsg.play();
-        nazivPlaceInput.setText("");
+        nazivCategoryInput.setText("");
     }
 
 
