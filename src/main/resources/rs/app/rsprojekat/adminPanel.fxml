@@ -49,7 +49,7 @@
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@user-solid.png" />
+                     <Image url="@icons/user-solid.png" />
                   </image>
                   <HBox.margin>
                      <Insets right="10.0" />
@@ -78,7 +78,7 @@
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@map-location-solid.png" />
+                     <Image url="@icons/map-location-solid.png" />
                   </image>
                   <HBox.margin>
                      <Insets right="10.0" />
@@ -103,7 +103,7 @@
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@location-dot-solid.png" />
+                     <Image url="@icons/location-dot-solid.png" />
                   </image>
                   <HBox.margin>
                      <Insets right="10.0" />
@@ -130,7 +130,7 @@
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@layer-group-solid.png" />
+                     <Image url="@icons/layer-group-solid.png" />
                   </image>
                   <HBox.margin>
                      <Insets right="10.0" />
@@ -155,7 +155,7 @@
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@icons-solid.png" />
+                     <Image url="@icons/icons-solid.png" />
                   </image>
                   <HBox.margin>
                      <Insets right="10.0" />
@@ -181,7 +181,7 @@
             <children>
                <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@list-solid.png" />
+                     <Image url="@icons/list-solid.png" />
                   </image>
                   <HBox.margin>
                      <Insets right="10.0" />

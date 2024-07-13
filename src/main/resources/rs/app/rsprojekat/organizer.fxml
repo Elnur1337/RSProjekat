@@ -54,7 +54,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@events.png" />
+                        <Image url="@controller/events.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="10.0" />
@@ -86,7 +86,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@events.png" />
+                        <Image url="@controller/events.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="10.0" />
@@ -159,7 +159,7 @@
                         <Separator minWidth="100.0" prefWidth="100.0" />
                         <ImageView fx:id="eventImage" fitHeight="102.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@defaultEventImage.png" />
+                              <Image url="@icons/defaultEventImage.png" />
                            </image></ImageView>
                      </children>
                   </HBox>

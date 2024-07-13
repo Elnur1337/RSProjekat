@@ -314,7 +314,7 @@ public class IndexController implements Initializable {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         eventsList = new ArrayList<>();
-        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true", Dogadjaj.class);
+        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true AND approved = true", Dogadjaj.class);
         try  {
             eventsList = query.getResultList();
         } catch (NoResultException ignored) {}
@@ -360,7 +360,8 @@ public class IndexController implements Initializable {
 
             final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
-            TypedQuery<Subcategory> query = entityManager.createQuery("SELECT s FROM Subcategory s", Subcategory.class);
+            TypedQuery<Subcategory> query = entityManager.createQuery("SELECT s FROM Subcategory s WHERE kategorija.naziv = :naziv", Subcategory.class);
+            query.setParameter("naziv", categoryBox.getValue());
             List<Subcategory> subcategories = query.getResultList();
             List<String> subCategoryNames = new ArrayList<>();
             for (Subcategory subcategory : subcategories) {
@@ -392,7 +393,8 @@ public class IndexController implements Initializable {
 
             final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
-            TypedQuery<Location> query = entityManager.createQuery("SELECT l FROM Location l", Location.class);
+            TypedQuery<Location> query = entityManager.createQuery("SELECT l FROM Location l WHERE mjesto.naziv = :naziv", Location.class);
+            query.setParameter("naziv", placeBox.getValue());
             List<Location> locations = query.getResultList();
             List<String> locationNames = new ArrayList<>();
             for (Location location : locations) {
@@ -552,7 +554,7 @@ public class IndexController implements Initializable {
             imageBox.setPrefWidth(250.0);
 
             ImageView image = new ImageView();
-//            image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("events.png"))));
+            image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("events.png"))));
 
             imageBox.getChildren().add(image);
 
@@ -590,17 +592,21 @@ public class IndexController implements Initializable {
         TypedQuery<Sector> query = entityManager.createQuery("SELECT DISTINCT(s) FROM Dogadjaj d JOIN Sector s ON s.lokacija = d.lokacija WHERE d.id = :idInput", Sector.class);
         query.setParameter("idInput", d.getId());
         List<Sector> sectors = query.getResultList();
+        entityManager.close();
+        entityManagerFactory.close();
 
         sektorBox.getItems().setAll(sectors.stream().map(Sector::getNaziv).toList());
         sektorBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (newValue != null) {
-                    TypedQuery<Long> query2 = entityManager.createQuery("SELECT COUNT(*) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Long.class);
-                    query2.setParameter("idInput", d.getId());
-                    query2.setParameter("nazivInput", newValue);
+                    final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+                    final EntityManager entityManager = entityManagerFactory.createEntityManager();
+                    TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(*) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Long.class);
+                    query.setParameter("idInput", d.getId());
+                    query.setParameter("nazivInput", newValue);
 
-                    Long brojKarata = query2.getSingleResult();
+                    Long brojKarata = query.getSingleResult();
                     slobodnoMjestaShow.setText(String.valueOf(brojKarata));
 
                     TypedQuery<Double> query3 = entityManager.createQuery("SELECT DISTINCT(price) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Double.class);
@@ -609,12 +615,12 @@ public class IndexController implements Initializable {
 
                     Double cijena = query3.getSingleResult();
                     cijenaShow.setText(String.valueOf(cijena));
+
+                    entityManager.close();
+                    entityManagerFactory.close();
                 }
             }
         });
-
-        entityManager.close();
-        entityManagerFactory.close();
     }
 
     @FXML

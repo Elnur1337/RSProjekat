@@ -250,6 +250,7 @@ public class AdminPanelController implements Initializable {
                 entityTransaction.begin();
                 entityManager.remove(user);
                 entityTransaction.commit();
+                --usersReqNumberLong;
                 refreshUsersPagination();
             });
 
