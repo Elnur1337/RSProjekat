@@ -16,6 +16,9 @@ public class Ticket {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "cijena", nullable = false)
+    private double price;
+
     @Column(name = "bought", nullable = false)
     private boolean bought;
 
@@ -44,6 +47,10 @@ public class Ticket {
     }
 
     public int getId() { return id; }
+
+    public double getPrice() { return price; }
+
+    public void setPrice(double price) { this.price = price; }
 
     public boolean getBought() { return bought; }
 
