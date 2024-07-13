@@ -16,6 +16,9 @@ public class Ticket {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "cijena", nullable = false)
+    private double price;
+
     @Column(name = "bought", nullable = false)
     private boolean bought;
 

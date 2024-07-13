@@ -91,9 +91,13 @@ public class IndexController implements Initializable {
     private ComboBox<String> placeBox;
     @FXML
     private ComboBox<String> locationBox;
+    @FXML
+    private ComboBox<String> sektorBox;
 
     @FXML
     private Pane coverPane;
+    @FXML
+    private Pane eventPane;
 
     @FXML
     private TextField pretragaTextField;
@@ -103,6 +107,26 @@ public class IndexController implements Initializable {
     private TextField upperPriceInput;
     @FXML
     private TextField searchInput;
+    @FXML
+    private TextField nazivShow;
+    @FXML
+    private TextArea opisShow;
+    @FXML
+    private TextField startDateShow;
+    @FXML
+    private TextField endDateShow;
+    @FXML
+    private TextField mjestoShow;
+    @FXML
+    private TextField lokacijaShow;
+    @FXML
+    private TextField cijenaShow;
+    @FXML
+    private TextField slobodnoMjestaShow;
+    @FXML
+    private TextField organizatorShow;
+    @FXML
+    private TextField brojKarataInput;
 
 
     private void setButtonVisibility(boolean visibility) {
@@ -260,12 +284,19 @@ public class IndexController implements Initializable {
                 }
             }
         });
-
         upperPriceInput.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if (!newValue.matches("\\d*")) {
                     upperPriceInput.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+        brojKarataInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    brojKarataInput.setText(newValue.replaceAll("[^\\d]", ""));
                 }
             }
         });
@@ -279,7 +310,7 @@ public class IndexController implements Initializable {
         } catch (NoResultException ignored) {}
 
         filtersBox.setTranslateX(320);
-        coverPane.setTranslateX(-950);
+        coverPane.setTranslateX(-1200);
         filtersBtn.setOnAction(event -> {
             if (filtersBox.getTranslateX() != 0) {
                 showMenu(filtersBox);
@@ -287,9 +318,11 @@ public class IndexController implements Initializable {
                 locationBox.setPromptText("Lokacija");
                 loadPlaces();
             } else {
-                hideMenu(filtersBox);
+                hideFilters();
             }
         });
+
+        hideEventInfo();
 
         loadCategoryBox();
         loadSubCategoryBox();
@@ -514,9 +547,74 @@ public class IndexController implements Initializable {
             imageBox.getChildren().add(image);
 
             dogadjajBox.getChildren().addAll(titleAndDateVBox, placeAndLocationVBox, imageBox);
+            dogadjajBox.setOnMouseClicked(event -> showEventInfo(d));
             page.getChildren().add(dogadjajBox);
         }
         return page;
+    }
+
+    private void showEventInfo(Dogadjaj d) {
+        TranslateTransition slide = new TranslateTransition(Duration.millis(300), eventPane);
+        slide.setToY(0);
+        slide.play();
+        slide = new TranslateTransition(Duration.millis(300), coverPane);
+        slide.setToX(0);
+        slide.play();
+
+        nazivShow.setText(d.getNaziv());
+        opisShow.setText(d.getOpis());
+        LocalDateTime time = d.getStartDate().toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm");
+        String formattedDateTime = time.format(formatter);
+        startDateShow.setText(formattedDateTime);
+        time = d.getEndDate().toLocalDateTime();
+        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm");
+        formattedDateTime = time.format(formatter);
+        endDateShow.setText(formattedDateTime);
+        mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
+        lokacijaShow.setText(d.getLokacija().getNaziv());
+        organizatorShow.setText(d.getOrganizator().getIme() + " " + d.getOrganizator().getPrezime());
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Sector> query = entityManager.createQuery("SELECT DISTINCT(s) FROM Dogadjaj d JOIN Sector s ON s.lokacija = d.lokacija WHERE d.id = :idInput", Sector.class);
+        query.setParameter("idInput", d.getId());
+        List<Sector> sectors = query.getResultList();
+
+        sektorBox.getItems().setAll(sectors.stream().map(Sector::getNaziv).toList());
+        sektorBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue != null) {
+                    TypedQuery<Long> query2 = entityManager.createQuery("SELECT COUNT(*) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Long.class);
+                    query2.setParameter("idInput", d.getId());
+                    query2.setParameter("nazivInput", newValue);
+
+                    Long brojKarata = query2.getSingleResult();
+                    slobodnoMjestaShow.setText(String.valueOf(brojKarata));
+
+                    TypedQuery<Double> query3 = entityManager.createQuery("SELECT DISTINCT(price) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Double.class);
+                    query3.setParameter("idInput", d.getId());
+                    query3.setParameter("nazivInput", newValue);
+
+                    Double cijena = query3.getSingleResult();
+                    cijenaShow.setText(String.valueOf(cijena));
+                }
+            }
+        });
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    @FXML
+    private void hideEventInfo() {
+        TranslateTransition slide = new TranslateTransition(Duration.millis(300), eventPane);
+        slide.setToY(-900);
+        slide.play();
+        slide = new TranslateTransition(Duration.millis(300), coverPane);
+        slide.setToX(-1200);
+        slide.play();
     }
 
     private void refreshEventsPagination() {
@@ -568,17 +666,22 @@ public class IndexController implements Initializable {
             upperPriceInput.setPromptText("do");
     }
 
-    private void hideMenu(VBox menu) {
-        TranslateTransition slide = new TranslateTransition(Duration.millis(300), menu);
-        slide.setToX(320);
-        slide.play();
-        slide = new TranslateTransition(Duration.millis(300), coverPane);
-        slide.setToX(-950);
-        slide.play();
+    private void hideFilters() {
+        if(filtersBox.getTranslateX() != 320) {
+            TranslateTransition slide = new TranslateTransition(Duration.millis(300), filtersBox);
+            slide.setToX(320);
+            slide.play();
+        }
+        if(coverPane.getTranslateX() != -1200) {
+            TranslateTransition slide = new TranslateTransition(Duration.millis(300), coverPane);
+            slide.setToX(-1200);
+            slide.play();
+        }
     }
 
     public void hideMenu(MouseEvent mouseEvent) {
-        hideMenu(filtersBox);
+        hideFilters();
+        hideEventInfo();
     }
 
     public void applyFilters(ActionEvent actionEvent) {
@@ -611,7 +714,7 @@ public class IndexController implements Initializable {
             showList = showList.stream().filter(dogadjaj -> dogadjaj.getBasePrice() <= upperPrice).toList();
         }
 
-        hideMenu(filtersBox);
+        hideFilters();
         clearFiltersBtn.setVisible(true);
         refreshEventsPagination();
     }
@@ -635,7 +738,7 @@ public class IndexController implements Initializable {
         else
             showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(categoryBox.getSelectionModel().getSelectedItem())).toList();
 
-        hideMenu(filtersBox);
+        hideFilters();
         clearFiltersBtn.setVisible(false);
         refreshEventsPagination();
     }
@@ -675,5 +778,13 @@ public class IndexController implements Initializable {
             showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getNaziv().contains(searchInput.getText())).toList();
 
         refreshEventsPagination();
+    }
+
+    public void rezervacija(ActionEvent actionEvent) {
+        System.out.println("Rezervacija");
+    }
+
+    public void kupovina(ActionEvent actionEvent) {
+        System.out.println("Kupovina");
     }
 }
