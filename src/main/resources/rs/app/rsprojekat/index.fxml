@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.IndexController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.IndexController">
     <children>
         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -168,7 +168,7 @@
             </Button>
          </children>
       </VBox>
-      <Pane fx:id="eventPane" layoutX="320.0" layoutY="92.0" prefHeight="708.0" prefWidth="566.0" style="-fx-background-color: #cccccc;" stylesheets="eventInfoStyle.css">
+      <Pane fx:id="eventPane" layoutX="320.0" layoutY="92.0" prefHeight="708.0" prefWidth="566.0" style="-fx-background-color: #cccccc;">
          <children>
             <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="351.0" prefWidth="250.0" spacing="10.0">
                <children>
@@ -193,7 +193,7 @@
                               <Font name="SansSerif Regular" size="16.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="opisShow" editable="false" prefHeight="200.0" prefWidth="200.0" stylesheets="eventInfoStyle.css" wrapText="true">
+                        <TextArea fx:id="opisShow" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
                            <font>
                               <Font name="SansSerif Regular" size="16.0" />
                            </font></TextArea>

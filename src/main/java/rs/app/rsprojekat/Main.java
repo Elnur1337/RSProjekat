@@ -28,6 +28,7 @@ public class Main extends Application {
         } catch(Exception e) {
             System.out.println("Aplikacija se ne može pokrenuti!");
             System.out.println("Razlog: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

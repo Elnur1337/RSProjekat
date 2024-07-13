@@ -3,18 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Pagination?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -50,7 +48,7 @@
        </HBox>
       <VBox layoutY="56.0" prefHeight="744.0" prefWidth="263.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #999; -fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="56.0">
          <children>
-            <HBox fx:id="myEventsBtn" alignment="CENTER" onMouseClicked="#showMyEvents" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <HBox alignment="CENTER" onMouseClicked="#showMyEventsPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -82,7 +80,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox fx:id="newEventBtn" alignment="CENTER" onMouseClicked="#makeNewEvent" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white;                          -fx-padding: 10;                          -fx-background-radius: 50;                          -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <HBox alignment="CENTER_LEFT" onMouseClicked="#showNewEventPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white;                          -fx-padding: 10;                          -fx-background-radius: 50;                          -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -100,7 +98,6 @@
                         <Insets />
                      </HBox.margin>
                   </Label>
-                  <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -109,163 +106,449 @@
          </children>
       </VBox>
       <Pagination fx:id="eventsPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
-      <VBox fx:id="newEventPanel" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" AnchorPane.topAnchor="56.0">
+      <VBox fx:id="newEventPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+         <padding>
+            <Insets top="24.0" />
+         </padding>
          <children>
-            <HBox prefHeight="84.0" prefWidth="937.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="917.0" style="-fx-padding: 0 10 0 10;">
                <children>
-                  <VBox prefHeight="100.0" prefWidth="406.0">
-                     <children>
-                        <HBox prefHeight="33.0" prefWidth="470.0">
-                           <children>
-                              <Label minWidth="125.0" text="Kategorija">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="25.0" />
-                                 </padding>
-                              </Label>
-                              <Separator prefWidth="200.0" />
-                              <ChoiceBox fx:id="categoryBox" minWidth="125.0" prefWidth="150.0" />
-                           </children>
-                        </HBox>
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <HBox prefHeight="33.0" prefWidth="470.0">
-                           <children>
-                              <Label minWidth="175.0" text="Podkategorija">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets left="25.0" />
-                                 </padding>
-                              </Label>
-                              <Separator prefWidth="200.0" />
-                              <ChoiceBox fx:id="subCategoryBox" minWidth="125.0" prefWidth="150.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER" prefHeight="84.0" prefWidth="517.0">
-                     <children>
-                        <Button fx:id="imageBtn" mnemonicParsing="false" onAction="#addEventImage" style="-fx-background-color: white;                               -fx-background-radius: 50px;                               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Dodaj sliku">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <font>
-                              <Font name="SansSerif Regular" size="18.0" />
-                           </font>
-                        </Button>
-                        <Separator minWidth="100.0" prefWidth="100.0" />
-                        <ImageView fx:id="eventImage" fitHeight="102.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@icons/defaultEventImage.png" />
-                           </image></ImageView>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label minWidth="125.0" text="Naziv">
+                  <Label text="Kreiranje događaja">
                      <font>
-                        <Font size="22.0" />
-                     </font>
-                     <padding>
-                        <Insets left="25.0" />
-                     </padding>
-                  </Label>
-                  <Separator maxWidth="300.0" minWidth="100.0" prefHeight="1.0" prefWidth="157.0" />
-                  <TextField fx:id="nazivInput" prefHeight="25.0" prefWidth="500.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label minWidth="125.0" text="Opis">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                     <padding>
-                        <Insets left="25.0" />
-                     </padding>
-                  </Label>
-                  <Separator maxWidth="300.0" minWidth="100.0" prefHeight="1.0" prefWidth="157.0" />
-                  <TextArea fx:id="opisInput" maxHeight="75.0" maxWidth="1.7976931348623157E308" prefHeight="50.0" prefWidth="500.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label minWidth="125.0" text="Pocetak dogadjaja">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                     <padding>
-                        <Insets left="25.0" />
-                     </padding>
-                  </Label>
-                  <Separator maxWidth="300.0" minWidth="76.0" prefHeight="4.0" prefWidth="76.0" />
-                  <DatePicker fx:id="startDatePicker" />
-                  <Separator minWidth="10.0" prefWidth="10.0" />
-                  <Pane fx:id="startHourSpinnerPlaceholder" prefHeight="100.0" prefWidth="40.0" />
-                  <Separator minWidth="10.0" prefWidth="10.0" />
-                  <Pane fx:id="startMinuteSpinnerPlaceholder" prefHeight="100.0" prefWidth="40.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label minWidth="125.0" text="Zavrsetak dogadjaja">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                     <padding>
-                        <Insets left="25.0" />
-                     </padding>
-                  </Label>
-                  <Separator maxWidth="300.0" minWidth="61.0" prefHeight="3.0" prefWidth="61.0" />
-                  <DatePicker fx:id="endDatePicker" />
-                  <Separator minWidth="10.0" prefWidth="10.0" />
-                  <Pane fx:id="endHourSpinnerPlaceholder" prefHeight="100.0" prefWidth="60.0" />
-                  <Separator minWidth="10.0" prefWidth="10.0" />
-                  <Pane fx:id="endMinuteSpinnerPlaceholder" prefHeight="100.0" prefWidth="60.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label minWidth="125.0" text="Cijena">
-                     <font>
-                        <Font size="22.0" />
-                     </font>
-                     <padding>
-                        <Insets left="25.0" />
-                     </padding>
-                  </Label>
-                  <Separator maxWidth="300.0" minWidth="100.0" prefHeight="1.0" prefWidth="157.0" />
-                  <TextField fx:id="priceInput" prefHeight="25.0" prefWidth="100.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Pane prefHeight="100.0" prefWidth="160.0" />
-                  <Label fx:id="msgLabel" alignment="CENTER" prefHeight="17.0" prefWidth="473.0" textFill="WHITE">
-                     <font>
-                        <Font name="SansSerif Regular" size="18.0" />
+                        <Font name="SansSerif Regular" size="48.0" />
                      </font>
                   </Label>
-                  <Pane prefHeight="100.0" prefWidth="95.0" />
-                  <Button fx:id="sendRequestBtn" mnemonicParsing="false" onAction="#sendRequest" style="-fx-background-color: white;                               -fx-background-radius: 50px;                               -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Pošalji zahtjev">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
+                  <Region prefHeight="55.0" prefWidth="351.0" />
+                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
                   </Button>
                </children>
             </HBox>
+            <HBox prefHeight="654.0" prefWidth="917.0">
+               <children>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="669.0" prefWidth="448.5" style="-fx-padding: 10;">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                     <children>
+                        <VBox prefHeight="78.0" prefWidth="426.0">
+                           <children>
+                              <Label text="Naziv:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox prefHeight="183.0" prefWidth="459.0">
+                           <children>
+                              <Label text="Opis:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextArea prefHeight="138.0" prefWidth="459.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                              </TextArea>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="81.0" prefWidth="429.0">
+                           <children>
+                              <Label text="Slika:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="429.0" style="-fx-border-color: lightgray; -fx-background-color: white; -fx-background-radius: 50; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                 <children>
+                                    <TextField editable="false" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="305.0" style="-fx-background-radius: 50; -fx-text-box-border: transparent;" text="asdadas">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="18.0" />
+                                       </font>
+                                    </TextField>
+                                    <Region prefHeight="36.0" prefWidth="36.0" />
+                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-radius: 50; -fx-background-color: #666;" text="Dodaj" textFill="WHITE">
+                                       <font>
+                                          <Font name="SansSerif Regular" size="18.0" />
+                                       </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="210.0" prefWidth="429.0">
+                           <children>
+                              <Label text="Početak:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <VBox prefHeight="176.0" prefWidth="429.0" style="-fx-border-color: lightgray; -fx-background-radius: 25; -fx-border-radius: 25; -fx-padding: 10;">
+                                 <children>
+                                    <HBox prefHeight="76.0" prefWidth="407.0" style="-fx-background-radius: 25;">
+                                       <children>
+                                          <VBox prefHeight="96.0" prefWidth="103.0">
+                                             <children>
+                                                <Label text="Godina:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                             </children>
+                                          </VBox>
+                                          <Region prefHeight="100.0" prefWidth="55.0" />
+                                          <VBox prefHeight="100.0" prefWidth="150.0">
+                                             <children>
+                                                <Label text="Mjesec:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                             </children>
+                                          </VBox>
+                                          <Region prefHeight="100.0" prefWidth="55.0" />
+                                          <VBox prefHeight="100.0" prefWidth="85.0">
+                                             <children>
+                                                <Label text="Dan:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="76.0" prefWidth="407.0" style="-fx-background-radius: 25;">
+                                       <children>
+                                          <VBox prefHeight="96.0" prefWidth="103.0">
+                                             <children>
+                                                <Label text="Sati:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets right="15.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <VBox prefHeight="100.0" prefWidth="103.0">
+                                             <children>
+                                                <Label text="Minuta:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox prefHeight="78.0" prefWidth="426.0">
+                           <children>
+                              <Label text="Bazna cijena:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="669.0" prefWidth="458.5" style="-fx-padding: 10;">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <children>
+                        <VBox prefHeight="210.0" prefWidth="429.0">
+                           <children>
+                              <Label text="Kraj:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <VBox prefHeight="176.0" prefWidth="429.0" style="-fx-border-color: lightgray; -fx-background-radius: 25; -fx-border-radius: 25; -fx-padding: 10;">
+                                 <children>
+                                    <HBox prefHeight="76.0" prefWidth="407.0" style="-fx-background-radius: 25;">
+                                       <children>
+                                          <VBox prefHeight="96.0" prefWidth="103.0">
+                                             <children>
+                                                <Label text="Godina:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                             </children>
+                                          </VBox>
+                                          <Region prefHeight="100.0" prefWidth="55.0" />
+                                          <VBox prefHeight="100.0" prefWidth="150.0">
+                                             <children>
+                                                <Label text="Mjesec:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                             </children>
+                                          </VBox>
+                                          <Region prefHeight="100.0" prefWidth="55.0" />
+                                          <VBox prefHeight="100.0" prefWidth="85.0">
+                                             <children>
+                                                <Label text="Dan:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox prefHeight="76.0" prefWidth="407.0" style="-fx-background-radius: 25;">
+                                       <children>
+                                          <VBox prefHeight="96.0" prefWidth="103.0">
+                                             <children>
+                                                <Label text="Sati:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets right="15.0" />
+                                             </HBox.margin>
+                                          </VBox>
+                                          <VBox prefHeight="100.0" prefWidth="103.0">
+                                             <children>
+                                                <Label text="Minuta:">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                   <font>
+                                                      <Font name="SansSerif Regular" size="18.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox prefHeight="123.0" prefWidth="438.0">
+                           <children>
+                              <Label text="Kategorija i podkaregorija">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="114.0" prefWidth="438.0" style="-fx-border-color: lightgray; -fx-padding: 10; -fx-background-radius: 25; -fx-border-radius: 25;">
+                                 <children>
+                                    <VBox prefHeight="96.0" prefWidth="216.0">
+                                       <children>
+                                          <Label text="Kategorija:">
+                                             <font>
+                                                <Font name="SansSerif Regular" size="18.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <ComboBox prefHeight="30.0" prefWidth="214.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox prefHeight="96.0" prefWidth="216.0">
+                                       <children>
+                                          <Label text="Podkategorija:">
+                                             <font>
+                                                <Font name="SansSerif Regular" size="18.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <ComboBox prefHeight="30.0" prefWidth="211.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox prefHeight="119.0" prefWidth="438.0">
+                           <children>
+                              <Label text="Mjesto i lokacija:">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="18.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <HBox prefHeight="100.0" prefWidth="432.0" style="-fx-border-color: lightgray; -fx-padding: 10; -fx-background-radius: 25; -fx-border-radius: 25;">
+                                 <children>
+                                    <VBox prefHeight="96.0" prefWidth="216.0">
+                                       <children>
+                                          <Label text="Mjesto:">
+                                             <font>
+                                                <Font name="SansSerif Regular" size="18.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <ComboBox prefHeight="30.0" prefWidth="214.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox prefHeight="96.0" prefWidth="216.0">
+                                       <children>
+                                          <Label text="Lokacija:">
+                                             <font>
+                                                <Font name="SansSerif Regular" size="18.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <ComboBox prefHeight="30.0" prefWidth="211.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <ScrollPane prefHeight="157.0" prefWidth="438.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="422.0" style="-fx-padding: 10;" />
+                          </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets top="24.0" />
-         </padding>
       </VBox>
    </children>
 </AnchorPane>
