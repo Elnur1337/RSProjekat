@@ -48,6 +48,10 @@ public class Ticket {
 
     public int getId() { return id; }
 
+    public double getPrice() { return price; }
+
+    public void setPrice(double price) { this.price = price; }
+
     public boolean getBought() { return bought; }
 
     public void setBought(boolean bought) { this.bought = bought; }
