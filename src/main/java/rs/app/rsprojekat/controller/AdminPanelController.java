@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,10 @@ import java.util.ResourceBundle;
 
 public class AdminPanelController implements Initializable {
     private String msg;
+
+    //Image veriables
+    private File selectedImgFile;
+    private String selectedImgExtension;
 
     private Stage stage;
     private Scene scene;
@@ -269,7 +275,7 @@ public class AdminPanelController implements Initializable {
     }
 
     private void getPlacesNames (ComboBox<String> placeInput) {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
@@ -292,7 +298,7 @@ public class AdminPanelController implements Initializable {
         entityManagerFactory.close();
     }
     private void getCategoryNames (ComboBox<String> categoryInput) {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelCategory.setVisible(false));
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
@@ -409,7 +415,7 @@ public class AdminPanelController implements Initializable {
     }
 
     public void addPlace() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelPlace.setVisible(false));
 
         if (nazivPlaceInput.getText().length() < 2) {
@@ -457,40 +463,23 @@ public class AdminPanelController implements Initializable {
 
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.png", "*.jpg", "*.jpeg"));
 
-        final File selectedLocationImg = fileChooser.showOpenDialog(null);
-
-        if (selectedLocationImg != null) {
-            imgPathLocationInput.setText(selectedLocationImg.toURI().toString());
-        }
+        selectedImgFile = fileChooser.showOpenDialog(null);
+        selectedImgExtension = selectedImgFile.toURI().toString().substring(selectedImgFile.toURI().toString().lastIndexOf(".") + 1);
+        imgPathLocationInput.setText(selectedImgFile.toPath().toString());
     }
 
-    public void addLocation() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
-        visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
-
+    private boolean validateLocations() {
         if (nazivLocationInput.getText().length() < 2 || nazivLocationInput.getText().length() > 100) {
             msg = "Naziv mora biti između 2 i 100 karaktera!";
-            msgLabelLocation.setText(msg);
-            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
-            msgLabelLocation.setVisible(true);
-            visibleMsg.play();
-            return;
+            return false;
         }
         if (adresaLocationInput.getText().length() < 2 || adresaLocationInput.getText().length() > 100) {
             msg = "Adresa mora biti između 2 i 100 karaktera!";
-            msgLabelLocation.setText(msg);
-            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
-            msgLabelLocation.setVisible(true);
-            visibleMsg.play();
-            return;
+            return false;
         }
         if (imgPathLocationInput.getText().equals("Slika lokacije")) {
             msg = "Slika lokacije je obavezna!";
-            msgLabelLocation.setText(msg);
-            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
-            msgLabelLocation.setVisible(true);
-            visibleMsg.play();
-            return;
+            return false;
         }
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
@@ -503,9 +492,21 @@ public class AdminPanelController implements Initializable {
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(l) FROM Location l WHERE naziv = :nazivInput AND mjesto = :mjestoInput", Long.class);
         query.setParameter("nazivInput", nazivLocationInput.getText());
         query.setParameter("mjestoInput", place);
-
-        if (query.getSingleResult().intValue() > 0) {
+        final int numberOfLocationsWithInputName = query.getSingleResult().intValue();
+        entityManager.close();
+        entityManagerFactory.close();
+        if (numberOfLocationsWithInputName > 0) {
             msg = "Lokacija sa tim nazivom već postoji!";
+            return false;
+        }
+        return true;
+    }
+
+    public void addLocation() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
+        visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
+
+        if (!validateLocations()) {
             msgLabelLocation.setText(msg);
             msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
             msgLabelLocation.setVisible(true);
@@ -513,11 +514,33 @@ public class AdminPanelController implements Initializable {
             return;
         }
 
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Integer> maxLocationIdQuery = entityManager.createQuery("SELECT MAX(id) FROM Location", Integer.class);
+        int id;
+        if(maxLocationIdQuery.getSingleResult() == null)
+            id = 1;
+        else
+            id = maxLocationIdQuery.getSingleResult() + 1;
+
+        File currentDirFile = new File(".");
+        String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
+        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\locationImages";
+        Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
+        Path destinationPath = targetDirectory.resolve(String.format("%d.%s", id, selectedImgExtension));
+        try {
+            Files.copy(selectedImgFile.toPath(), destinationPath);
+        } catch (IOException ignored) {}
+
+        TypedQuery<Place> queryPlace = entityManager.createQuery("SELECT p FROM Place p WHERE naziv = :nazivInput", Place.class);
+        queryPlace.setParameter("nazivInput", placeInput.getValue());
+
         Location location = new Location();
         location.setNaziv(nazivLocationInput.getText());
-        location.setImgPath(imgPathLocationInput.getText());
+        location.setImgPath(String.format("@locationImages/%d.%s", id, selectedImgExtension));
         location.setAdresa(adresaLocationInput.getText());
-        location.setMjesto(place);
+        location.setMjesto(queryPlace.getSingleResult());
 
         final EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
@@ -623,7 +646,7 @@ public class AdminPanelController implements Initializable {
 
 
     public void addSubcategory() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelSubcategory.setVisible(false));
 
         if (nazivSubcategoryInput.getText().length() < 2) {
@@ -637,9 +660,6 @@ public class AdminPanelController implements Initializable {
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        //  TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Subcategory s WHERE naziv = :nazivInput", Long.class);
-        //   query.setParameter("nazivInput", nazivSubcategoryInput.getText());
 
         TypedQuery<Category> queryCategory = entityManager.createQuery("SELECT c FROM Category c WHERE naziv = :nazivInput", Category.class);
         queryCategory.setParameter("nazivInput", categoryInput.getValue());
@@ -681,7 +701,7 @@ public class AdminPanelController implements Initializable {
     }
 
     public void addCategory() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelCategory.setVisible(false));
 
         if (nazivCategoryInput.getText().length() < 2) {
@@ -724,7 +744,7 @@ public class AdminPanelController implements Initializable {
     }
 
     public void addSector() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelSector.setVisible(false));
 
         if (sectorNameInput.getText().length() < 2) {

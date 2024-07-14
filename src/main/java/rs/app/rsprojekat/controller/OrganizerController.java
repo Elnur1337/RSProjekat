@@ -382,7 +382,7 @@ public class OrganizerController implements Initializable {
     }
 
     public void addEvent() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabel.setVisible(false));
         if (!validate()) {
             msgLabel.setText(msg);
@@ -428,7 +428,7 @@ public class OrganizerController implements Initializable {
         dogadjaj.setPodkategorija(subcategoryQuery.getSingleResult());
         dogadjaj.setLokacija(locationQuery.getSingleResult());
 
-        EntityTransaction entityTransaction = entityManager.getTransaction();
+        final EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         entityManager.persist(dogadjaj);
 
