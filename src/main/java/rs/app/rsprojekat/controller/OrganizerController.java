@@ -138,4 +138,38 @@ public class OrganizerController implements Initializable {
     }
 
 
+    public void addEventImage(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Odabir slike za dogadjaj");
+
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+        System.out.println(selectedFile.toURI().toString());
+
+        Dogadjaj dogadjaj = new Dogadjaj();
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Integer> query2 = entityManager.createQuery("SELECT MAX(id) FROM Dogadjaj", Integer.class);
+        int id;
+        if(query2.getSingleResult() == null)
+            id = 1;
+        else
+            id = query2.getSingleResult() + 1;
+
+        File currentDirFile = new File(".");
+        String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
+        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\eventImages";
+        Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
+        Path destinationPath = targetDirectory.resolve(String.format("%d.jpg", id));
+
+        Files.copy(selectedFile.toPath(), destinationPath);
+        System.out.println("File copied to: " + destinationPath);
+
+        String extension = destinationPath.toString().substring(destinationPath.toString().lastIndexOf(".") + 1);
+        dogadjaj.setImgPath(String.format("@eventImages/%d.%s", id, extension));
+    }
 }

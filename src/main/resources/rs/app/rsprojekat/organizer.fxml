@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +24,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.OrganizerController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.OrganizerController">
    <children>
        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <children>
@@ -119,7 +126,7 @@
                      </font>
                   </Label>
                   <Region prefHeight="55.0" prefWidth="351.0" />
-                  <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
+                  <Button fx:id="zahtjevBtn" mnemonicParsing="false" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
@@ -143,7 +150,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                              <TextField fx:id="nazivInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                  <font>
                                     <Font name="SansSerif Regular" size="18.0" />
                                  </font>
@@ -163,7 +170,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <TextArea prefHeight="138.0" prefWidth="459.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                              <TextArea fx:id="opisInput" prefHeight="138.0" prefWidth="459.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                  <font>
                                     <Font name="SansSerif Regular" size="18.0" />
                                  </font>
@@ -182,13 +189,13 @@
                               </Label>
                               <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="429.0" style="-fx-border-color: lightgray; -fx-background-color: white; -fx-background-radius: 50; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                  <children>
-                                    <TextField editable="false" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="305.0" style="-fx-background-radius: 50; -fx-text-box-border: transparent;" text="asdadas">
+                                    <TextField fx:id="imgPathShow" editable="false" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="305.0" style="-fx-background-radius: 50; -fx-text-box-border: transparent;">
                                        <font>
                                           <Font name="SansSerif Regular" size="18.0" />
                                        </font>
                                     </TextField>
                                     <Region prefHeight="36.0" prefWidth="36.0" />
-                                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-radius: 50; -fx-background-color: #666;" text="Dodaj" textFill="WHITE">
+                                    <Button fx:id="dodajSlikuBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addEventImage" prefHeight="30.0" prefWidth="82.0" style="-fx-background-radius: 50; -fx-background-color: #666;" text="Dodaj" textFill="WHITE">
                                        <font>
                                           <Font name="SansSerif Regular" size="18.0" />
                                        </font>
@@ -224,7 +231,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                                <ComboBox fx:id="pocetakGodinaBox" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                              </children>
                                           </VBox>
                                           <Region prefHeight="100.0" prefWidth="55.0" />
@@ -238,7 +245,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                                <ComboBox fx:id="pocetakMjesecBox" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                              </children>
                                           </VBox>
                                           <Region prefHeight="100.0" prefWidth="55.0" />
@@ -252,7 +259,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                                <ComboBox fx:id="pocetakDanBox" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -269,7 +276,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="pocetakSatInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -289,7 +296,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="pocetakMinuteInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -315,7 +322,7 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                              <TextField fx:id="baznaCijenaInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                  <font>
                                     <Font name="SansSerif Regular" size="18.0" />
                                  </font>
@@ -356,7 +363,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                                <ComboBox fx:id="krajGodinaInput" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                              </children>
                                           </VBox>
                                           <Region prefHeight="100.0" prefWidth="55.0" />
@@ -370,7 +377,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                                <ComboBox fx:id="krajMjesecInput" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                              </children>
                                           </VBox>
                                           <Region prefHeight="100.0" prefWidth="55.0" />
@@ -384,7 +391,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                                <ComboBox fx:id="krajDanInput" prefHeight="30.0" prefWidth="150.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -401,7 +408,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="krajSatInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -421,7 +428,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="krajMinuteInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -439,7 +446,7 @@
                         </VBox>
                         <VBox prefHeight="123.0" prefWidth="438.0">
                            <children>
-                              <Label text="Kategorija i podkaregorija">
+                              <Label text="Kategorija i podkategorija">
                                  <font>
                                     <Font name="SansSerif Regular" size="18.0" />
                                  </font>
@@ -459,7 +466,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <ComboBox prefHeight="30.0" prefWidth="214.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                          <ComboBox fx:id="kategorijaBox" prefHeight="30.0" prefWidth="214.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                        </children>
                                        <HBox.margin>
                                           <Insets right="5.0" />
@@ -475,7 +482,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <ComboBox prefHeight="30.0" prefWidth="211.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                          <ComboBox fx:id="podKategorijaBox" prefHeight="30.0" prefWidth="211.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                        </children>
                                        <HBox.margin>
                                           <Insets left="5.0" />
@@ -510,7 +517,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <ComboBox prefHeight="30.0" prefWidth="214.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                          <ComboBox fx:id="mjestoBox" prefHeight="30.0" prefWidth="214.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                        </children>
                                        <HBox.margin>
                                           <Insets right="5.0" />
@@ -526,7 +533,7 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <ComboBox prefHeight="30.0" prefWidth="211.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                                          <ComboBox fx:id="lokacijaBox" prefHeight="30.0" prefWidth="211.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
                                        </children>
                                        <HBox.margin>
                                           <Insets left="5.0" />
@@ -541,7 +548,7 @@
                         </VBox>
                         <ScrollPane prefHeight="157.0" prefWidth="438.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="422.0" style="-fx-padding: 10;" />
+                            <AnchorPane fx:id="sektorPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="422.0" style="-fx-padding: 10;" />
                           </content>
                         </ScrollPane>
                      </children>
