@@ -147,7 +147,7 @@ public class OrganizerController implements Initializable {
         );
 
         File selectedFile = fileChooser.showOpenDialog(null);
-        System.out.println(selectedFile.toURI().toString());
+        String extension = selectedFile.toURI().toString().substring(selectedFile.toURI().toString().lastIndexOf(".") + 1);
 
         Dogadjaj dogadjaj = new Dogadjaj();
 
@@ -164,12 +164,8 @@ public class OrganizerController implements Initializable {
         String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
         targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\eventImages";
         Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
-        Path destinationPath = targetDirectory.resolve(String.format("%d.jpg", id));
-
+        Path destinationPath = targetDirectory.resolve(String.format("%d.%s", id, extension));
         Files.copy(selectedFile.toPath(), destinationPath);
-        System.out.println("File copied to: " + destinationPath);
-
-        String extension = destinationPath.toString().substring(destinationPath.toString().lastIndexOf(".") + 1);
         dogadjaj.setImgPath(String.format("@eventImages/%d.%s", id, extension));
     }
 }
