@@ -176,6 +176,8 @@ public class OrganizerController implements Initializable {
         for (String placeName : resultList) {
             mjestoBox.getItems().add(placeName);
         }
+
+        refreshEventsNumber();
     }
 
     public void fillPodkategorijaBox() {
@@ -189,9 +191,8 @@ public class OrganizerController implements Initializable {
         entityManager.close();
         entityManagerFactory.close();
 
-        for (String subcategoryName : resultList) {
-            podkategorijaBox.getItems().add(subcategoryName);
-        }
+        podkategorijaBox.getItems().clear();
+        podkategorijaBox.getItems().addAll(resultList);
     }
 
     public void fillLokacijaBox() {
@@ -205,22 +206,23 @@ public class OrganizerController implements Initializable {
         entityManager.close();
         entityManagerFactory.close();
 
-        for (String locationName : resultList) {
-            lokacijaBox.getItems().add(locationName);
-        }
+        lokacijaBox.getItems().clear();
+        lokacijaBox.getItems().addAll(resultList);
     }
 
     public void fillSektorPane() {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        TypedQuery<Sector> sectorQuery = entityManager.createQuery("SELECT s FROM Sector s WHERE s.lokacija.naziv = :locationNameInput", Sector.class);
+        TypedQuery<Sector> sectorQuery = entityManager.createQuery("SELECT s FROM Sector s WHERE s.lokacija.naziv = :locationNameInput AND s.lokacija.mjesto.naziv = :mjestoNameInput", Sector.class);
         sectorQuery.setParameter("locationNameInput", lokacijaBox.getValue());
+        sectorQuery.setParameter("mjestoNameInput", mjestoBox.getValue());
         sectorsList = sectorQuery.getResultList();
 
         entityManager.close();
         entityManagerFactory.close();
 
+        sektorVBox.getChildren().clear();
         int counter = 0;
         for (Sector sector : sectorsList) {
             HBox sectorHBox = new HBox();
@@ -411,8 +413,9 @@ public class OrganizerController implements Initializable {
         TypedQuery<Subcategory> subcategoryQuery = entityManager.createQuery("SELECT s FROM Subcategory s WHERE s.naziv = :subcategoryNameInput", Subcategory.class);
         subcategoryQuery.setParameter("subcategoryNameInput", podkategorijaBox.getValue());
 
-        TypedQuery<Location> locationQuery = entityManager.createQuery("SELECT l FROM Location l WHERE l.naziv = :locationNameInput", Location.class);
+        TypedQuery<Location> locationQuery = entityManager.createQuery("SELECT l FROM Location l WHERE l.naziv = :locationNameInput AND l.mjesto.naziv = :mjestoNameInput", Location.class);
         locationQuery.setParameter("locationNameInput", lokacijaBox.getValue());
+        locationQuery.setParameter("mjestoNameInput", mjestoBox.getValue());
 
         Dogadjaj dogadjaj = new Dogadjaj();
         dogadjaj.setNaziv(nazivInput.getText());
@@ -428,10 +431,23 @@ public class OrganizerController implements Initializable {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         entityManager.persist(dogadjaj);
+
+        for (int i = 0; i < sectorsList.size(); ++i) {
+            TypedQuery<Seat> query = entityManager.createQuery("SELECT s FROM Seat s WHERE s.sektor = :sektor", Seat.class);
+            query.setParameter("sektor", sectorsList.get(i));
+            List<Seat> seats = query.getResultList();
+
+            for(Seat seat : seats) {
+                double cijena = Double.parseDouble(sectorPriceModifier.get(i));
+                Ticket ticket = new Ticket();
+                ticket.setDogadjaj(dogadjaj);
+                ticket.setPrice(cijena);
+                ticket.setSjedalo(seat);
+                entityManager.persist(ticket);
+            }
+        }
+
         entityTransaction.commit();
-
-        //KREIRATI KARTE
-
         entityManager.close();
         entityManagerFactory.close();
 
@@ -440,6 +456,8 @@ public class OrganizerController implements Initializable {
         msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
         msgLabel.setVisible(true);
         visibleMsg.play();
+
+        refreshEventsNumber();
     }
 
     public void switchToHomeScene(ActionEvent event) throws IOException {

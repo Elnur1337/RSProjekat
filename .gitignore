@@ -39,3 +39,4 @@ build/
 
 rememberMe.txt
 /src/main/resources/META-INF/persistence.xml
+/src/main/resources/rs/app/rsprojekat/eventImages/*

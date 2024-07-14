@@ -24,7 +24,7 @@ CREATE TABLE sektor (
 );
 
 CREATE TABLE sjedalo (
-	id INT NOT NULL PRIMARY KEY,
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     broj_sjedala INT NOT NULL,
     id_sektor INT NOT NULL,
     FOREIGN KEY (id_sektor) REFERENCES sektor(id)
@@ -82,7 +82,7 @@ CREATE TABLE karta (
     reserved TINYINT NOT NULL DEFAULT 0,
     reserved_to DATE,
     id_dogadjaj INT NOT NULL,
-    id_sjedalo INT,
+    id_sjedalo INT NOT NULL,
     id_kupac INT,
     FOREIGN KEY (id_dogadjaj) REFERENCES dogadjaj(id),
     FOREIGN KEY (id_sjedalo) REFERENCES sjedalo(id),
