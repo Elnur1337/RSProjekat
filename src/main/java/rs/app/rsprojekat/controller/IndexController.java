@@ -191,7 +191,7 @@ public class IndexController implements Initializable {
     }
 
     public void switchToWalletScene(ActionEvent event) throws IOException {
-        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/wallet.fxml").toUri().toURL();
+        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/profile.fxml").toUri().toURL();
         root = FXMLLoader.load(url);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -201,7 +201,7 @@ public class IndexController implements Initializable {
     }
 
     private void refreshWallet() {
-        walletBtn.setText("Račun: " + user.getWallet() + "KM");
+        walletBtn.setText("Profil: " + user.getWallet() + "KM");
     }
 
     @Override

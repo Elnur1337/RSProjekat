@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.ProfileController">
+    <children>
+        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#switchToHomeScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Početna">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </Button>
+                <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="36.0" prefWidth="630.0" HBox.hgrow="ALWAYS" />
+                <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Odjava">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+            </children>
+        </HBox>
+        <VBox layoutY="56.0" prefHeight="744.0" prefWidth="263.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #999; -fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="56.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" onMouseClicked="#showInfoPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                    <children>
+                        <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/map-location-solid.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Label text="Informacije">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER" onMouseClicked="#showBoughtTicketsPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                    <children>
+                        <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/user-solid.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Label text="Kupljene karte">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Label>
+                        <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="usersReqNumber" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
+                            <font>
+                                <Font name="SansSerif Bold" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER" onMouseClicked="#showReservedTicketsPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                    <children>
+                        <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/user-solid.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Label text="Rezervisane karte">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Label>
+                        <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="usersReqNumber1" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
+                            <font>
+                                <Font name="SansSerif Bold" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" onMouseClicked="#showWalletPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                    <children>
+                        <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@icons/map-location-solid.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Label text="Dopuna računa">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </HBox>
+            </children>
+        </VBox>
+        <Pagination fx:id="kartePagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
+        <VBox fx:id="infoPanel" alignment="CENTER" layoutX="432.0" layoutY="190.0" prefHeight="420.0" prefWidth="600.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="75.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Ime">
+                            <font>
+                                <Font name="SansSerif Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="imeShow" alignment="CENTER" editable="false" maxWidth="300.0" prefHeight="40.0" prefWidth="200.0">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="75.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Prezime">
+                            <font>
+                                <Font name="SansSerif Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="prezimeShow" alignment="CENTER" editable="false" maxWidth="300.0" prefHeight="40.0" prefWidth="174.0">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="75.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Datum rođenja">
+                            <font>
+                                <Font name="SansSerif Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="datumRodjenjaShow" alignment="CENTER" editable="false" maxWidth="300.0" prefHeight="40.0" prefWidth="174.0">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="75.0" prefWidth="600.0">
+                    <children>
+                        <Label text="E-mail">
+                            <font>
+                                <Font name="SansSerif Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="emailShow" alignment="CENTER" editable="false" maxWidth="300.0" prefHeight="40.0" prefWidth="174.0">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="75.0" prefWidth="600.0">
+                    <children>
+                        <Label text="Stanje na računu">
+                            <font>
+                                <Font name="SansSerif Regular" size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="stanjeShow" alignment="CENTER" editable="false" maxWidth="300.0" prefHeight="40.0" prefWidth="174.0">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+        <VBox fx:id="walletPanel" alignment="CENTER" layoutX="432.0" layoutY="190.0" prefHeight="420.0" prefWidth="600.0" spacing="10.0" visible="false">
+            <children>
+                <Label fx:id="stanjeLabel" text="Stanje na računu: 0.0KM">
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="imeInput" prefHeight="40.0" prefWidth="300.0" promptText="Ime">
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="prezimeInput" prefHeight="40.0" prefWidth="300.0" promptText="Prezime">
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="brojKarticeInput" prefHeight="40.0" prefWidth="300.0" promptText="Broj kartice">
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                </TextField>
+                <HBox prefHeight="40.0" prefWidth="600.0" spacing="5.0">
+                    <children>
+                        <TextField fx:id="datumIstekaInput" prefHeight="40.0" prefWidth="300.0" promptText="mjesec/godina isteka">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                        <TextField fx:id="cvvInput" prefHeight="40.0" prefWidth="300.0" promptText="CVV broj">
+                            <font>
+                                <Font name="SansSerif Regular" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <TextField fx:id="iznosInput" maxWidth="200.0" minWidth="200.0" prefHeight="40.0" prefWidth="200.0" promptText="Iznos">
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                </TextField>
+                <Button fx:id="uplataBtn" mnemonicParsing="false" onAction="#uplatiNovac" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Uplata">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                    </font>
+                </Button>
+                <Label fx:id="msgLabel" textFill="WHITE">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
