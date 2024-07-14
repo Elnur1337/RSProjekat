@@ -758,6 +758,14 @@ public class AdminPanelController implements Initializable {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
         entityManager.persist(sector);
+
+        for(int i = 1; i <= sectorCapacity; ++i) {
+            Seat seat = new Seat();
+            seat.setSector(sector);
+            seat.setBrojSjedala(i);
+            entityManager.persist(seat);
+        }
+
         entityTransaction.commit();
 
         HBox sectorHBox = new HBox();
@@ -789,6 +797,12 @@ public class AdminPanelController implements Initializable {
         iconHBox.setCursor(Cursor.HAND);
         iconHBox.setOnMouseClicked(event -> {
             entityTransaction.begin();
+            TypedQuery<Seat> query = entityManager.createQuery("SELECT s FROM Seat s WHERE s.sektor = :sektor", Seat.class);
+            query.setParameter("sektor", sector);
+            List<Seat> seats = query.getResultList();
+            for(Seat seat : seats) {
+                entityManager.remove(seat);
+            }
             entityManager.remove(sector);
             entityTransaction.commit();
             sectorContainer.getChildren().remove(sectorHBox);

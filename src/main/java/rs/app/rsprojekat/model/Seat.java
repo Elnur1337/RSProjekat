@@ -24,7 +24,6 @@ public class Seat {
     private Sector sektor;
 
     public Seat() {
-        id = 0;
         sektor = new Sector();
     }
 
