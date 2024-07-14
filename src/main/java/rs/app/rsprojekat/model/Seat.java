@@ -16,6 +16,9 @@ public class Seat {
     @Column(name = "id")
     private int id;
 
+    @Column(name = "broj_sjedala", nullable = false)
+    private int brojSjedala;
+
     @ManyToOne
     @JoinColumn(name = "id_sektor", referencedColumnName = "id")
     private Sector sektor;
@@ -26,6 +29,10 @@ public class Seat {
     }
 
     public int getId() { return id; }
+
+    public int getBrojSjedala() { return brojSjedala; }
+
+    public void setBrojSjedala(int brojSjedala) { this.brojSjedala = brojSjedala; }
 
     public Sector getSector() { return sektor; }
 

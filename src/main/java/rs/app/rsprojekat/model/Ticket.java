@@ -33,11 +33,11 @@ public class Ticket {
     private Dogadjaj dogadjaj;
 
     @ManyToOne
-    @JoinColumn(name = "id_kupac", referencedColumnName = "id")
+    @JoinColumn(name = "id_kupac", referencedColumnName = "id", nullable = true)
     private User kupac;
 
     @ManyToOne
-    @JoinColumn(name = "id_sjedalo", referencedColumnName = "id")
+    @JoinColumn(name = "id_sjedalo", referencedColumnName = "id", nullable = false)
     private Seat sjedalo;
 
     public Ticket() {

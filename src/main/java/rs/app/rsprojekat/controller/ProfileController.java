@@ -47,6 +47,15 @@ import javax.persistence.*;
 public class ProfileController implements Initializable {
     private static User user = new User();
     private String msg;
+    private ticketState state;
+    private Long kupljeneKarteLong;
+    private Long rezervisaneKarteLong;
+    private List<Ticket> tickets = new ArrayList<>();
+
+    private enum ticketState {
+        BOUGHT,
+        RESERVED
+    }
 
     private Stage stage;
     private Scene scene;
@@ -64,9 +73,15 @@ public class ProfileController implements Initializable {
     private Button uplataBtn;
 
     @FXML
+    private Label kupljeneKarteLabel;
+    @FXML
+    private Label rezervisaneKarteLabel;
+    @FXML
     private Label stanjeLabel;
     @FXML
     private Label msgLabel;
+    @FXML
+    private Label notEnoughMoneyLabel;
 
     @FXML
     private TextField imeShow;
@@ -119,16 +134,29 @@ public class ProfileController implements Initializable {
             eventsBtn.setManaged(false);
         }
 
+        loadTickets();
         showInfoPanel();
     }
 
-    public void switchToHomeScene(ActionEvent actionEvent) throws IOException {
-        final URL url = Paths.get("src/main/resources/rs/app/rsprojekat/index.fxml").toUri().toURL();
+    private void switchScene(String sceneURL, ActionEvent event) throws IOException {
+        final URL url = Paths.get(sceneURL).toUri().toURL();
         root = FXMLLoader.load(url);
-        stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void switchToHomeScene(ActionEvent actionEvent) throws IOException {
+        switchScene("src/main/resources/rs/app/rsprojekat/index.fxml", actionEvent);
+    }
+
+    public void switchToAdminPanelScene(ActionEvent actionEvent) throws IOException {
+        switchScene("src/main/resources/rs/app/rsprojekat/adminPanel.fxml", actionEvent);
+    }
+
+    public void switchToOrganizerScene(ActionEvent actionEvent) throws IOException {
+        switchScene("src/main/resources/rs/app/rsprojekat/organizer.fxml", actionEvent);
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
@@ -157,18 +185,225 @@ public class ProfileController implements Initializable {
         showInfoPanel();
     }
 
-    private void showBoughtTicketsPanel() {
+    private void loadTickets() {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Ticket> query = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.kupac = :user", Ticket.class);
+        query.setParameter("user", user);
+        tickets = query.getResultList();
+        entityManager.close();
+        entityManagerFactory.close();
 
+        kupljeneKarteLong = tickets.stream().filter(Ticket::getBought).count();
+        kupljeneKarteLabel.setText(kupljeneKarteLong.toString());
+        rezervisaneKarteLong = tickets.stream().filter(Ticket::getReserved).count();
+        rezervisaneKarteLabel.setText(rezervisaneKarteLong.toString());
+    }
+
+    private void refreshTicketsPagination() {
+        kupljeneKarteLabel.setText(kupljeneKarteLong.toString());
+        rezervisaneKarteLabel.setText(rezervisaneKarteLong.toString());
+
+        if(state == ticketState.BOUGHT)
+            kartePagination.setPageCount(kupljeneKarteLong.intValue() / 6 + 1);
+        else
+            kartePagination.setPageCount(rezervisaneKarteLong.intValue() / 6 + 1);
+
+        kartePagination.setPageFactory(this::getTicketsPanel);
+    }
+
+    private VBox getTicketsPanel(int pageIndex) {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        List<Ticket> karte;
+        if(state == ticketState.BOUGHT)
+            karte = tickets.stream().filter(Ticket::getBought).toList();
+        else
+            karte = tickets.stream().filter(Ticket::getReserved).toList();
+
+        VBox page = new VBox();
+        page.setPrefWidth(kartePagination.getPrefWidth());
+        page.setStyle("-fx-padding: 10;");
+
+        for (Ticket t : karte) {
+            HBox ticketBox = new HBox();
+            ticketBox.setAlignment(Pos.CENTER_LEFT);
+            ticketBox.setPrefHeight(110.0);
+            ticketBox.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #666; -fx-background-radius: 20; -fx-padding: 10;");
+            VBox.setMargin(ticketBox, new Insets(0, 0, 10, 0));
+
+            VBox titleAndDateVBox = new VBox();
+            titleAndDateVBox.setPrefWidth(200.0);
+
+            Label title = new Label();
+            title.setText("Naziv: " + t.getDogadjaj().getNaziv());
+            title.setTextFill(Color.WHITE);
+            title.setFont(Font.font("SansSerif Regular", 18.0));
+
+            Region titleAndDateRegion = new Region();
+            VBox.setVgrow(titleAndDateRegion, Priority.ALWAYS);
+
+            Label date = new Label();
+            date.setText("Datum: " + (new SimpleDateFormat("dd-MM-yyyy")).format(t.getDogadjaj().getStartDate()));
+            date.setTextFill(Color.WHITE);
+            date.setFont(Font.font("SansSerif Regular", 18.0));
+
+            titleAndDateVBox.getChildren().addAll(title, titleAndDateRegion, date);
+
+
+            VBox placeAndLocationVBox = new VBox();
+            placeAndLocationVBox.setPrefWidth(300.0);
+
+            Label place = new Label();
+            place.setText("Mjesto: " + t.getDogadjaj().getLokacija().getMjesto().getNaziv());
+            place.setTextFill(Color.WHITE);
+            place.setFont(Font.font("SansSerif Regular", 18.0));
+
+            Region placeAndLocationRegion = new Region();
+            VBox.setVgrow(placeAndLocationRegion, Priority.ALWAYS);
+
+            Label location = new Label();
+            location.setText("Lokacija: " + t.getDogadjaj().getLokacija().getNaziv());
+            location.setTextFill(Color.WHITE);
+            location.setFont(Font.font("SansSerif Regular", 18.0));
+
+            placeAndLocationVBox.getChildren().addAll(place, placeAndLocationRegion, location);
+
+
+            VBox seatAndDeadlineVBox = new VBox();
+            seatAndDeadlineVBox.setPrefWidth(250.0);
+
+            Label seat = new Label();
+            seat.setText("Sjedalo: " + t.getSjedalo().getSector().getNaziv() + ", " + t.getSjedalo().getBrojSjedala());
+            seat.setTextFill(Color.WHITE);
+            seat.setFont(Font.font("SansSerif Regular", 18.0));
+
+            Region seatAndDeadlineRegion = new Region();
+            VBox.setVgrow(seatAndDeadlineRegion, Priority.ALWAYS);
+
+            Label deadline = new Label();
+            deadline.setText("Istek rezervacije: " + (new SimpleDateFormat("dd-MM-yyyy")).format(t.getReservedTo()));
+            deadline.setTextFill(Color.WHITE);
+            deadline.setFont(Font.font("SansSerif Regular", 18.0));
+            if(state == ticketState.BOUGHT)
+                deadline.setVisible(false);
+
+            seatAndDeadlineVBox.getChildren().addAll(seat, seatAndDeadlineRegion, deadline);
+
+
+            Region buttonBoxRegion = new Region();
+            HBox.setHgrow(buttonBoxRegion, Priority.ALWAYS);
+
+
+            VBox buttonsVBox = new VBox();
+            buttonsVBox.setPrefWidth(100.0);
+            buttonsVBox.setAlignment(Pos.CENTER);
+
+            Button cancelBtn = new Button();
+            cancelBtn.setMnemonicParsing(false);
+            cancelBtn.setPrefWidth(100.0);
+            cancelBtn.setStyle("-fx-background-color: #781510; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            cancelBtn.setTextFill(Color.WHITE);
+            cancelBtn.setText("Otkaži rezervaciju");
+            cancelBtn.setFont(Font.font("SansSerif Bold", 18.0));
+            cancelBtn.setCursor(Cursor.HAND);
+            cancelBtn.setOnAction(event -> {
+                Ticket karta = entityManager.find(Ticket.class, t.getId());
+                EntityTransaction entityTransaction = entityManager.getTransaction();
+                entityTransaction.begin();
+                t.setKupac(null);
+                t.setReserved(false);
+                t.setReservedTo(null);
+                entityTransaction.commit();
+                PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+                visibleMsg.setOnFinished(e -> notEnoughMoneyLabel.setVisible(false));
+                notEnoughMoneyLabel.setText("Uspješno ste ozkazali rezervaciju.");
+                notEnoughMoneyLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+                notEnoughMoneyLabel.setVisible(true);
+                visibleMsg.play();
+                --rezervisaneKarteLong;
+                refreshTicketsPagination();
+            });
+
+            Region buttonsRegion = new Region();
+            VBox.setVgrow(buttonsRegion, Priority.ALWAYS);
+
+            Button buyOrPrintBtn = new Button();
+            buyOrPrintBtn.setMnemonicParsing(false);
+            buyOrPrintBtn.setPrefWidth(100.0);
+            buyOrPrintBtn.setStyle("-fx-background-color: #107811; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            buyOrPrintBtn.setFont(Font.font("SansSerif Bold", 18.0));
+            buyOrPrintBtn.setCursor(Cursor.HAND);
+
+            if(state == ticketState.BOUGHT) {
+                cancelBtn.setVisible(false);
+                buyOrPrintBtn.setText("Printaj kartu");
+                buyOrPrintBtn.setTextFill(Color.BLACK);
+                buyOrPrintBtn.setOnAction(event -> {
+                    printPDF(t);
+                });
+            } else {
+                cancelBtn.setVisible(true);
+                buyOrPrintBtn.setOnAction(event -> {
+                    Ticket karta = entityManager.find(Ticket.class, t.getId());
+                    EntityTransaction entityTransaction = entityManager.getTransaction();
+                    entityTransaction.begin();
+                    PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+                    Double wallet = karta.getKupac().getWallet();
+                    if(karta.getPrice() > wallet) {
+                        visibleMsg.setOnFinished(e -> notEnoughMoneyLabel.setVisible(false));
+                        notEnoughMoneyLabel.setText("Nemate dovoljno sredstava na računu.");
+                        notEnoughMoneyLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+                        notEnoughMoneyLabel.setVisible(true);
+                        visibleMsg.play();
+                    } else {
+                        karta.getKupac().setWallet(wallet - karta.getPrice());
+                        karta.setReserved(false);
+                        karta.setReservedTo(null);
+                        karta.setBought(true);
+                        entityTransaction.commit();
+                        --rezervisaneKarteLong;
+                        ++kupljeneKarteLong;
+                        refreshTicketsPagination();
+                        notEnoughMoneyLabel.setText("Uspješno ste kupili kartu.");
+                        notEnoughMoneyLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+                        notEnoughMoneyLabel.setVisible(true);
+                        visibleMsg.play();
+                    }
+                });
+            }
+
+            buttonsVBox.getChildren().addAll(cancelBtn, buttonsRegion, buyOrPrintBtn);
+
+            ticketBox.getChildren().addAll(titleAndDateVBox, placeAndLocationVBox, seatAndDeadlineVBox, buttonsRegion, buttonsVBox);
+            page.getChildren().add(ticketBox);
+        }
+        return page;
+    }
+
+    private void showBoughtTicketsPanel() {
+        infoPanel.setVisible(false);
+        kartePagination.setVisible(true);
+        walletPanel.setVisible(false);
+
+        state = ticketState.BOUGHT;
     }
 
     public void showBoughtTicketsPanel(MouseEvent mouseEvent) {
+        showBoughtTicketsPanel();
     }
 
     private void showReservedTicketsPanel() {
+        infoPanel.setVisible(false);
+        kartePagination.setVisible(true);
+        walletPanel.setVisible(false);
 
+        state = ticketState.RESERVED;
     }
 
     public void showReservedTicketsPanel(MouseEvent mouseEvent) {
+        showReservedTicketsPanel();
     }
 
     private void showWalletPanel() {
@@ -309,4 +544,6 @@ public class ProfileController implements Initializable {
         msgLabel.setVisible(true);
         visibleMsg.play();
     }
+
+    private void printPDF(Ticket ticket) {}
 }
