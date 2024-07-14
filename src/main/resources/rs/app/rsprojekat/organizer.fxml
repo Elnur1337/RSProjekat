@@ -105,8 +105,8 @@
             </HBox>
          </children>
       </VBox>
-      <Pagination fx:id="eventsPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
-      <VBox fx:id="newEventPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+      <Pagination fx:id="eventsPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
+      <VBox fx:id="newEventPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
          <padding>
             <Insets top="24.0" />
          </padding>
@@ -119,7 +119,7 @@
                      </font>
                   </Label>
                   <Region prefHeight="55.0" prefWidth="351.0" />
-                  <Button fx:id="zahtjevBtn" mnemonicParsing="false" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
+                  <Button mnemonicParsing="false" onAction="#addEvent" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
@@ -269,7 +269,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField fx:id="pocetakSatInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="99.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="pocetakSatiInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="99.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -289,7 +289,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField fx:id="pocetakMinuteInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="pocetakMinutiInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -401,7 +401,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField fx:id="krajSatInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="krajSatiInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -421,7 +421,7 @@
                                                       <Insets bottom="10.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <TextField fx:id="krajMinuteInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                                                <TextField fx:id="krajMinutiInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="458.5" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                                    <font>
                                                       <Font name="SansSerif Regular" size="18.0" />
                                                    </font>
@@ -541,7 +541,7 @@
                         </VBox>
                         <VBox prefHeight="137.0" prefWidth="438.0">
                            <children>
-                              <Label text="Broj karti:">
+                              <Label text="Dodatna cijena na kartu:">
                                  <font>
                                     <Font name="SansSerif Regular" size="18.0" />
                                  </font>
@@ -563,7 +563,11 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </VBox>
-                        <Label fx:id="msgLabel" prefHeight="38.0" prefWidth="438.0" text="Label" />
+                        <Label fx:id="msgLabel" alignment="CENTER" prefHeight="38.0" prefWidth="438.0" textFill="WHITE" visible="false">
+                           <font>
+                              <Font name="SansSerif Regular" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </VBox>
                </children>
