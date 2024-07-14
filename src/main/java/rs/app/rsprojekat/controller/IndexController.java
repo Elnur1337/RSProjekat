@@ -576,11 +576,11 @@ public class IndexController implements Initializable {
         nazivShow.setText(d.getNaziv());
         opisShow.setText(d.getOpis());
         LocalDateTime time = d.getStartDate().toLocalDateTime();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String formattedDateTime = time.format(formatter);
         startDateShow.setText(formattedDateTime);
         time = d.getEndDate().toLocalDateTime();
-        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm");
+        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         formattedDateTime = time.format(formatter);
         endDateShow.setText(formattedDateTime);
         mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
@@ -609,12 +609,12 @@ public class IndexController implements Initializable {
                     Long brojKarata = query.getSingleResult();
                     slobodnoMjestaShow.setText(String.valueOf(brojKarata));
 
-                    TypedQuery<Double> query3 = entityManager.createQuery("SELECT DISTINCT(price) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Double.class);
+                    TypedQuery<Ticket> query3 = entityManager.createQuery("SELECT t FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Ticket.class);
                     query3.setParameter("idInput", d.getId());
                     query3.setParameter("nazivInput", newValue);
 
-                    Double cijena = query3.getSingleResult();
-                    cijenaShow.setText(String.valueOf(cijena));
+                    List<Ticket> karte = query3.getResultList();
+                    cijenaShow.setText(karte.get(0).getPrice() + "KM");
 
                     entityManager.close();
                     entityManagerFactory.close();

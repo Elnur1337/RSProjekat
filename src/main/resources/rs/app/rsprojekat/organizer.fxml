@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -17,7 +24,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.OrganizerController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.OrganizerController">
    <children>
        <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <children>
@@ -48,7 +55,7 @@
        </HBox>
       <VBox layoutY="56.0" prefHeight="744.0" prefWidth="263.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #999; -fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="56.0">
          <children>
-            <HBox alignment="CENTER" onMouseClicked="#showMyEventsPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <HBox alignment="CENTER" onMouseClicked="#showActiveEventsPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -58,7 +65,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label text="Moji događaji">
+                  <Label text="Aktivni događaji">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
@@ -67,7 +74,7 @@
                      <HBox.margin>
                         <Insets />
                      </HBox.margin></Region>
-                  <Label fx:id="eventsNumber" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
+                  <Label fx:id="activeEventsNumber" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
                      <font>
                         <Font name="SansSerif Bold" size="16.0" />
                      </font>
@@ -79,6 +86,39 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+            </HBox>
+            <HBox alignment="CENTER" onMouseClicked="#showInactiveEventsPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@controller/events.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label text="Završeni događaji">
+                     <font>
+                        <Font name="SansSerif Regular" size="18.0" />
+                     </font>
+                  </Label>
+                  <Region prefHeight="34.0" prefWidth="9.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Region>
+                  <Label fx:id="inactiveEventsNumber" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
             </HBox>
             <HBox alignment="CENTER_LEFT" onMouseClicked="#showNewEventPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white;                          -fx-padding: 10;                          -fx-background-radius: 50;                          -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                <children>
@@ -119,7 +159,7 @@
                      </font>
                   </Label>
                   <Region prefHeight="55.0" prefWidth="351.0" />
-                  <Button mnemonicParsing="false" onAction="#addEvent" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
+                  <Button fx:id="addEventBtn" mnemonicParsing="false" onAction="#addEvent" prefHeight="33.0" prefWidth="140.0" style="-fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Pošalji zahtjev">
                      <font>
                         <Font name="SansSerif Regular" size="18.0" />
                      </font>
@@ -574,5 +614,178 @@
             </HBox>
          </children>
       </VBox>
+      <Label fx:id="labelEventsMsg" layoutX="718.0" layoutY="733.0" />
+      <Pane fx:id="coverPane" layoutX="263.0" layoutY="55.0" onMouseClicked="#hideEventInfo" opacity="0.2" prefHeight="744.0" prefWidth="941.0" style="-fx-background-color: #e9e9e9;" />
+      <Pane fx:id="eventPane" layoutX="435.0" layoutY="71.0" prefHeight="708.0" prefWidth="566.0" style="-fx-background-color: #cccccc;">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" prefHeight="351.0" prefWidth="250.0" spacing="10.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Naziv">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="nazivShow" alignment="CENTER" editable="false" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="121.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Opis">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="opisShow" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Početak">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="startDateShow" alignment="CENTER" editable="false" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Završetak">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="endDateShow" alignment="CENTER" editable="false" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <VBox layoutX="280.0" layoutY="14.0" prefHeight="383.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <ImageView fx:id="eventImage" fitHeight="190.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Mjesto">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="mjestoShow" alignment="CENTER" editable="false" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Lokacija">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="lokacijaShow" alignment="CENTER" editable="false" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <HBox layoutX="14.0" layoutY="357.0" prefHeight="342.0" prefWidth="535.0" spacing="15.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="230.0" prefWidth="250.0" spacing="10.0">
+                     <children>
+                        <ComboBox fx:id="sektorBox" prefHeight="44.0" prefWidth="250.0" promptText="Sektor" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" />
+                        <Label text="Cijena">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="cijenaShow" alignment="CENTER" editable="false" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                        <Label text="Prodano karata">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="prodanoKarataShow" alignment="CENTER" editable="false" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                        <Label text="Rezervisano karata">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="rezervisanoKarataShow" alignment="CENTER" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                        <Label text="Ukupno karata">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="ukupnoKarataShow" alignment="CENTER" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="200.0" style="-fx-alignment: center;">
+                           <font>
+                              <Font name="SansSerif Regular" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <ImageView fx:id="sectorImage" fitHeight="206.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </HBox>
+            <Button fx:id="cancelEventBtn" layoutX="330.0" layoutY="554.0" mnemonicParsing="false" onAction="#cancelEvent" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Otkaži" visible="false">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="editEventBtn" layoutX="330.0" layoutY="601.0" mnemonicParsing="false" onAction="#editEvent" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Uredi" visible="false">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="nazadBtn" layoutX="330.0" layoutY="648.0" mnemonicParsing="false" onAction="#hideEventInfo" prefHeight="33.0" prefWidth="159.0" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Nazad">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

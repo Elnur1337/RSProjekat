@@ -226,7 +226,10 @@ public class ProfileController implements Initializable {
         page.setPrefWidth(kartePagination.getPrefWidth());
         page.setStyle("-fx-padding: 10;");
 
-        for (Ticket t : karte) {
+        int fromIndex = pageIndex * 5;
+        int toIndex = Math.min(fromIndex + 5, karte.size());
+
+        for (Ticket t : karte.subList(fromIndex, toIndex)) {
             HBox ticketBox = new HBox();
             ticketBox.setAlignment(Pos.CENTER_LEFT);
             ticketBox.setPrefHeight(110.0);
@@ -318,7 +321,7 @@ public class ProfileController implements Initializable {
                 entityTransaction.commit();
                 PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
                 visibleMsg.setOnFinished(e -> notEnoughMoneyLabel.setVisible(false));
-                notEnoughMoneyLabel.setText("Uspješno ste ozkazali rezervaciju.");
+                notEnoughMoneyLabel.setText("Uspješno ste otkazali rezervaciju.");
                 notEnoughMoneyLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
                 notEnoughMoneyLabel.setVisible(true);
                 visibleMsg.play();

@@ -6,22 +6,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -37,6 +46,14 @@ import java.util.ResourceBundle;
 public class OrganizerController implements Initializable {
     //private static User user = new User();
     private String msg;
+    private eventState state;
+    private List<Dogadjaj> eventsList;
+    Dogadjaj selectedEvent;
+
+    private enum eventState {
+        ACTIVE,
+        INACTIVE
+    }
 
     private final Map<String, Integer> monthNameNumberMap = new HashMap<>();
     private final Map<String, Integer> monthNameDaysMap = new HashMap<>();
@@ -51,16 +68,18 @@ public class OrganizerController implements Initializable {
     private Scene scene;
     private Parent root;
 
-    private Long eventsNumberLong;
+    private Long activeEventsLong;
+    private Long inactiveEventsLong;
+
     @FXML
     private Button homeBtn;
     @FXML
-    private Label eventsNumber;
+    private Button cancelEventBtn;
+    @FXML
+    private Button editEventBtn;
 
     @FXML
     private Pagination eventsPagination;
-    @FXML
-    private VBox newEventPanel;
 
     //Create new event panel
     @FXML
@@ -84,7 +103,13 @@ public class OrganizerController implements Initializable {
     @FXML
     private ComboBox<String> lokacijaBox;
     @FXML
+    private ComboBox<String> sektorBox;
+
+    @FXML
     private VBox sektorVBox;
+    @FXML
+    private VBox newEventPanel;
+
     @FXML
     private TextField nazivInput;
     @FXML
@@ -101,17 +126,47 @@ public class OrganizerController implements Initializable {
     private TextField krajSatiInput;
     @FXML
     private TextField krajMinutiInput;
+
     @FXML
     private Label msgLabel;
+    @FXML
+    private Label activeEventsNumber;
+    @FXML
+    private Label inactiveEventsNumber;
+    @FXML
+    private Label labelEventsMsg;
+
+    @FXML
+    private TextField nazivShow;
+    @FXML
+    private TextArea opisShow;
+    @FXML
+    private TextField startDateShow;
+    @FXML
+    private TextField endDateShow;
+    @FXML
+    private TextField cijenaShow;
+    @FXML
+    private TextField prodanoKarataShow;
+    @FXML
+    private TextField ukupnoKarataShow;
+    @FXML
+    private TextField rezervisanoKarataShow;
+    @FXML
+    private TextField mjestoShow;
+    @FXML
+    private TextField lokacijaShow;
+
+    @FXML
+    private ImageView eventImage;
+    @FXML
+    private ImageView sectorImage;
+
+    @FXML
+    private Pane eventPane, coverPane;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d WHERE organizator = :korisnik", Long.class);
-        query.setParameter("korisnik", IndexController.getCurrentUser());
-        eventsNumberLong = query.getSingleResult();
-
         monthNameNumberMap.put("Januar", 1);
         monthNameNumberMap.put("Februar", 2);
         monthNameNumberMap.put("Mart", 3);
@@ -160,6 +215,8 @@ public class OrganizerController implements Initializable {
                 }
         );
 
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
         TypedQuery<String> categoryNamesQuery = entityManager.createQuery("SELECT c.naziv FROM Category c", String.class);
         List<String> resultList = categoryNamesQuery.getResultList();
 
@@ -177,7 +234,145 @@ public class OrganizerController implements Initializable {
             mjestoBox.getItems().add(placeName);
         }
 
+        hideEventInfo();
+        loadEvents();
         refreshEventsNumber();
+    }
+
+    private VBox showEventsPanel(int pageIndex) {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        List<Dogadjaj> dogadjaji;
+        if(state == eventState.ACTIVE)
+            dogadjaji = eventsList.stream().filter(event -> event.isApproved() && event.isAvailable()).toList();
+        else
+            dogadjaji = eventsList.stream().filter(event -> event.isApproved() && !event.isAvailable()).toList();
+
+        VBox page = new VBox();
+        page.setPrefWidth(eventsPagination.getPrefWidth());
+        page.setStyle("-fx-padding: 10;");
+
+        int fromIndex = pageIndex * 5;
+        int toIndex = Math.min(fromIndex + 5, dogadjaji.size());
+
+        for (Dogadjaj d : dogadjaji.subList(fromIndex, toIndex)) {
+            HBox dogadjajBox = new HBox();
+            dogadjajBox.setAlignment(Pos.CENTER_LEFT);
+            dogadjajBox.setPrefHeight(110.0);
+            dogadjajBox.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #666; -fx-background-radius: 20; -fx-padding: 10;");
+            VBox.setMargin(dogadjajBox, new Insets(0, 0, 10, 0));
+
+            VBox titleAndDateVBox = new VBox();
+            titleAndDateVBox.setPrefWidth(250.0);
+
+            Label title = new Label();
+            title.setText("Naziv: " + d.getNaziv());
+            title.setTextFill(Color.WHITE);
+            title.setFont(Font.font("SansSerif Regular", 18.0));
+
+            Region titleAndDateRegion = new Region();
+            VBox.setVgrow(titleAndDateRegion, Priority.ALWAYS);
+
+            Label date = new Label();
+            LocalDateTime time = d.getStartDate().toLocalDateTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String formattedDateTime = time.format(formatter);
+            date.setText("Vrijeme: " + formattedDateTime);
+            date.setTextFill(Color.WHITE);
+            date.setFont(Font.font("SansSerif Regular", 18.0));
+
+            titleAndDateVBox.getChildren().addAll(title, titleAndDateRegion, date);
+
+            VBox placeAndLocationVBox = new VBox();
+            placeAndLocationVBox.setPrefWidth(250.0);
+
+            Label place = new Label();
+            place.setText("Mjesto: " + d.getLokacija().getMjesto().getNaziv());
+            place.setTextFill(Color.WHITE);
+            place.setFont(Font.font("SansSerif Regular", 18.0));
+
+            Region placeAndLocationRegion = new Region();
+            VBox.setVgrow(placeAndLocationRegion, Priority.ALWAYS);
+
+            Label location = new Label();
+            location.setText("Lokacija: " + d.getLokacija().getNaziv());
+            location.setTextFill(Color.WHITE);
+            location.setFont(Font.font("SansSerif Regular", 18.0));
+
+            placeAndLocationVBox.getChildren().addAll(place, placeAndLocationRegion, location);
+
+            VBox imageBox = new VBox();
+            imageBox.setPrefWidth(140);
+
+            ImageView image = new ImageView();
+            image.setFitHeight(140);
+            image.setFitWidth(140);
+            image.setPreserveRatio(true);
+            // NEED TO CHECK WHETHER THIS WORKS WHEN ALL EVENTS HAVE IMAGES
+//            image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getImgPath()))));
+
+            imageBox.getChildren().add(image);
+
+            Region buttonBoxRegion = new Region();
+            HBox.setHgrow(buttonBoxRegion, Priority.ALWAYS);
+
+
+            VBox buttonsVBox = new VBox();
+            buttonsVBox.setPrefWidth(100.0);
+            buttonsVBox.setAlignment(Pos.CENTER);
+
+            Button cancelBtn = new Button();
+            cancelBtn.setMnemonicParsing(false);
+            cancelBtn.setPrefWidth(100.0);
+            cancelBtn.setStyle("-fx-background-color: #781510; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            cancelBtn.setTextFill(Color.WHITE);
+            cancelBtn.setText("Otkaži događaj");
+            cancelBtn.setFont(Font.font("SansSerif Bold", 18.0));
+            cancelBtn.setCursor(Cursor.HAND);
+            cancelBtn.setOnAction(event -> cancelEvent(d));
+
+            Region buttonsRegion = new Region();
+            VBox.setVgrow(buttonsRegion, Priority.ALWAYS);
+
+            Button editBtn = new Button();
+            editBtn.setMnemonicParsing(false);
+            editBtn.setPrefWidth(100.0);
+            editBtn.setStyle("-fx-background-color: #107811; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            editBtn.setFont(Font.font("SansSerif Bold", 18.0));
+            editBtn.setCursor(Cursor.HAND);
+            editBtn.setOnAction(event -> editEventInfo(d));
+
+            if(state == eventState.ACTIVE) {
+                cancelBtn.setVisible(true);
+                editBtn.setVisible(true);
+            } else {
+                cancelBtn.setVisible(false);
+                editBtn.setVisible(false);
+            }
+
+            buttonsVBox.getChildren().addAll(cancelBtn, buttonsRegion, editBtn);
+
+            dogadjajBox.setMaxHeight(140);
+            dogadjajBox.getChildren().addAll(titleAndDateVBox, placeAndLocationVBox, imageBox);
+            dogadjajBox.setOnMouseClicked(event -> showEventInfo(d));
+            page.getChildren().add(dogadjajBox);
+        }
+        return page;
+    }
+
+    public void showActiveEventsPanel(MouseEvent mouseEvent) {
+        eventsPagination.setVisible(true);
+        newEventPanel.setVisible(false);
+        state = eventState.ACTIVE;
+        refreshEventsPagination();
+    }
+
+    public void showInactiveEventsPanel(MouseEvent mouseEvent) {
+        eventsPagination.setVisible(true);
+        newEventPanel.setVisible(false);
+        state = eventState.INACTIVE;
+        refreshEventsPagination();
     }
 
     public void fillPodkategorijaBox() {
@@ -441,7 +636,7 @@ public class OrganizerController implements Initializable {
                 double cijena = Double.parseDouble(sectorPriceModifier.get(i));
                 Ticket ticket = new Ticket();
                 ticket.setDogadjaj(dogadjaj);
-                ticket.setPrice(cijena);
+                ticket.setPrice(cijena + dogadjaj.getBasePrice());
                 ticket.setSjedalo(seat);
                 entityManager.persist(ticket);
             }
@@ -480,35 +675,28 @@ public class OrganizerController implements Initializable {
     }
 
     private void refreshEventsNumber() {
-        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d WHERE organizator = :korisnik", Long.class);
-        query.setParameter("korisnik", IndexController.getCurrentUser());
-        eventsNumberLong = query.getSingleResult();
+        activeEventsLong = eventsList.stream().filter(event -> event.isAvailable() && event.isApproved()).count();
+        inactiveEventsLong = eventsList.stream().filter(event -> !event.isAvailable() && event.isApproved()).count();
 
-        eventsNumber.setText(eventsNumberLong.toString());
-
-        entityManager.close();
-        entityManagerFactory.close();
+        activeEventsNumber.setText(activeEventsLong.toString());
+        inactiveEventsNumber.setText(inactiveEventsLong.toString());
     }
 
-    private VBox loadMyEvents(int pageIndex) {
-        System.out.println("Events panel!");
-        return null;
+    private void loadEvents() {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE organizator = :korisnik", Dogadjaj.class);
+        query.setParameter("korisnik", IndexController.getCurrentUser());
+        eventsList = query.getResultList();
     }
 
     private void refreshEventsPagination() {
         refreshEventsNumber();
-        eventsPagination.setPageCount(eventsNumberLong.intValue() / 6 + 1);
-        eventsPagination.setPageFactory(this::loadMyEvents);
-    }
-
-    public void showMyEventsPanel() {
-        newEventPanel.setVisible(false);
-        newEventPanel.setManaged(false);
-        eventsPagination.setVisible(true);
-        eventsPagination.setManaged(true);
-        refreshEventsPagination();
+        if(state == eventState.ACTIVE)
+            eventsPagination.setPageCount(activeEventsLong.intValue() / 6 + 1);
+        else
+            eventsPagination.setPageCount(inactiveEventsLong.intValue() / 6 + 1);
+        eventsPagination.setPageFactory(this::showEventsPanel);
     }
 
     public void showNewEventPanel() {
@@ -529,5 +717,179 @@ public class OrganizerController implements Initializable {
         selectedImgFile = fileChooser.showOpenDialog(null);
         selectedImgExtension = selectedImgFile.toURI().toString().substring(selectedImgFile.toURI().toString().lastIndexOf(".") + 1);
         imgPathShow.setText(selectedImgFile.toPath().toString());
+    }
+
+    private void showEventInfo(Dogadjaj d) {
+        TranslateTransition slide = new TranslateTransition(Duration.millis(300), eventPane);
+        slide.setToY(0);
+        slide.play();
+        slide = new TranslateTransition(Duration.millis(300), coverPane);
+        slide.setToX(0);
+        slide.play();
+
+        nazivShow.setText(d.getNaziv());
+        opisShow.setText(d.getOpis());
+        LocalDateTime time = d.getStartDate().toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String formattedDateTime = time.format(formatter);
+        startDateShow.setText(formattedDateTime);
+        time = d.getEndDate().toLocalDateTime();
+        formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        formattedDateTime = time.format(formatter);
+        endDateShow.setText(formattedDateTime);
+        mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
+        lokacijaShow.setText(d.getLokacija().getNaziv());
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Sector> query = entityManager.createQuery("SELECT DISTINCT(s) FROM Dogadjaj d JOIN Sector s ON s.lokacija = d.lokacija WHERE d.id = :idInput", Sector.class);
+        query.setParameter("idInput", d.getId());
+        List<Sector> sectors = query.getResultList();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        sektorBox.getItems().setAll(sectors.stream().map(Sector::getNaziv).toList());
+        sektorBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (newValue != null) {
+                    final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+                    final EntityManager entityManager = entityManagerFactory.createEntityManager();
+                    TypedQuery<Ticket> query = entityManager.createQuery("SELECT t FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput", Ticket.class);
+                    query.setParameter("idInput", d.getId());
+                    query.setParameter("nazivInput", newValue);
+                    List<Ticket> karte = query.getResultList();
+
+                    prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getBought).count()));
+                    prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getReserved).count()));
+                    ukupnoKarataShow.setText(String.valueOf(karte.size()));
+                    cijenaShow.setText(karte.get(0).getPrice() + "KM");
+
+                    entityManager.close();
+                    entityManagerFactory.close();
+                }
+            }
+        });
+
+        if(state == eventState.ACTIVE) {
+            cancelEventBtn.setVisible(true);
+            editEventBtn.setVisible(true);
+        } else {
+            cancelEventBtn.setVisible(false);
+            editEventBtn.setVisible(false);
+        }
+
+        selectedEvent = d;
+    }
+
+    @FXML
+    private void hideEventInfo() {
+        TranslateTransition slide = new TranslateTransition(Duration.millis(300), eventPane);
+        slide.setToY(-1000);
+        slide.play();
+        slide = new TranslateTransition(Duration.millis(300), coverPane);
+        slide.setToX(1000);
+        slide.play();
+    }
+
+    private void editEventInfo(Dogadjaj d) {
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
+        hideEventInfo();
+
+        newEventPanel.setVisible(true);
+
+        nazivInput.setText(d.getNaziv());
+        opisInput.setText(d.getOpis());
+        LocalDateTime time = d.getStartDate().toLocalDateTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
+        String formattedDateTime = time.format(formatter);
+        pocetakGodinaBox.setValue(Integer.parseInt(formattedDateTime.substring(0, 4)));
+        pocetakMjesecBox.setValue(formattedDateTime.substring(5, 7));
+        pocetakDanBox.setValue(Integer.parseInt(formattedDateTime.substring(8, 10)));
+        pocetakSatiInput.setText(formattedDateTime.substring(11, 13));
+        pocetakMinutiInput.setText(formattedDateTime.substring(14));
+        baznaCijenaInput.setText(String.valueOf(d.getBasePrice()));
+        formattedDateTime = d.getEndDate().toLocalDateTime().format(formatter);
+        krajGodinaBox.setValue(Integer.parseInt(formattedDateTime.substring(0, 4)));
+        krajMjesecBox.setValue(formattedDateTime.substring(5, 7));
+        krajDanBox.setValue(Integer.parseInt(formattedDateTime.substring(8, 10)));
+        krajSatiInput.setText(formattedDateTime.substring(11, 13));
+        krajMinutiInput.setText(formattedDateTime.substring(14));
+        kategorijaBox.setValue(d.getPodkategorija().getKategorija().getNaziv());
+        podkategorijaBox.setValue(d.getPodkategorija().getNaziv());
+        mjestoBox.setValue(d.getLokacija().getMjesto().getNaziv());
+        lokacijaBox.setValue(d.getLokacija().getNaziv());
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Sector> sectorQuery = entityManager.createQuery("SELECT s FROM Sector s WHERE s.lokacija.naziv = :locationNameInput AND s.lokacija.mjesto.naziv = :mjestoNameInput", Sector.class);
+        sectorQuery.setParameter("locationNameInput", lokacijaBox.getValue());
+        sectorQuery.setParameter("mjestoNameInput", mjestoBox.getValue());
+        sectorsList = sectorQuery.getResultList();
+        List<Ticket> karte = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjaj", Ticket.class).setParameter("dogadjaj", d).getResultList();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        sektorVBox.getChildren().clear();
+        int counter = 0;
+        for (Sector sector : sectorsList) {
+            HBox sectorHBox = new HBox();
+            sectorHBox.setPrefHeight(50.0);
+            sectorHBox.setAlignment(Pos.CENTER_LEFT);
+
+            Label nazivLabel = new Label(sector.getNaziv() + "(Kap. " + sector.getKapacitet() + ")");
+            nazivLabel.setPrefWidth(250.0);
+            nazivLabel.setPrefHeight(36.0);
+            nazivLabel.setFont(Font.font("SansSerif Regular", 18));
+            nazivLabel.setStyle("-fx-padding: 5; -fx-border-color: lightgray; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            HBox.setMargin(nazivLabel, new Insets(0, 15, 0, 0));
+
+            TextField priceModifierTextField = new TextField();
+            priceModifierTextField.setPrefWidth(80.0);
+            priceModifierTextField.setPrefHeight(36.0);
+            priceModifierTextField.setStyle("-fx-background-radius: 50; -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            priceModifierTextField.setFont(Font.font("SansSerif Regular", 18.0));
+            priceModifierTextField.setText(String.valueOf(karte.stream().filter(karta -> karta.getSjedalo().getSector() == sector).toList().get(0).getPrice()));
+
+            sectorHBox.getChildren().addAll(nazivLabel, priceModifierTextField);
+            sektorVBox.getChildren().add(sectorHBox);
+
+            ++counter;
+        }
+    }
+
+    private void cancelEvent(Dogadjaj d) {
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Dogadjaj dogadjaj = entityManager.find(Dogadjaj.class, d.getId());
+        List<Ticket> karte = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjaj", Ticket.class).setParameter("dogadjaj", dogadjaj).getResultList();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        for(Ticket t : karte) {
+            t.getKupac().setWallet(t.getKupac().getWallet() + t.getPrice());
+            t.setKupac(null);
+        }
+        dogadjaj.setAvailable(false);
+        entityTransaction.commit();
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(e -> labelEventsMsg.setVisible(false));
+        labelEventsMsg.setText("Uspješno ste otkazali događaj.");
+        labelEventsMsg.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+        labelEventsMsg.setVisible(true);
+        visibleMsg.play();
+        --activeEventsLong;
+        refreshEventsPagination();
+
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    public void cancelEvent(ActionEvent actionEvent) {
+        cancelEvent(selectedEvent);
+    }
+
+    public void editEvent(ActionEvent actionEvent) {
+        editEventInfo(selectedEvent);
     }
 }
