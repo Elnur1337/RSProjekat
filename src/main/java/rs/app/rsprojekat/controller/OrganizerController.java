@@ -41,7 +41,7 @@ public class OrganizerController implements Initializable {
     private final Map<String, Integer> monthNameNumberMap = new HashMap<>();
     private final Map<String, Integer> monthNameDaysMap = new HashMap<>();
     private List<Sector> sectorsList;
-    private ArrayList<String> sectorCardsNumber = new ArrayList<>();
+    private ArrayList<String> sectorPriceModifier = new ArrayList<>();
 
     //Image variables
     private File selectedImgFile;
@@ -234,22 +234,22 @@ public class OrganizerController implements Initializable {
             nazivLabel.setStyle("-fx-padding: 5; -fx-border-color: lightgray; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
             HBox.setMargin(nazivLabel, new Insets(0, 15, 0, 0));
 
-            TextField brojKartiTextField = new TextField();
-            brojKartiTextField.setPrefWidth(80.0);
-            brojKartiTextField.setPrefHeight(36.0);
-            brojKartiTextField.setStyle("-fx-background-radius: 50; -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
-            brojKartiTextField.setFont(Font.font("SansSerif Regular", 18.0));
+            TextField priceModifierTextField = new TextField();
+            priceModifierTextField.setPrefWidth(80.0);
+            priceModifierTextField.setPrefHeight(36.0);
+            priceModifierTextField.setStyle("-fx-background-radius: 50; -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            priceModifierTextField.setFont(Font.font("SansSerif Regular", 18.0));
             final int finalCounter = counter;
-            brojKartiTextField.setOnKeyTyped(event -> {
+            priceModifierTextField.setOnKeyTyped(event -> {
                 try {
-                    sectorCardsNumber.set(finalCounter, brojKartiTextField.getText());
+                    sectorPriceModifier.set(finalCounter, priceModifierTextField.getText());
                 } catch (IndexOutOfBoundsException e) {
-                    sectorCardsNumber.add(finalCounter, brojKartiTextField.getText());
+                    sectorPriceModifier.add(finalCounter, priceModifierTextField.getText());
                 }
 
             });
 
-            sectorHBox.getChildren().addAll(nazivLabel, brojKartiTextField);
+            sectorHBox.getChildren().addAll(nazivLabel, priceModifierTextField);
             sektorVBox.getChildren().add(sectorHBox);
 
             ++counter;
@@ -367,7 +367,7 @@ public class OrganizerController implements Initializable {
         }
         for (int i = 0; i < sectorsList.size(); ++i) {
             try {
-                Double.parseDouble(sectorCardsNumber.get(i));
+                Double.parseDouble(sectorPriceModifier.get(i));
             } catch (IndexOutOfBoundsException e) {
                 msg = "Morate unijeti poskupljenje na sektore!";
                 return false;
