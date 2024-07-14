@@ -5,9 +5,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.Year;
 import java.util.*;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javafx.util.Duration;
 import rs.app.rsprojekat.model.*;
 
 import javax.persistence.*;
@@ -38,7 +41,11 @@ public class OrganizerController implements Initializable {
     private final Map<String, Integer> monthNameNumberMap = new HashMap<>();
     private final Map<String, Integer> monthNameDaysMap = new HashMap<>();
     private List<Sector> sectorsList;
-    private ArrayList<String> sectorCardsNumber = new ArrayList<>();
+    private ArrayList<String> sectorPriceModifier = new ArrayList<>();
+
+    //Image variables
+    private File selectedImgFile;
+    private String selectedImgExtension;
 
     private Stage stage;
     private Scene scene;
@@ -80,6 +87,22 @@ public class OrganizerController implements Initializable {
     private VBox sektorVBox;
     @FXML
     private TextField nazivInput;
+    @FXML
+    private TextArea opisInput;
+    @FXML
+    private TextField imgPathShow;
+    @FXML
+    private TextField pocetakSatiInput;
+    @FXML
+    private TextField pocetakMinutiInput;
+    @FXML
+    private TextField baznaCijenaInput;
+    @FXML
+    private TextField krajSatiInput;
+    @FXML
+    private TextField krajMinutiInput;
+    @FXML
+    private Label msgLabel;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -211,26 +234,212 @@ public class OrganizerController implements Initializable {
             nazivLabel.setStyle("-fx-padding: 5; -fx-border-color: lightgray; -fx-border-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
             HBox.setMargin(nazivLabel, new Insets(0, 15, 0, 0));
 
-            TextField brojKartiTextField = new TextField();
-            brojKartiTextField.setPrefWidth(80.0);
-            brojKartiTextField.setPrefHeight(36.0);
-            brojKartiTextField.setStyle("-fx-background-radius: 50; -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
-            brojKartiTextField.setFont(Font.font("SansSerif Regular", 18.0));
+            TextField priceModifierTextField = new TextField();
+            priceModifierTextField.setPrefWidth(80.0);
+            priceModifierTextField.setPrefHeight(36.0);
+            priceModifierTextField.setStyle("-fx-background-radius: 50; -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            priceModifierTextField.setFont(Font.font("SansSerif Regular", 18.0));
             final int finalCounter = counter;
-            brojKartiTextField.setOnKeyTyped(event -> {
+            priceModifierTextField.setOnKeyTyped(event -> {
                 try {
-                    sectorCardsNumber.set(finalCounter, brojKartiTextField.getText());
+                    sectorPriceModifier.set(finalCounter, priceModifierTextField.getText());
                 } catch (IndexOutOfBoundsException e) {
-                    sectorCardsNumber.add(finalCounter, brojKartiTextField.getText());
+                    sectorPriceModifier.add(finalCounter, priceModifierTextField.getText());
                 }
 
             });
 
-            sectorHBox.getChildren().addAll(nazivLabel, brojKartiTextField);
+            sectorHBox.getChildren().addAll(nazivLabel, priceModifierTextField);
             sektorVBox.getChildren().add(sectorHBox);
 
             ++counter;
         }
+    }
+
+    private boolean validate() {
+        if (nazivInput.getText().length() < 5 || nazivInput.getText().length() > 150) {
+            msg = "Naziv mora biti između 5 i 150 karaktera!";
+            return false;
+        }
+        if (opisInput.getText().length() < 5 || opisInput.getText().length() > 500) {
+            msg = "Opis mora biti između 5 i 500 karaktera!";
+            return false;
+        }
+        if (imgPathShow.getText().isEmpty()) {
+            msg = "Slika događaja je obavezna!";
+            return false;
+        }
+        try {
+            pocetakGodinaBox.getValue().intValue();
+        } catch (NullPointerException e) {
+            msg = "Godina početka je obavezna!";
+            return false;
+        }
+        try {
+            pocetakMjesecBox.getValue().isEmpty();
+        } catch (NullPointerException e) {
+            msg = "Mjesec početka je obavezan!";
+            return false;
+        }
+        try {
+            pocetakDanBox.getValue().intValue();
+        } catch (NullPointerException e) {
+            msg = "Dan početka je obavezan!";
+            return false;
+        }
+        int hoursInput;
+        try {
+            hoursInput = Integer.parseInt(pocetakSatiInput.getText());
+        } catch (NumberFormatException e) {
+            msg = "Sati početka moraju biti cijeli broj!";
+            return false;
+        }
+        int minutesInput;
+        try {
+            minutesInput = Integer.parseInt(pocetakMinutiInput.getText());
+        } catch (NumberFormatException e) {
+            msg = "Minute početka moraju biti cijeli broj!";
+            return false;
+        }
+        if (hoursInput < 0 || hoursInput > 23) {
+            msg = "Vrijednost sati početka mora biti između -1 i 24!";
+            return false;
+        }
+        if (minutesInput < 0 || minutesInput > 59) {
+            msg = "Vrijednost minuta početka mora biti između -1 i 60!";
+            return false;
+        }
+        try {
+            Double.parseDouble(baznaCijenaInput.getText());
+        } catch (NullPointerException | NumberFormatException e) {
+            msg = "Bazna cijena mora biti realan broj!";
+            return false;
+        }
+        try {
+            krajGodinaBox.getValue().intValue();
+        } catch (NullPointerException e) {
+            msg = "Godina kraja je obavezna!";
+            return false;
+        }
+        try {
+            krajMjesecBox.getValue().isEmpty();
+        } catch (NullPointerException e) {
+            msg = "Mjesec kraja je obavezan!";
+            return false;
+        }
+        try {
+            krajDanBox.getValue().intValue();
+        } catch (NullPointerException e) {
+            msg = "Dan kraja je obavezan!";
+            return false;
+        }
+        try {
+            hoursInput = Integer.parseInt(krajSatiInput.getText());
+        } catch (NumberFormatException e) {
+            msg = "Sati kraja moraju biti cijeli broj!";
+            return false;
+        }
+        try {
+            minutesInput = Integer.parseInt(krajMinutiInput.getText());
+        } catch (NumberFormatException e) {
+            msg = "Minute kraja moraju biti cijeli broj!";
+            return false;
+        }
+        if (hoursInput < 0 || hoursInput > 23) {
+            msg = "Vrijednost sati kraja mora biti između -1 i 24!";
+            return false;
+        }
+        if (minutesInput < 0 || minutesInput > 59) {
+            msg = "Vrijednost minuta kraja mora biti između -1 i 60!";
+            return false;
+        }
+        try {
+            podkategorijaBox.getValue().isEmpty();
+        } catch (NullPointerException e) {
+            msg = "Podkategorija je obavezna!";
+            return false;
+        }
+        try {
+            lokacijaBox.getValue().isEmpty();
+        } catch (NullPointerException e) {
+            msg = "Lokacija je obavezna!";
+            return false;
+        }
+        for (int i = 0; i < sectorsList.size(); ++i) {
+            try {
+                Double.parseDouble(sectorPriceModifier.get(i));
+            } catch (IndexOutOfBoundsException e) {
+                msg = "Morate unijeti poskupljenje na sektore!";
+                return false;
+            } catch (NullPointerException | NumberFormatException e) {
+                msg = "Poskupljenje za sektore mora biti realan broj!";
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void addEvent() {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        visibleMsg.setOnFinished(event -> msgLabel.setVisible(false));
+        if (!validate()) {
+            msgLabel.setText(msg);
+            msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+            msgLabel.setVisible(true);
+            visibleMsg.play();
+            return;
+        }
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Integer> maxEventIdQuery = entityManager.createQuery("SELECT MAX(id) FROM Dogadjaj", Integer.class);
+        int id;
+        if(maxEventIdQuery.getSingleResult() == null)
+            id = 1;
+        else
+            id = maxEventIdQuery.getSingleResult() + 1;
+
+        File currentDirFile = new File(".");
+        String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
+        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\eventImages";
+        Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
+        Path destinationPath = targetDirectory.resolve(String.format("%d.%s", id, selectedImgExtension));
+        try {
+            Files.copy(selectedImgFile.toPath(), destinationPath);
+        } catch (IOException ignored) {}
+
+        TypedQuery<Subcategory> subcategoryQuery = entityManager.createQuery("SELECT s FROM Subcategory s WHERE s.naziv = :subcategoryNameInput", Subcategory.class);
+        subcategoryQuery.setParameter("subcategoryNameInput", podkategorijaBox.getValue());
+
+        TypedQuery<Location> locationQuery = entityManager.createQuery("SELECT l FROM Location l WHERE l.naziv = :locationNameInput", Location.class);
+        locationQuery.setParameter("locationNameInput", lokacijaBox.getValue());
+
+        Dogadjaj dogadjaj = new Dogadjaj();
+        dogadjaj.setNaziv(nazivInput.getText());
+        dogadjaj.setOpis(opisInput.getText());
+        dogadjaj.setImgPath(String.format("@eventImages/%d.%s", id, selectedImgExtension));
+        dogadjaj.setStartDate(Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", pocetakGodinaBox.getValue(), monthNameNumberMap.get(pocetakMjesecBox.getValue()), pocetakDanBox.getValue(), Integer.parseInt(pocetakSatiInput.getText()), Integer.parseInt(pocetakMinutiInput.getText()), 0)));
+        dogadjaj.setEndDate(Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", krajGodinaBox.getValue(), monthNameNumberMap.get(krajMjesecBox.getValue()), krajDanBox.getValue(), Integer.parseInt(krajSatiInput.getText()), Integer.parseInt(krajMinutiInput.getText()), 0)));
+        dogadjaj.setBasePrice(Double.parseDouble(baznaCijenaInput.getText()));
+        dogadjaj.setOrganizator(IndexController.getCurrentUser());
+        dogadjaj.setPodkategorija(subcategoryQuery.getSingleResult());
+        dogadjaj.setLokacija(locationQuery.getSingleResult());
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(dogadjaj);
+        entityTransaction.commit();
+
+        //KREIRATI KARTE
+
+        entityManager.close();
+        entityManagerFactory.close();
+
+        msg = "Događaj uspješno dodan!";
+        msgLabel.setText(msg);
+        msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        msgLabel.setVisible(true);
+        visibleMsg.play();
     }
 
     public void switchToHomeScene(ActionEvent event) throws IOException {
@@ -284,14 +493,14 @@ public class OrganizerController implements Initializable {
         refreshEventsPagination();
     }
 
-    public void showNewEventPanel(MouseEvent mouseEvent) {
+    public void showNewEventPanel() {
         eventsPagination.setVisible(false);
         eventsPagination.setManaged(false);
         newEventPanel.setVisible(true);
         newEventPanel.setManaged(true);
     }
 
-    public void addEventImage() throws IOException {
+    public void addEventImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Odabir slike za dogadjaj");
 
@@ -299,26 +508,8 @@ public class OrganizerController implements Initializable {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
 
-        File selectedFile = fileChooser.showOpenDialog(null);
-        String extension = selectedFile.toURI().toString().substring(selectedFile.toURI().toString().lastIndexOf(".") + 1);
-
-        Dogadjaj dogadjaj = new Dogadjaj();
-
-        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Integer> query2 = entityManager.createQuery("SELECT MAX(id) FROM Dogadjaj", Integer.class);
-        int id;
-        if(query2.getSingleResult() == null)
-            id = 1;
-        else
-            id = query2.getSingleResult() + 1;
-
-        File currentDirFile = new File(".");
-        String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
-        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\eventImages";
-        Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
-        Path destinationPath = targetDirectory.resolve(String.format("%d.%s", id, extension));
-        Files.copy(selectedFile.toPath(), destinationPath);
-        dogadjaj.setImgPath(String.format("@eventImages/%d.%s", id, extension));
+        selectedImgFile = fileChooser.showOpenDialog(null);
+        selectedImgExtension = selectedImgFile.toURI().toString().substring(selectedImgFile.toURI().toString().lastIndexOf(".") + 1);
+        imgPathShow.setText(selectedImgFile.toPath().toString());
     }
 }
