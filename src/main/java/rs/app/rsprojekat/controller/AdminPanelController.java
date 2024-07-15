@@ -291,9 +291,8 @@ public class AdminPanelController implements Initializable {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        List<String> placesList = new ArrayList<>();
-
         TypedQuery<String> query = entityManager.createQuery("SELECT p.naziv FROM Place p", String.class);
+        List<String> placesList = new ArrayList<>();
 
         placeInput.getItems().addAll(placesList);
         entityManager.close();

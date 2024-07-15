@@ -9,6 +9,7 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -23,6 +24,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -51,7 +54,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -659,10 +661,17 @@ public class ProfileController implements Initializable {
             String QRCodePath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")) + ".png";
             generateQRcode(QRCodeData, QRCodePath, charset, hashMap, 200, 200);
             ImageData imageData = ImageDataFactory.create(QRCodePath);
-            Image img = new Image(String.valueOf(imageData));
+            Files.delete(Path.of(QRCodePath));
+            Image img = new Image(imageData);
 
-            // Creating Image object from the imagedata
-//            doc.add(img);
+            PageSize pageSize = pdfDoc.getDefaultPageSize();
+            float pageWidth = pageSize.getWidth();
+            float imageWidth = img.getImageScaledWidth();
+            float xPosition = pageWidth - imageWidth - 10;
+            float yPosition = 10;
+            img.setFixedPosition(xPosition, yPosition);
+
+            document.add(img);
 
             document.close();
         }
@@ -684,10 +693,7 @@ public class ProfileController implements Initializable {
 
     public static void generateQRcode(String data, String path, String charset, Map map, int h, int w) throws WriterException, IOException
     {
-        String newPath = path.substring(0, path.lastIndexOf(".")) + ".png";
         BitMatrix matrix = new MultiFormatWriter().encode(new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, w, h);
-        MatrixToImageWriter.writeToFile(matrix, "png", new File(newPath));
+        MatrixToImageWriter.writeToFile(matrix, "png", new File(path));
     }
-
-
 }
