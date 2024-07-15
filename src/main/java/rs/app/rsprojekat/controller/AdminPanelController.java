@@ -685,7 +685,7 @@ public class AdminPanelController implements Initializable {
             cijenaLabel.setAlignment(Pos.CENTER_LEFT);
             HBox.setMargin(cijenaLabel, new Insets(0, 15, 0, 0));
 
-            Label cijenaContainerLabel = new Label(Double.toString(event.getBasePrice()) + "KM");
+            Label cijenaContainerLabel = new Label(event.getBasePrice() + "KM");
             cijenaContainerLabel.setPrefWidth(386.0);
             cijenaContainerLabel.setPrefHeight(42.0);
             cijenaContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
