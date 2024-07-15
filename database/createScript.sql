@@ -70,6 +70,7 @@ CREATE TABLE dogadjaj (
     id_podkategorija INT NOT NULL,
     id_lokacija INT NOT NULL,
 	created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    id_original INT DEFAULT NULL,
     FOREIGN KEY (id_organizator) REFERENCES korisnik(id),
     FOREIGN KEY (id_podkategorija) REFERENCES podkategorija(id),
     FOREIGN KEY (id_lokacija) REFERENCES lokacija(id)

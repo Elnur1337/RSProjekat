@@ -325,10 +325,11 @@ public class IndexController implements Initializable {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         eventsList = new ArrayList<>();
-        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true AND approved = true", Dogadjaj.class);
+        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true AND approved = true ORDER BY d.naziv", Dogadjaj.class);
         try  {
             eventsList = query.getResultList();
             eventsList = eventsList.stream().filter(event -> event.getStartDate().toLocalDateTime().isAfter(LocalDateTime.now())).toList();
+            showList = eventsList;
         } catch (NoResultException ignored) {}
 
         filtersBox.setTranslateX(320);
@@ -525,6 +526,9 @@ public class IndexController implements Initializable {
         mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
         lokacijaShow.setText(d.getLokacija().getNaziv());
         organizatorShow.setText(d.getOrganizator().getIme() + " " + d.getOrganizator().getPrezime());
+        cijenaShow.clear();
+        slobodnoMjestaShow.clear();
+        brojKarataInput.clear();
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -573,10 +577,6 @@ public class IndexController implements Initializable {
     }
 
     private void refreshEventsPagination() {
-        refreshEventsPagination("");
-    }
-
-    private void refreshEventsPagination(String filters) {
         refreshNumOfEvents();
         eventsPagination.setPageCount(numOfEvents.intValue() / 6 + 1);
         eventsPagination.setPageFactory(this::getEvents);

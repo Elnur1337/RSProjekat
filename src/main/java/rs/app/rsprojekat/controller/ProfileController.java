@@ -1,6 +1,10 @@
 package rs.app.rsprojekat.controller;
 
 // Imports for PDF
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -23,6 +27,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -198,7 +206,7 @@ public class ProfileController implements Initializable {
     private void loadTickets() {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Ticket> query = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.kupac = :user", Ticket.class);
+        TypedQuery<Ticket> query = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.kupac = :user ORDER BY t.dogadjaj.startDate", Ticket.class);
         query.setParameter("user", user);
         tickets = query.getResultList();
         entityManager.close();
@@ -588,15 +596,48 @@ public class ProfileController implements Initializable {
             Document document = new Document(pdfDoc);
 
             LocalDateTime time = ticket.getDogadjaj().getStartDate().toLocalDateTime();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
             String formattedDateTime = time.format(formatter);
 
-            document.add(new Paragraph("Dogadjaj: " + ticket.getDogadjaj().getNaziv()));
-            document.add(new Paragraph("Vrijeme pocetka: " + formattedDateTime));
-            document.add(new Paragraph("Mjesto: " + ticket.getDogadjaj().getLokacija().getMjesto().getNaziv()));
-            document.add(new Paragraph("Lokacija: " + ticket.getDogadjaj().getLokacija().getNaziv()));
-            document.add(new Paragraph("Sektor: " + ticket.getSjedalo().getSector().getNaziv()));
-            document.add(new Paragraph("Sjedalo: " + ticket.getSjedalo().getBrojSjedala()));
+            Paragraph title = new Paragraph(ticket.getDogadjaj().getNaziv())
+                    .setFontSize(20)
+                    .setBold()
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginBottom(20);
+            document.add(title);
+
+            Paragraph kupacHeader = new Paragraph("Informacije o kupcu")
+                    .setFontSize(16)
+                    .setBold()
+                    .setFontColor(ColorConstants.BLUE)
+                    .setMarginBottom(10);
+            document.add(kupacHeader);
+
+            addTicketDetail(document, "Ime", ticket.getKupac().getIme());
+            addTicketDetail(document, "Prezime", ticket.getKupac().getPrezime());
+
+            Paragraph dogadjajHeader = new Paragraph("Informacije o dogadjaju")
+                    .setFontSize(16)
+                    .setBold()
+                    .setFontColor(ColorConstants.BLUE)
+                    .setMarginTop(20)
+                    .setMarginBottom(10);
+            document.add(dogadjajHeader);
+
+            addTicketDetail(document, "Mjesto", ticket.getDogadjaj().getLokacija().getMjesto().getNaziv());
+            addTicketDetail(document, "Lokacija", ticket.getDogadjaj().getLokacija().getNaziv());
+            addTicketDetail(document, "Vrijeme pocetka", formattedDateTime);
+
+            Paragraph sjedaloHeader = new Paragraph("Informacije o sjedistu")
+                    .setFontSize(16)
+                    .setBold()
+                    .setFontColor(ColorConstants.BLUE)
+                    .setMarginTop(20)
+                    .setMarginBottom(10);
+            document.add(sjedaloHeader);
+
+            addTicketDetail(document, "Sektor", ticket.getSjedalo().getSector().getNaziv());
+            addTicketDetail(document, "Sjedalo", String.valueOf(ticket.getSjedalo().getBrojSjedala()));
 
 //            String barcodeData = ticket.getId() + " "
 //                    + ticket.getDogadjaj().getNaziv() + " "
@@ -617,5 +658,19 @@ public class ProfileController implements Initializable {
             document.close();
         }
 
+    }
+
+    private void addTicketDetail(Document document, String label, String value) {
+        Table table = new Table(2);
+        table.setWidth(UnitValue.createPercentValue(100));
+
+        Paragraph paragraphLabel = new Paragraph(label).setBold().setFontSize(12).setFontColor(ColorConstants.BLUE);
+        Paragraph paragraphValue = new Paragraph(value).setFontSize(12);
+
+        table.addCell(new Cell().add(paragraphLabel).setWidth(UnitValue.createPercentValue(50)));
+        table.addCell(new Cell().add(paragraphValue).setWidth(UnitValue.createPercentValue(50)));
+
+        table.setMarginBottom(10);
+        document.add(table);
     }
 }
