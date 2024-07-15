@@ -288,21 +288,14 @@ public class AdminPanelController implements Initializable {
         PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
         visibleMsg.setOnFinished(event -> msgLabelLocation.setVisible(false));
 
+        placeInput.getItems().clear();
+
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        List<String> placesList = new ArrayList<>();
-
         TypedQuery<String> query = entityManager.createQuery("SELECT p.naziv FROM Place p", String.class);
-        try {
-            placesList = query.getResultList();
-        } catch (NoResultException e) {
-            msg = "Prvo morate dodati mjesto!";
-            msgLabelLocation.setText(msg);
-            msgLabelLocation.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
-            msgLabelLocation.setVisible(true);
-            visibleMsg.play();
-        }
+        List<String> placesList= query.getResultList();
+
         placeInput.getItems().addAll(placesList);
         entityManager.close();
         entityManagerFactory.close();
