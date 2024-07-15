@@ -26,10 +26,10 @@ import javafx.util.Duration;
 import rs.app.rsprojekat.model.*;
 
 import javax.persistence.*;
-import java.awt.event.HierarchyBoundsAdapter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -731,6 +731,57 @@ public class AdminPanelController implements Initializable {
             buttonsHBox.setPrefHeight(60.0);
             buttonsHBox.setAlignment(Pos.CENTER_RIGHT);
 
+            Button approveBtn = new Button();
+            approveBtn.setMnemonicParsing(false);
+            approveBtn.setPrefWidth(100.0);
+            approveBtn.setStyle("-fx-background-color: #107811; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            approveBtn.setTextFill(Color.WHITE);
+            approveBtn.setText("Prihvati");
+            approveBtn.setFont(Font.font("SansSerif Bold", 18.0));
+            approveBtn.setCursor(Cursor.HAND);
+            approveBtn.setOnAction(eventClick -> {
+                Dogadjaj dogadjaj = entityManager.find(Dogadjaj.class, event.getId());
+                final EntityTransaction entityTransaction = entityManager.getTransaction();
+                entityTransaction.begin();
+                dogadjaj.setApproved(true);
+                dogadjaj.setAvailable(true);
+                entityTransaction.commit();
+                --eventsReqNumberLong;
+                refreshEventsPagination();
+            });
+            HBox.setMargin(approveBtn, new Insets(0, 15, 0, 0));
+
+            Button rejectBtn = new Button();
+            rejectBtn.setMnemonicParsing(false);
+            rejectBtn.setPrefWidth(100.0);
+            rejectBtn.setStyle("-fx-background-color: #781510; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
+            rejectBtn.setTextFill(Color.WHITE);
+            rejectBtn.setText("Odbij");
+            rejectBtn.setFont(Font.font("SansSerif Bold", 18.0));
+            rejectBtn.setCursor(Cursor.HAND);
+            rejectBtn.setOnAction(eventClick -> {
+                Path currDir = Paths.get("").toAbsolutePath();
+                Path imgToDelete = currDir.resolve("src/main/resources/rs/app/rsprojekat/controller/" + event.getImgPath());
+                try {
+                    Files.delete(imgToDelete);
+                } catch (IOException ignored) {}
+                Dogadjaj dogadjaj = entityManager.find(Dogadjaj.class, event.getId());
+                final EntityTransaction entityTransaction = entityManager.getTransaction();
+                TypedQuery<Ticket> ticketsQuery = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjajInput", Ticket.class);
+                ticketsQuery.setParameter("dogadjajInput", event);
+                List<Ticket> ticketsList = ticketsQuery.getResultList();
+                entityTransaction.begin();
+                for (Ticket ticket : ticketsList) {
+                    entityManager.remove(ticket);
+                }
+                entityManager.remove(dogadjaj);
+                entityTransaction.commit();
+                --eventsReqNumberLong;
+                refreshEventsPagination();
+            });
+
+            buttonsHBox.getChildren().addAll(approveBtn, rejectBtn);
+
             page.getChildren().addAll(nazivHBox, pocetakKrajHBox, kategorijaPodkategorijaHBox, mjestoLokacijaHBox, organizatorCijenaHBox, opisVBox, eventImageView, buttonsHBox);
         }
         return page;
@@ -738,7 +789,7 @@ public class AdminPanelController implements Initializable {
 
     private void refreshEventsPagination() {
         eventsReqNumber.setText(eventsReqNumberLong.toString());
-        eventsPagination.setPageCount(eventsReqNumberLong.intValue() + 1);
+        eventsPagination.setPageCount(eventsReqNumberLong.intValue() == 0 ? 1 : eventsReqNumberLong.intValue());
         eventsPagination.setPageFactory(this::getEventPanel);
     }
 

@@ -147,6 +147,14 @@ public class RegisterController implements Initializable {
             msg = "Ime ne moze pocinjati sa praznim mjestom!";
             return false;
         }
+        if (ime.matches(".*\\d.*")) {
+            msg = "Ime ne moze sadrzati brojeve!";
+            return false;
+        }
+        if (!Character.isUpperCase(ime.charAt(0))) {
+            msg = "Ime mora poceti velikim slovom!";
+            return false;
+        }
         String prezime = prezimeInput.getText();
         if (prezime.length() < 2 || prezime.length() > 20) {
             msg = "Prezime mora biti izmedju 2 i 20 karaktera!";
@@ -154,6 +162,14 @@ public class RegisterController implements Initializable {
         }
         if (prezime.charAt(0) == ' ') {
             msg = "Prezime ne moze pocinjati sa praznim mjestom!";
+            return false;
+        }
+        if (prezime.matches(".*\\d.*")) {
+            msg = "Prezime ne moze sadrzati brojeve!";
+            return false;
+        }
+        if (!Character.isUpperCase(prezime.charAt(0))) {
+            msg = "Prezime mora pocinjati velikim slovom!";
             return false;
         }
         String email = emailInput.getText();
