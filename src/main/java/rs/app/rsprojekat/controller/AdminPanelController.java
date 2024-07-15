@@ -26,6 +26,7 @@ import javafx.util.Duration;
 import rs.app.rsprojekat.model.*;
 
 import javax.persistence.*;
+import java.awt.event.HierarchyBoundsAdapter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -108,6 +109,11 @@ public class AdminPanelController implements Initializable {
     private TextField sectorCapacityInput;
     @FXML
     private Label msgLabelSector;
+    @FXML
+    private Pagination eventsPagination;
+    @FXML
+    private Label eventsReqNumber;
+    private Long eventsReqNumberLong;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -115,6 +121,10 @@ public class AdminPanelController implements Initializable {
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(u) FROM User u WHERE approved = 0", Long.class);
         usersReqNumberLong = query.getSingleResult();
+
+        TypedQuery<Long> eventsReqNumberQuery = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d WHERE approved = 0", Long.class);
+        eventsReqNumberLong = eventsReqNumberQuery.getSingleResult();
+        eventsReqNumber.setText(eventsReqNumberLong.toString());
 
         entityManager.close();
         entityManagerFactory.close();
@@ -328,12 +338,14 @@ public class AdminPanelController implements Initializable {
         locationPanel.setManaged(false);
         sectorPanel.setVisible(false);
         sectorPanel.setManaged(false);
-        usersPagination.setVisible(true);
-        usersPagination.setManaged(true);
         categoryPanel.setVisible(false);
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
+        usersPagination.setVisible(true);
+        usersPagination.setManaged(true);
         refreshUsersPagination();
     }
 
@@ -344,12 +356,14 @@ public class AdminPanelController implements Initializable {
         locationPanel.setManaged(false);
         sectorPanel.setVisible(false);
         sectorPanel.setManaged(false);
-        placePanel.setVisible(true);
-        placePanel.setManaged(true);
         categoryPanel.setVisible(false);
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
+        placePanel.setVisible(true);
+        placePanel.setManaged(true);
     }
     public void showCategoryPanel() {
         usersPagination.setVisible(false);
@@ -360,10 +374,12 @@ public class AdminPanelController implements Initializable {
         sectorPanel.setManaged(false);
         placePanel.setVisible(false);
         placePanel.setManaged(false);
-        categoryPanel.setVisible(true);
-        categoryPanel.setManaged(true);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
+        categoryPanel.setVisible(true);
+        categoryPanel.setManaged(true);
     }
 
     public void showSubcategoryPanel() {
@@ -377,6 +393,8 @@ public class AdminPanelController implements Initializable {
         placePanel.setManaged(false);
         categoryPanel.setVisible(false);
         categoryPanel.setManaged(false);
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
         subcategoryPanel.setVisible(true);
         subcategoryPanel.setManaged(true);
         getCategoryNames(categoryInput);
@@ -389,12 +407,14 @@ public class AdminPanelController implements Initializable {
         placePanel.setManaged(false);
         sectorPanel.setVisible(false);
         sectorPanel.setManaged(false);
-        locationPanel.setVisible(true);
-        locationPanel.setManaged(true);
         categoryPanel.setVisible(false);
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
+        locationPanel.setVisible(true);
+        locationPanel.setManaged(true);
         getPlacesNames(placeInput);
     }
 
@@ -405,13 +425,321 @@ public class AdminPanelController implements Initializable {
         placePanel.setManaged(false);
         locationPanel.setVisible(false);
         locationPanel.setManaged(false);
-        sectorPanel.setVisible(true);
-        sectorPanel.setManaged(true);
         categoryPanel.setVisible(false);
         categoryPanel.setManaged(false);
         subcategoryPanel.setVisible(false);
         subcategoryPanel.setManaged(false);
+        eventsPagination.setVisible(false);
+        eventsPagination.setManaged(false);
+        sectorPanel.setVisible(true);
+        sectorPanel.setManaged(true);
         getPlacesNames(sectorPlaceInput);
+    }
+
+    public void showEventPanel() {
+        usersPagination.setVisible(false);
+        usersPagination.setManaged(false);
+        placePanel.setVisible(false);
+        placePanel.setManaged(false);
+        locationPanel.setVisible(false);
+        locationPanel.setManaged(false);
+        sectorPanel.setVisible(false);
+        sectorPanel.setManaged(false);
+        categoryPanel.setVisible(false);
+        categoryPanel.setManaged(false);
+        subcategoryPanel.setVisible(false);
+        subcategoryPanel.setManaged(false);
+        eventsPagination.setVisible(true);
+        eventsPagination.setManaged(true);
+        refreshEventsPagination();
+    }
+
+    private VBox getEventPanel(int pageIndex) {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Dogadjaj> eventsQeury = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE approved = 0", Dogadjaj.class).setFirstResult(pageIndex).setMaxResults(1);
+        List<Dogadjaj> eventsList = eventsQeury.getResultList();
+
+        VBox page = new VBox();
+        page.setPrefWidth(eventsPagination.getPrefWidth());
+        page.setStyle("-fx-padding: 10;");
+
+        for (Dogadjaj event : eventsList) {
+            HBox nazivHBox = new HBox();
+            nazivHBox.setPrefWidth(page.getPrefWidth());
+            nazivHBox.setPrefHeight(45.0);
+            nazivHBox.setAlignment(Pos.CENTER_LEFT);
+            VBox.setMargin(nazivHBox, new Insets(0, 0, 10, 0));
+
+            Label nazivLabel = new Label("Naziv:");
+            nazivLabel.setPrefWidth(62.0);
+            nazivLabel.setPrefHeight(26.0);
+            nazivLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            nazivLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(nazivLabel, new Insets(0, 15, 0, 0));
+
+            Label nazivContainerLabel = new Label(event.getNaziv());
+            nazivContainerLabel.setPrefWidth(834.0);
+            nazivContainerLabel.setPrefHeight(42.0);
+            nazivContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            nazivContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            nazivContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            nazivHBox.getChildren().addAll(nazivLabel, nazivContainerLabel);
+
+            HBox pocetakKrajHBox = new HBox();
+            pocetakKrajHBox.setPrefWidth(page.getPrefWidth());
+            pocetakKrajHBox.setPrefHeight(45.0);
+            pocetakKrajHBox.setAlignment(Pos.CENTER_LEFT);
+            VBox.setMargin(pocetakKrajHBox, new Insets(0, 0, 10, 0));
+
+            HBox pocetakHBox = new HBox();
+            pocetakHBox.setPrefWidth(pocetakKrajHBox.getPrefWidth() / 2);
+            pocetakHBox.setPrefHeight(45.0);
+            pocetakHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(pocetakHBox, new Insets(0, 10, 0, 0));
+
+            HBox krajHBox = new HBox();
+            krajHBox.setPrefWidth(pocetakKrajHBox.getPrefWidth() / 2);
+            krajHBox.setPrefHeight(45.0);
+            krajHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(krajHBox, new Insets(0, 0, 0, 10));
+
+            Label pocetakLabel = new Label("Početak:");
+            pocetakLabel.setPrefWidth(87.0);
+            pocetakLabel.setPrefHeight(26.0);
+            pocetakLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            pocetakLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(pocetakLabel, new Insets(0, 15, 0, 0));
+
+            Label pocetakContainerLabel = new Label(event.getStartDate().toString());
+            pocetakContainerLabel.setPrefWidth(344.0);
+            pocetakContainerLabel.setPrefHeight(42.0);
+            pocetakContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            pocetakContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            pocetakContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            pocetakHBox.getChildren().addAll(pocetakLabel, pocetakContainerLabel);
+
+            Label krajLabel = new Label("Kraj:");
+            krajLabel.setPrefWidth(47.0);
+            krajLabel.setPrefHeight(26.0);
+            krajLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            krajLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(krajLabel, new Insets(0, 15, 0, 0));
+
+            Label krajContainerLabel = new Label(event.getEndDate().toString());
+            krajContainerLabel.setPrefWidth(386.0);
+            krajContainerLabel.setPrefHeight(42.0);
+            krajContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            krajContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            krajContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            krajHBox.getChildren().addAll(krajLabel, krajContainerLabel);
+
+            pocetakKrajHBox.getChildren().addAll(pocetakHBox, krajHBox);
+
+            HBox kategorijaPodkategorijaHBox = new HBox();
+            kategorijaPodkategorijaHBox.setPrefWidth(page.getPrefWidth());
+            kategorijaPodkategorijaHBox.setPrefHeight(45.0);
+            kategorijaPodkategorijaHBox.setAlignment(Pos.CENTER_LEFT);
+            VBox.setMargin(kategorijaPodkategorijaHBox, new Insets(0, 0, 10, 0));
+
+            HBox kategorijaHBox = new HBox();
+            kategorijaHBox.setPrefWidth(kategorijaPodkategorijaHBox.getPrefWidth() / 2);
+            kategorijaHBox.setPrefHeight(45.0);
+            kategorijaHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(kategorijaHBox, new Insets(0, 10, 0, 0));
+
+            HBox podkategorijaHBox = new HBox();
+            podkategorijaHBox.setPrefWidth(kategorijaPodkategorijaHBox.getPrefWidth() / 2);
+            podkategorijaHBox.setPrefHeight(45.0);
+            podkategorijaHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(podkategorijaHBox, new Insets(0, 0, 0, 10));
+
+            Label kategorijaLabel = new Label("Kategorija:");
+            kategorijaLabel.setPrefWidth(106.0);
+            kategorijaLabel.setPrefHeight(26.0);
+            kategorijaLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            kategorijaLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(kategorijaLabel, new Insets(0, 15, 0, 0));
+
+            Label kategorijaContainerLabel = new Label(event.getPodkategorija().getKategorija().getNaziv());
+            kategorijaContainerLabel.setPrefWidth(328.0);
+            kategorijaContainerLabel.setPrefHeight(42.0);
+            kategorijaContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            kategorijaContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            kategorijaContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            kategorijaHBox.getChildren().addAll(kategorijaLabel, kategorijaContainerLabel);
+
+            Label podkategorijaLabel = new Label("Podkategorija:");
+            podkategorijaLabel.setPrefWidth(256.0);
+            podkategorijaLabel.setPrefHeight(26.0);
+            podkategorijaLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            podkategorijaLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(podkategorijaLabel, new Insets(0, 15, 0, 0));
+
+            Label podkategorijaContainerLabel = new Label(event.getPodkategorija().getNaziv());
+            podkategorijaContainerLabel.setPrefWidth(386.0);
+            podkategorijaContainerLabel.setPrefHeight(42.0);
+            podkategorijaContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            podkategorijaContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            podkategorijaContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            podkategorijaHBox.getChildren().addAll(podkategorijaLabel, podkategorijaContainerLabel);
+
+            kategorijaPodkategorijaHBox.getChildren().addAll(kategorijaHBox, podkategorijaHBox);
+
+            HBox mjestoLokacijaHBox = new HBox();
+            mjestoLokacijaHBox.setPrefWidth(page.getPrefWidth());
+            mjestoLokacijaHBox.setPrefHeight(45.0);
+            mjestoLokacijaHBox.setAlignment(Pos.CENTER_LEFT);
+            VBox.setMargin(mjestoLokacijaHBox, new Insets(0, 0, 10, 0));
+
+            HBox mjestoHBox = new HBox();
+            mjestoHBox.setPrefWidth(pocetakKrajHBox.getPrefWidth() / 2);
+            mjestoHBox.setPrefHeight(45.0);
+            mjestoHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(mjestoHBox, new Insets(0, 10, 0, 0));
+
+            HBox lokacijaHBox = new HBox();
+            lokacijaHBox.setPrefWidth(pocetakKrajHBox.getPrefWidth() / 2);
+            lokacijaHBox.setPrefHeight(45.0);
+            lokacijaHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(lokacijaHBox, new Insets(0, 0, 0, 10));
+
+            Label mjestoLabel = new Label("Mjesto:");
+            mjestoLabel.setPrefWidth(73.0);
+            mjestoLabel.setPrefHeight(26.0);
+            mjestoLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            mjestoLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(mjestoLabel, new Insets(0, 15, 0, 0));
+
+            Label mjestoContainerLabel = new Label(event.getLokacija().getMjesto().getNaziv());
+            mjestoContainerLabel.setPrefWidth(361.0);
+            mjestoContainerLabel.setPrefHeight(42.0);
+            mjestoContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            mjestoContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            mjestoContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            mjestoHBox.getChildren().addAll(mjestoLabel, mjestoContainerLabel);
+
+            Label lokacijaLabel = new Label("Lokacija:");
+            lokacijaLabel.setPrefWidth(139.0);
+            lokacijaLabel.setPrefHeight(26.0);
+            lokacijaLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            lokacijaLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(lokacijaLabel, new Insets(0, 15, 0, 0));
+
+            Label lokacijaContainerLabel = new Label(event.getLokacija().getNaziv());
+            lokacijaContainerLabel.setPrefWidth(386.0);
+            lokacijaContainerLabel.setPrefHeight(42.0);
+            lokacijaContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            lokacijaContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            lokacijaContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            lokacijaHBox.getChildren().addAll(lokacijaLabel, lokacijaContainerLabel);
+
+            mjestoLokacijaHBox.getChildren().addAll(mjestoHBox, lokacijaHBox);
+
+            HBox organizatorCijenaHBox = new HBox();
+            organizatorCijenaHBox.setPrefWidth(page.getPrefWidth());
+            organizatorCijenaHBox.setPrefHeight(45.0);
+            organizatorCijenaHBox.setAlignment(Pos.CENTER_LEFT);
+            VBox.setMargin(organizatorCijenaHBox, new Insets(0, 0, 10, 0));
+
+            HBox organizatorHBox = new HBox();
+            organizatorHBox.setPrefWidth(organizatorCijenaHBox.getPrefWidth() / 2);
+            organizatorHBox.setPrefHeight(45.0);
+            organizatorHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(organizatorHBox, new Insets(0, 10, 0, 0));
+
+            HBox cijenaHBox = new HBox();
+            cijenaHBox.setPrefWidth(organizatorCijenaHBox.getPrefWidth() / 2);
+            cijenaHBox.setPrefHeight(45.0);
+            cijenaHBox.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(cijenaHBox, new Insets(0, 0, 0, 10));
+
+            Label organizatorLabel = new Label("Organizator:");
+            organizatorLabel.setPrefWidth(127.0);
+            organizatorLabel.setPrefHeight(26.0);
+            organizatorLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            organizatorLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(organizatorLabel, new Insets(0, 15, 0, 0));
+
+            Label organizatorContainerLabel = new Label(event.getOrganizator().getIme() + " " + event.getOrganizator().getPrezime());
+            organizatorContainerLabel.setPrefWidth(304.0);
+            organizatorContainerLabel.setPrefHeight(42.0);
+            organizatorContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            organizatorContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            organizatorContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            organizatorHBox.getChildren().addAll(organizatorLabel, organizatorContainerLabel);
+
+            Label cijenaLabel = new Label("Cijena:");
+            cijenaLabel.setPrefWidth(100.0);
+            cijenaLabel.setPrefHeight(26.0);
+            cijenaLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            cijenaLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(cijenaLabel, new Insets(0, 15, 0, 0));
+
+            Label cijenaContainerLabel = new Label(Double.toString(event.getBasePrice()) + "KM");
+            cijenaContainerLabel.setPrefWidth(386.0);
+            cijenaContainerLabel.setPrefHeight(42.0);
+            cijenaContainerLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            cijenaContainerLabel.setAlignment(Pos.CENTER_LEFT);
+            cijenaContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 50; -fx-border-radius: 50;");
+
+            cijenaHBox.getChildren().addAll(cijenaLabel, cijenaContainerLabel);
+
+            organizatorCijenaHBox.getChildren().addAll(organizatorHBox, cijenaHBox);
+
+            VBox opisVBox = new VBox();
+            opisVBox.setPrefWidth(page.getPrefWidth());
+            opisVBox.setPrefHeight(182.0);
+            opisVBox.setAlignment(Pos.TOP_LEFT);
+            VBox.setMargin(opisVBox, new Insets(0, 0, 10, 0));
+
+            Label opisLabel = new Label("Opis:");
+            opisLabel.setPrefWidth(55.0);
+            opisLabel.setPrefHeight(26.0);
+            opisLabel.setFont(Font.font("SansSerif Regular", 22.0));
+            opisLabel.setAlignment(Pos.CENTER_LEFT);
+            HBox.setMargin(opisLabel, new Insets(0, 0, 10, 0));
+
+            Label opisContainerLabel = new Label(event.getOpis());
+            opisContainerLabel.setPrefWidth(908.0);
+            opisContainerLabel.setPrefHeight(157.0);
+            opisContainerLabel.setFont(Font.font("SansSerif Regular", 20.0));
+            opisContainerLabel.setAlignment(Pos.TOP_LEFT);
+            opisContainerLabel.setStyle("-fx-border-color: lightgray; -fx-padding: 7; -fx-background-radius: 20; -fx-border-radius: 20;");
+
+            opisVBox.getChildren().addAll(opisLabel, opisContainerLabel);
+
+            ImageView eventImageView = new ImageView();
+            eventImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(event.getImgPath()))));
+            eventImageView.setPickOnBounds(true);
+            eventImageView.setPreserveRatio(true);
+            eventImageView.setFitWidth(page.getPrefWidth());
+            eventImageView.setFitHeight(150.0);
+            VBox.setMargin(eventImageView, new Insets(0, 0, 10, 0));
+
+            HBox buttonsHBox = new HBox();
+            buttonsHBox.setPrefWidth(page.getPrefWidth());
+            buttonsHBox.setPrefHeight(60.0);
+            buttonsHBox.setAlignment(Pos.CENTER_RIGHT);
+
+            page.getChildren().addAll(nazivHBox, pocetakKrajHBox, kategorijaPodkategorijaHBox, mjestoLokacijaHBox, organizatorCijenaHBox, opisVBox, eventImageView, buttonsHBox);
+        }
+        return page;
+    }
+
+    private void refreshEventsPagination() {
+        eventsReqNumber.setText(eventsReqNumberLong.toString());
+        eventsPagination.setPageCount(eventsReqNumberLong.intValue() + 1);
+        eventsPagination.setPageFactory(this::getEventPanel);
     }
 
     public void addPlace() {
@@ -526,9 +854,9 @@ public class AdminPanelController implements Initializable {
 
         File currentDirFile = new File(".");
         String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
-        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\locationImages";
+        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\controller";
         Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
-        Path destinationPath = targetDirectory.resolve(String.format("%d.%s", id, selectedImgExtension));
+        Path destinationPath = targetDirectory.resolve(String.format("locationImageN%d.%s", id, selectedImgExtension));
         try {
             Files.copy(selectedImgFile.toPath(), destinationPath);
         } catch (IOException ignored) {}
@@ -538,7 +866,7 @@ public class AdminPanelController implements Initializable {
 
         Location location = new Location();
         location.setNaziv(nazivLocationInput.getText());
-        location.setImgPath(String.format("@locationImages/%d.%s", id, selectedImgExtension));
+        location.setImgPath(String.format("locationImageN%d.%s", id, selectedImgExtension));
         location.setAdresa(adresaLocationInput.getText());
         location.setMjesto(queryPlace.getSingleResult());
 

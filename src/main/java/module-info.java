@@ -10,11 +10,15 @@ module rs.app.rsprojekat {
     requires java.sql;
     requires java.persistence;
     requires bcrypt;
+<<<<<<< Updated upstream
     requires kernel;
     requires layout;
     requires com.google.zxing;
     requires com.google.zxing.javase;
     requires io;
+=======
+    requires java.desktop;
+>>>>>>> Stashed changes
 
     opens rs.app.rsprojekat to javafx.fxml;
     opens rs.app.rsprojekat.controller to javafx.fxml;

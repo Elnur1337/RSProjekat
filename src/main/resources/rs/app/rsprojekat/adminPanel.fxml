@@ -201,6 +201,32 @@
                <Insets bottom="10.0" />
             </VBox.margin>
          </HBox>
+         <HBox alignment="CENTER" onMouseClicked="#showEventPanel" prefHeight="54.0" prefWidth="263.0" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+            <children>
+               <ImageView fitHeight="25.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@icons/calendar-plus-regular.png" />
+                  </image>
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </ImageView>
+               <Label text="Događaji">
+                  <font>
+                     <Font name="SansSerif Regular" size="18.0" />
+                  </font>
+               </Label>
+               <Region prefHeight="34.0" prefWidth="18.0" HBox.hgrow="ALWAYS" />
+               <Label fx:id="eventsReqNumber" alignment="CENTER" prefHeight="27.0" prefWidth="27.0" style="-fx-background-color: #7d2424; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="0" textFill="WHITE">
+                  <font>
+                     <Font name="SansSerif Bold" size="16.0" />
+                  </font>
+               </Label>
+            </children>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </HBox>
       </children>
    </VBox>
    <Pagination fx:id="usersPagination" layoutX="259.0" layoutY="55.0" prefHeight="744.0" prefWidth="944.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
@@ -425,7 +451,7 @@
    </VBox>
 
 
-   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+   <VBox fx:id="sectorPanel" alignment="CENTER" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="937.0" style="-fx-padding: 10;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
       <children>
          <Label text="Uređivanje sektora">
             <font>
@@ -542,4 +568,5 @@
          </Label>
       </children>
    </VBox>
+   <Pagination fx:id="eventsPagination" layoutX="263.0" layoutY="56.0" prefHeight="744.0" prefWidth="944.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="263.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
 </AnchorPane>

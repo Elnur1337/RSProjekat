@@ -598,9 +598,9 @@ public class OrganizerController implements Initializable {
 
         File currentDirFile = new File(".");
         String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
-        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\eventImages";
+        targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\controller";
         Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
-        Path destinationPath = targetDirectory.resolve(String.format("%d.%s", id, selectedImgExtension));
+        Path destinationPath = targetDirectory.resolve(String.format("eventImageN%d.%s", id, selectedImgExtension));
         try {
             Files.copy(selectedImgFile.toPath(), destinationPath);
         } catch (IOException ignored) {}
@@ -615,7 +615,7 @@ public class OrganizerController implements Initializable {
         Dogadjaj dogadjaj = new Dogadjaj();
         dogadjaj.setNaziv(nazivInput.getText());
         dogadjaj.setOpis(opisInput.getText());
-        dogadjaj.setImgPath(String.format("@eventImages/%d.%s", id, selectedImgExtension));
+        dogadjaj.setImgPath(String.format("eventImageN%d.%s", id, selectedImgExtension));
         dogadjaj.setStartDate(Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", pocetakGodinaBox.getValue(), monthNameNumberMap.get(pocetakMjesecBox.getValue()), pocetakDanBox.getValue(), Integer.parseInt(pocetakSatiInput.getText()), Integer.parseInt(pocetakMinutiInput.getText()), 0)));
         dogadjaj.setEndDate(Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", krajGodinaBox.getValue(), monthNameNumberMap.get(krajMjesecBox.getValue()), krajDanBox.getValue(), Integer.parseInt(krajSatiInput.getText()), Integer.parseInt(krajMinutiInput.getText()), 0)));
         dogadjaj.setBasePrice(Double.parseDouble(baznaCijenaInput.getText()));
