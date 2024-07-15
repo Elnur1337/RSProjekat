@@ -14,328 +14,156 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane
-        prefHeight="800.0"
-        prefWidth="1200.0"
-        xmlns="http://javafx.com/javafx/17"
-        xmlns:fx="http://javafx.com/fxml/1"
-        fx:controller="rs.app.rsprojekat.controller.RegisterController">
-    <HBox
-            alignment="CENTER_RIGHT"
-            prefHeight="56.0"
-            prefWidth="1200.0"
-            style="-fx-background-color: #666; -fx-padding: 10px;"
-            styleClass="navBar"
-            AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
-        <Button
-                fx:id="homeBtn"
-                mnemonicParsing="false"
-                onAction="#switchToHomeScene"
-                style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                styleClass="navBtn"
-                text="Početna">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rs.app.rsprojekat.controller.RegisterController">
+    <HBox alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="1200.0" style="-fx-background-color: #666; -fx-padding: 10px;" styleClass="navBar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#switchToHomeScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Početna">
             <font>
-                <Font name="SansSerif Regular" size="18.0"/>
+                <Font name="SansSerif Regular" size="18.0" />
             </font>
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </Button>
-        <Region
-                prefHeight="36.0"
-                prefWidth="710.0"
-                HBox.hgrow="ALWAYS"/>
-        <Button
-                mnemonicParsing="false"
-                onAction="#switchToLoginScene"
-                style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                styleClass="navBtn"
-                text="Prijava">
+        <Region prefHeight="36.0" prefWidth="710.0" HBox.hgrow="ALWAYS" />
+        <Button mnemonicParsing="false" onAction="#switchToLoginScene" style="-fx-background-color: white; -fx-background-radius: 50px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" styleClass="navBtn" text="Prijava">
             <font>
-                <Font name="SansSerif Regular" size="18.0"/>
+                <Font name="SansSerif Regular" size="18.0" />
             </font>
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
             <HBox.margin>
-                <Insets/>
+                <Insets />
             </HBox.margin>
         </Button>
     </HBox>
-    <VBox
-            alignment="CENTER"
-            layoutY="56.0"
-            prefHeight="744.0"
-            prefWidth="705.0"
-            AnchorPane.bottomAnchor="0.0"
-            AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="495.0"
-            AnchorPane.topAnchor="56.0">
+    <VBox alignment="CENTER" layoutY="56.0" prefHeight="744.0" prefWidth="705.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="495.0" AnchorPane.topAnchor="56.0">
         <Label text="Registracija">
             <font>
-                <Font size="46.0"/>
+                <Font name="SansSerif Regular" size="46.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="30.0"/>
+                <Insets bottom="30.0" />
             </VBox.margin>
         </Label>
-        <TextField
-                fx:id="imeInput"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="36.0"
-                prefWidth="275.0"
-                promptText="Ime"
-                style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;"
-                styleClass="input"
-                VBox.vgrow="NEVER">
+        <TextField fx:id="imeInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Ime" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="input" VBox.vgrow="NEVER">
             <font>
-                <Font size="18.0"/>
+                <Font name="SansSerif Regular" size="18.0" />
             </font>
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
         </TextField>
-        <TextField
-                fx:id="prezimeInput"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="36.0"
-                prefWidth="275.0"
-                promptText="Prezime"
-                style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;"
-                styleClass="input">
+        <TextField fx:id="prezimeInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Prezime" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="input">
             <font>
-                <Font size="18.0"/>
+                <Font name="SansSerif Regular" size="18.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
         </TextField>
-        <TextField
-                fx:id="emailInput"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="36.0"
-                prefWidth="275.0"
-                promptText="Email"
-                style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;"
-                styleClass="input">
+        <TextField fx:id="emailInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Email" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="input">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
             <opaqueInsets>
-                <Insets/>
+                <Insets />
             </opaqueInsets>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
         </TextField>
-        <PasswordField
-                fx:id="passwordInput"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="36.0"
-                prefWidth="275.0"
-                promptText="Šifra"
-                style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
+        <PasswordField fx:id="passwordInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Šifra" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
         </PasswordField>
-        <PasswordField
-                fx:id="passwordRepeatInput"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="36.0"
-                prefWidth="275.0"
-                promptText="Ponovite šifru"
-                style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
+        <PasswordField fx:id="passwordRepeatInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="275.0" promptText="Ponovite šifru" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;">
             <font>
-                <Font size="18.0"/>
+                <Font name="SansSerif Regular" size="18.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
         </PasswordField>
-        <VBox
-                alignment="CENTER"
-                maxHeight="-Infinity"
-                maxWidth="-Infinity"
-                minHeight="-Infinity"
-                minWidth="-Infinity"
-                prefHeight="111.0"
-                prefWidth="324.0">
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="111.0" prefWidth="324.0">
             <Label text="Datum rođenja">
                 <font>
-                    <Font size="18.0"/>
+                    <Font size="18.0" />
                 </font>
             </Label>
-            <HBox
-                    alignment="CENTER"
-                    maxHeight="-Infinity"
-                    maxWidth="-Infinity"
-                    minHeight="-Infinity"
-                    minWidth="-Infinity"
-                    prefHeight="74.0"
-                    prefWidth="329.0">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="74.0" prefWidth="329.0">
                 <VBox.margin>
-                    <Insets bottom="15.0"/>
+                    <Insets bottom="15.0" />
                 </VBox.margin>
-                <VBox
-                        maxHeight="-Infinity"
-                        maxWidth="-Infinity"
-                        minHeight="-Infinity"
-                        minWidth="-Infinity"
-                        prefHeight="61.0"
-                        prefWidth="94.0">
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="94.0">
                     <HBox.margin>
-                        <Insets right="15.0"/>
+                        <Insets right="15.0" />
                     </HBox.margin>
-                    <Label
-                            prefHeight="29.0"
-                            prefWidth="63.0"
-                            text="Godina:">
+                    <Label prefHeight="29.0" prefWidth="63.0" text="Godina:">
                         <font>
-                            <Font size="18.0"/>
+                            <Font size="18.0" />
                         </font>
                     </Label>
-                    <ComboBox
-                            fx:id="yearInput"
-                            maxHeight="-Infinity"
-                            minHeight="-Infinity"
-                            prefHeight="32.0"
-                            prefWidth="150.0"
-                            style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;"
-                            styleClass="comboBox"/>
+                    <ComboBox fx:id="yearInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="comboBox" />
                 </VBox>
-                <VBox
-                        maxHeight="-Infinity"
-                        maxWidth="-Infinity"
-                        minHeight="-Infinity"
-                        minWidth="-Infinity"
-                        prefHeight="61.0"
-                        prefWidth="112.0">
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="112.0">
                     <HBox.margin>
-                        <Insets right="15.0"/>
+                        <Insets right="15.0" />
                     </HBox.margin>
-                    <Label
-                            prefHeight="33.0"
-                            prefWidth="77.0"
-                            text="Mjesec:">
+                    <Label prefHeight="33.0" prefWidth="77.0" text="Mjesec:">
                         <font>
-                            <Font size="18.0"/>
+                            <Font size="18.0" />
                         </font>
                     </Label>
-                    <ComboBox
-                            fx:id="monthInput"
-                            maxHeight="-Infinity"
-                            minHeight="-Infinity"
-                            prefHeight="32.0"
-                            prefWidth="150.0"
-                            style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;"
-                            styleClass="comboBox"/>
+                    <ComboBox fx:id="monthInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="comboBox" />
                 </VBox>
-                <VBox
-                        maxHeight="-Infinity"
-                        maxWidth="-Infinity"
-                        minHeight="-Infinity"
-                        minWidth="-Infinity"
-                        prefHeight="61.0"
-                        prefWidth="78.0">
-                    <Label
-                            prefHeight="33.0"
-                            prefWidth="77.0"
-                            text="Dan:">
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="78.0">
+                    <Label prefHeight="33.0" prefWidth="77.0" text="Dan:">
                         <font>
-                            <Font size="18.0"/>
+                            <Font size="18.0" />
                         </font>
                     </Label>
-                    <ComboBox
-                            fx:id="dayInput"
-                            maxHeight="-Infinity"
-                            minHeight="-Infinity"
-                            prefHeight="32.0"
-                            prefWidth="150.0"
-                            style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;"
-                            styleClass="comboBox"/>
+                    <ComboBox fx:id="dayInput" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-text-fill: white;" styleClass="comboBox" />
                 </VBox>
             </HBox>
         </VBox>
-        <CheckBox
-                fx:id="isOrganizatorInput"
-                alignment="CENTER"
-                mnemonicParsing="false"
-                text="Organizator">
+        <CheckBox fx:id="isOrganizatorInput" alignment="CENTER" mnemonicParsing="false" text="Organizator">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
         </CheckBox>
-        <Button
-                alignment="CENTER"
-                mnemonicParsing="false"
-                onAction="#register"
-                style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                text="Registracija"
-                textFill="WHITE">
+        <Button alignment="CENTER" mnemonicParsing="false" onAction="#register" style="-fx-background-color: #666; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="Registracija" textFill="WHITE">
             <VBox.margin>
-                <Insets bottom="15.0"/>
+                <Insets bottom="15.0" />
             </VBox.margin>
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
             <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
             </cursor>
         </Button>
-        <Label
-                fx:id="msgLabel"
-                alignment="CENTER"
-                prefHeight="46.0"
-                prefWidth="507.0"
-                style="-fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);"
-                text="msg"
-                textFill="WHITE"
-                visible="false">
+        <Label fx:id="msgLabel" alignment="CENTER" prefHeight="46.0" prefWidth="507.0" style="-fx-background-radius: 50; -fx-border-width: 1; -fx-border-color: #ad4c4c; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);" text="msg" textFill="WHITE" visible="false">
             <font>
-                <Font size="20.0"/>
+                <Font size="20.0" />
             </font>
         </Label>
     </VBox>
-    <AnchorPane
-            layoutX="705.0"
-            layoutY="56.0"
-            prefHeight="744.0"
-            prefWidth="499.0"
-            styleClass="registerImg"
-            AnchorPane.bottomAnchor="0.0"
-            AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="56.0"/>
+    <AnchorPane layoutX="705.0" layoutY="56.0" prefHeight="744.0" prefWidth="499.0" styleClass="registerImg" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
 </AnchorPane>
