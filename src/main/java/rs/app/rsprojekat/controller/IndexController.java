@@ -137,6 +137,11 @@ public class IndexController implements Initializable {
     @FXML
     private Label msgLabel;
 
+    @FXML
+    private ImageView eventImage;
+    @FXML
+    private ImageView locationImage;
+
 
     private void setButtonVisibility(boolean visibility) {
         walletBtn.setVisible(visibility);
@@ -538,6 +543,8 @@ public class IndexController implements Initializable {
         cijenaShow.clear();
         slobodnoMjestaShow.clear();
         brojKarataInput.clear();
+
+        locationImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getLokacija().getImgPath()))));
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();

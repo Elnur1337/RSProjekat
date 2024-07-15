@@ -142,6 +142,6 @@ public class Dogadjaj {
 
     @Override
     public String toString() {
-        return "ID: " + id + "\nNaziv: " + naziv + "\nMjesto: " + lokacija.getMjesto().getNaziv() + "\nLokacija: " + lokacija.getNaziv() + "\nImage path: " + imgPath;
+        return "ID: " + id + "\nNaziv: " + naziv + "\nMjesto: " + lokacija.getMjesto().getNaziv() + "\nLokacija: " + lokacija.getNaziv() + "\nImage path: " + imgPath + "\nLocation path: " + lokacija.getImgPath();
     }
 }
