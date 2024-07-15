@@ -653,6 +653,7 @@ public class OrganizerController implements Initializable {
         visibleMsg.play();
 
         refreshEventsNumber();
+        showNewEventPanel();
     }
 
     public void switchToHomeScene(ActionEvent event) throws IOException {
@@ -763,7 +764,7 @@ public class OrganizerController implements Initializable {
                     prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getBought).count()));
                     prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getReserved).count()));
                     ukupnoKarataShow.setText(String.valueOf(karte.size()));
-                    cijenaShow.setText(karte.get(0).getPrice() + "KM");
+                    cijenaShow.setText((karte.get(0).getPrice() + d.getBasePrice()) + "KM");
 
                     entityManager.close();
                     entityManagerFactory.close();

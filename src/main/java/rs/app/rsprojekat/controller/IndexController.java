@@ -4,13 +4,12 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -50,6 +49,8 @@ public class IndexController implements Initializable {
     private Long numOfEvents;
     private String selektovanoMjesto;
     private String selektovanaLokacija;
+    private String msg;
+    private Dogadjaj selectedEvent;
 
     private List<Dogadjaj> eventsList = new ArrayList<>();
     private List<Dogadjaj> showList = new ArrayList<>();
@@ -131,6 +132,9 @@ public class IndexController implements Initializable {
     private TextField organizatorShow;
     @FXML
     private TextField brojKarataInput;
+
+    @FXML
+    private Label msgLabel;
 
 
     private void setButtonVisibility(boolean visibility) {
@@ -289,6 +293,8 @@ public class IndexController implements Initializable {
         bottomPriceInput.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() > 4)
+                    bottomPriceInput.setText(oldValue);
                 if (!newValue.matches("\\d*")) {
                     bottomPriceInput.setText(newValue.replaceAll("[^\\d]", ""));
                 }
@@ -297,6 +303,8 @@ public class IndexController implements Initializable {
         upperPriceInput.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() > 4)
+                    upperPriceInput.setText(oldValue);
                 if (!newValue.matches("\\d*")) {
                     upperPriceInput.setText(newValue.replaceAll("[^\\d]", ""));
                 }
@@ -305,6 +313,8 @@ public class IndexController implements Initializable {
         brojKarataInput.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(newValue.length() > 4)
+                    brojKarataInput.setText(oldValue);
                 if (!newValue.matches("\\d*")) {
                     brojKarataInput.setText(newValue.replaceAll("[^\\d]", ""));
                 }
@@ -317,6 +327,7 @@ public class IndexController implements Initializable {
         TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true AND approved = true", Dogadjaj.class);
         try  {
             eventsList = query.getResultList();
+            eventsList = eventsList.stream().filter(event -> event.getStartDate().toLocalDateTime().isAfter(LocalDateTime.now())).toList();
         } catch (NoResultException ignored) {}
 
         filtersBox.setTranslateX(320);
@@ -420,81 +431,6 @@ public class IndexController implements Initializable {
         stage.show();
     }
 
-//    @FXML
-//    private void pretraga() {
-//        String uneseniTekst = pretragaTextField.getText();
-//        String criteria = criteriaComboBox.getValue();
-//
-//        if (uneseniTekst == null || criteria == null) {
-//            System.err.println("Neispravan unos");
-//            return;
-//        }
-//
-//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
-//
-//        List<Dogadjaj> result = new ArrayList<>();
-//
-//        try {
-//            if ("Naziv".equals(criteria)) {
-//                TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE d.naziv LIKE :tekst", Dogadjaj.class);
-//                query.setParameter("tekst", "%" + uneseniTekst + "%");
-//                result = query.getResultList();
-//            } else if ("Cijena".equals(criteria)) {
-//              /*  TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE d.cijena LIKE :tekst", Dogadjaj.class);
-//                query.setParameter("tekst", "%" + uneseniTekst + "%");
-//                result = query.getResultList();
-//                */
-//
-//            } else if ("all".equals(criteria)) {
-//                TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d", Dogadjaj.class);
-//                result = query.getResultList();
-//            }
-//
-//            centralBox.getChildren().clear();
-//
-//            // VBox
-//            VBox resultsBox = new VBox();
-//            resultsBox.setSpacing(20);
-//            resultsBox.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 20px; -fx-border-color: #ddd; -fx-border-width: 1px; -fx-border-radius: 5px;");
-//
-//            for (Dogadjaj event : result) {
-//                VBox box = new VBox();
-//                box.setSpacing(10);
-//                box.setMinWidth(600);
-//                box.setStyle("-fx-background-color: white; -fx-padding: 15px; -fx-border-color: #ccc; -fx-border-width: 1px; -fx-border-radius: 3px;");
-//
-//                Label nazivLabel = new Label(event.getNaziv());
-//                nazivLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
-//
-//                Label opisLabel = new Label(event.getOpis());
-//                opisLabel.setStyle("-fx-font-size: 14px;");
-//
-//                box.getChildren().addAll(nazivLabel, opisLabel);
-//
-//                resultsBox.getChildren().add(box);
-//            }
-//
-//            // Create ScrollPane
-//            ScrollPane scrollPane = new ScrollPane();
-//            scrollPane.setContent(resultsBox);
-//            scrollPane.setFitToWidth(true);
-//            scrollPane.setFitToHeight(true);
-//            scrollPane.setStyle("-fx-background-color: transparent; -fx-min-width: 700px; -fx-min-height: 600px;"); // Adjust minimum width and height as needed
-//
-//            // Add ScrollPane
-//            centralBox.getChildren().add(scrollPane);
-//            VBox.setVgrow(scrollPane, Priority.ALWAYS);
-//
-//        } catch (Exception e) {
-//            System.err.println("Greska: " + e.getMessage());
-//            e.printStackTrace();
-//        } finally {
-//            entityManager.close();
-//            entityManagerFactory.close();
-//        }
-//    }
-
     private VBox getEvents(int pageIndex) {
         VBox page = new VBox();
         page.setPrefWidth(eventsPagination.getPrefWidth());
@@ -573,6 +509,8 @@ public class IndexController implements Initializable {
         slide.setToX(0);
         slide.play();
 
+        selectedEvent = d;
+
         nazivShow.setText(d.getNaziv());
         opisShow.setText(d.getOpis());
         LocalDateTime time = d.getStartDate().toLocalDateTime();
@@ -602,19 +540,19 @@ public class IndexController implements Initializable {
                 if (newValue != null) {
                     final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
                     final EntityManager entityManager = entityManagerFactory.createEntityManager();
-                    TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(*) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Long.class);
+                    TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(*) FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND t.bought = false AND t.reserved = false", Long.class);
                     query.setParameter("idInput", d.getId());
                     query.setParameter("nazivInput", newValue);
 
                     Long brojKarata = query.getSingleResult();
                     slobodnoMjestaShow.setText(String.valueOf(brojKarata));
 
-                    TypedQuery<Ticket> query3 = entityManager.createQuery("SELECT t FROM Ticket t JOIN Dogadjaj d ON t.dogadjaj = d JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE d.id = :idInput AND sector.naziv = :nazivInput AND (t.bought = false OR t.reserved = false)", Ticket.class);
-                    query3.setParameter("idInput", d.getId());
+                    TypedQuery<Ticket> query3 = entityManager.createQuery("SELECT t FROM Ticket t JOIN Seat seat ON t.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE t.dogadjaj = :dogadjaj AND sector.naziv = :nazivInput", Ticket.class);
+                    query3.setParameter("dogadjaj", d);
                     query3.setParameter("nazivInput", newValue);
 
                     List<Ticket> karte = query3.getResultList();
-                    cijenaShow.setText(karte.get(0).getPrice() + "KM");
+                    cijenaShow.setText((karte.get(0).getPrice() + d.getBasePrice()) + "KM");
 
                     entityManager.close();
                     entityManagerFactory.close();
@@ -641,10 +579,6 @@ public class IndexController implements Initializable {
         refreshNumOfEvents(filters);
         eventsPagination.setPageCount(numOfEvents.intValue() / 6 + 1);
         eventsPagination.setPageFactory(this::getEvents);
-    }
-
-    private void refreshNumOfEvents() {
-        refreshNumOfEvents("");
     }
 
     private void refreshNumOfEvents(String filters) {
@@ -797,10 +731,122 @@ public class IndexController implements Initializable {
     }
 
     public void rezervacija(ActionEvent actionEvent) {
-        System.out.println("Rezervacija");
+        Long slobodnoMjesta = Long.parseLong(slobodnoMjestaShow.getText());
+        LocalDateTime maxRezervacijaDatum = selectedEvent.getStartDate().toLocalDateTime().minusDays(3);
+        LocalDateTime rezervacijaDo = LocalDateTime.now().plusDays(1);
+        rezervacijaDo = rezervacijaDo.isBefore(maxRezervacijaDatum) ? rezervacijaDo : maxRezervacijaDatum;
+
+        if(LocalDateTime.now().plusDays(1).isAfter(maxRezervacijaDatum)) {
+            msg = "Ne možete rezervisati kartu za ovaj događaj.";
+            printMessage(false);
+            return;
+        }
+
+        Long brojKarata = Long.parseLong(brojKarataInput.getText());
+
+        if(brojKarata > slobodnoMjesta) {
+            msg = "Nedovoljno slobodnih mjesta za uneseni broj karata.";
+            printMessage(false);
+            return;
+        }
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Ticket> query = entityManager.createQuery("SELECT ticket FROM Ticket ticket JOIN Seat seat ON ticket.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE ticket.dogadjaj = :dogadjaj AND sector.naziv = :sector AND ticket.bought = false AND ticket.reserved = false", Ticket.class);
+        query.setParameter("dogadjaj", selectedEvent);
+        query.setParameter("sector", sektorBox.getValue());
+        List<Ticket> tickets = query.getResultList();
+
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        for(int i = 0; i < brojKarata; ++i) {
+            tickets.get(i).setBought(false);
+            tickets.get(i).setReserved(true);
+            tickets.get(i).setReservedTo(Timestamp.valueOf(rezervacijaDo));
+            tickets.get(i).setKupac(user);
+            entityManager.persist(tickets.get(i));
+        }
+
+        transaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        slobodnoMjesta -= brojKarata;
+        slobodnoMjestaShow.setText(slobodnoMjesta.toString());
+        msg = brojKarata > 1 ? "Uspješno ste rezervisali karte za ovaj događaj." : "Uspješno ste rezervisali kartu za ovaj događaj.";
+        printMessage(true);
     }
 
     public void kupovina(ActionEvent actionEvent) {
-        System.out.println("Kupovina");
+        Long slobodnoMjesta = Long.parseLong(slobodnoMjestaShow.getText());
+        Long brojKarata;
+
+        try {
+            brojKarata = Long.parseLong(brojKarataInput.getText());
+        } catch(NumberFormatException e) {
+            msg = "Morate unijeti broj karata.";
+            printMessage(false);
+            return;
+        }
+
+        if(brojKarata > slobodnoMjesta) {
+            msg = "Nedovoljno slobodnih mjesta za uneseni broj karata.";
+            printMessage(false);
+            return;
+        }
+
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Ticket> query = entityManager.createQuery("SELECT ticket FROM Ticket ticket JOIN Seat seat ON ticket.sjedalo = seat JOIN Sector sector ON seat.sektor = sector WHERE ticket.dogadjaj = :dogadjaj AND sector.naziv = :sector AND ticket.bought = false AND ticket.reserved = false", Ticket.class);
+        query.setParameter("dogadjaj", selectedEvent);
+        query.setParameter("sector", sektorBox.getValue());
+        List<Ticket> tickets = query.getResultList();
+
+        double cijenaKarata = (tickets.get(0).getPrice() + tickets.get(0).getDogadjaj().getBasePrice()) * brojKarata;
+        if(user.getWallet() < cijenaKarata) {
+            msg = "Nedovoljno sredstava na računu za kupovinu karata.";
+            printMessage(false);
+            return;
+        }
+
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        for(int i = 0; i < brojKarata; ++i) {
+            tickets.get(i).setBought(true);
+            tickets.get(i).setReserved(false);
+            tickets.get(i).setReservedTo(null);
+            tickets.get(i).setKupac(user);
+            entityManager.persist(tickets.get(i));
+        }
+
+        User u = entityManager.find(User.class, user.getId());
+        u.setWallet(u.getWallet() - cijenaKarata);
+        entityManager.persist(u);
+        user = u;
+
+        transaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+
+        refreshWallet();
+        slobodnoMjesta -= brojKarata;
+        slobodnoMjestaShow.setText(slobodnoMjesta.toString());
+        msg = brojKarata > 1 ? "Uspješno ste kupili karte za ovaj događaj." : "Uspješno ste kupili kartu za ovaj događaj.";
+        printMessage(true);
+    }
+
+    private void printMessage(boolean successful) {
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(1500));
+        visibleMsg.setOnFinished(event -> msgLabel.setVisible(false));
+        msgLabel.setText(msg);
+        if (successful) {
+            msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+        } else {
+            msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+        }
+        msgLabel.setVisible(true);
+        visibleMsg.play();
     }
 }

@@ -26,7 +26,7 @@ public class Ticket {
     private boolean reserved;
 
     @Column(name = "reserved_to", nullable = true)
-    private Date reservedTo;
+    private Timestamp reservedTo;
 
     @ManyToOne
     @JoinColumn(name = "id_dogadjaj", referencedColumnName = "id")
@@ -60,9 +60,9 @@ public class Ticket {
 
     public void setReserved(boolean reserved) { this.reserved = reserved; }
 
-    public Date getReservedTo() { return reservedTo; }
+    public Timestamp getReservedTo() { return reservedTo; }
 
-    public void setReservedTo(Date reservedTo) { this.reservedTo = reservedTo; }
+    public void setReservedTo(Timestamp reservedTo) { this.reservedTo = reservedTo; }
 
     public Dogadjaj getDogadjaj() { return dogadjaj; }
 

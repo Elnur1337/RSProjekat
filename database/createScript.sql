@@ -80,7 +80,7 @@ CREATE TABLE karta (
     cijena DECIMAL(6, 2) NOT NULL,
     bought TINYINT NOT NULL DEFAULT 0,
     reserved TINYINT NOT NULL DEFAULT 0,
-    reserved_to DATE,
+    reserved_to TIMESTAMP,
     id_dogadjaj INT NOT NULL,
     id_sjedalo INT NOT NULL,
     id_kupac INT,

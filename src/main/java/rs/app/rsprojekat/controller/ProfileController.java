@@ -9,10 +9,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
@@ -256,7 +253,7 @@ public class ProfileController implements Initializable {
 
 
             VBox placeAndLocationVBox = new VBox();
-            placeAndLocationVBox.setPrefWidth(300.0);
+            placeAndLocationVBox.setPrefWidth(250.0);
 
             Label place = new Label();
             place.setText("Mjesto: " + t.getDogadjaj().getLokacija().getMjesto().getNaziv());
@@ -275,7 +272,7 @@ public class ProfileController implements Initializable {
 
 
             VBox seatAndDeadlineVBox = new VBox();
-            seatAndDeadlineVBox.setPrefWidth(250.0);
+            seatAndDeadlineVBox.setPrefWidth(300.0);
 
             Label seat = new Label();
             seat.setText("Sjedalo: " + t.getSjedalo().getSector().getNaziv() + ", " + t.getSjedalo().getBrojSjedala());
@@ -286,11 +283,14 @@ public class ProfileController implements Initializable {
             VBox.setVgrow(seatAndDeadlineRegion, Priority.ALWAYS);
 
             Label deadline = new Label();
-            deadline.setText("Istek rezervacije: " + (new SimpleDateFormat("dd-MM-yyyy")).format(t.getReservedTo()));
             deadline.setTextFill(Color.WHITE);
             deadline.setFont(Font.font("SansSerif Regular", 18.0));
             if(state == ticketState.BOUGHT)
                 deadline.setVisible(false);
+            else {
+                deadline.setVisible(true);
+                deadline.setText("Istek rezervacije: " + (new SimpleDateFormat("dd-MM-yyyy HH:mm")).format(t.getReservedTo()));
+            }
 
             seatAndDeadlineVBox.getChildren().addAll(seat, seatAndDeadlineRegion, deadline);
 
@@ -308,16 +308,17 @@ public class ProfileController implements Initializable {
             cancelBtn.setPrefWidth(100.0);
             cancelBtn.setStyle("-fx-background-color: #781510; -fx-background-radius: 50; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
             cancelBtn.setTextFill(Color.WHITE);
-            cancelBtn.setText("Otkaži rezervaciju");
+            cancelBtn.setText("Otkaži");
             cancelBtn.setFont(Font.font("SansSerif Bold", 18.0));
             cancelBtn.setCursor(Cursor.HAND);
             cancelBtn.setOnAction(event -> {
                 Ticket karta = entityManager.find(Ticket.class, t.getId());
                 EntityTransaction entityTransaction = entityManager.getTransaction();
                 entityTransaction.begin();
-                t.setKupac(null);
-                t.setReserved(false);
-                t.setReservedTo(null);
+                karta.setKupac(null);
+                karta.setReserved(false);
+                karta.setReservedTo(null);
+                entityManager.persist(karta);
                 entityTransaction.commit();
                 PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
                 visibleMsg.setOnFinished(e -> notEnoughMoneyLabel.setVisible(false));
@@ -326,6 +327,7 @@ public class ProfileController implements Initializable {
                 notEnoughMoneyLabel.setVisible(true);
                 visibleMsg.play();
                 --rezervisaneKarteLong;
+                tickets.remove(karta);
                 refreshTicketsPagination();
             });
 
@@ -343,11 +345,15 @@ public class ProfileController implements Initializable {
                 cancelBtn.setVisible(false);
                 buyOrPrintBtn.setText("Printaj kartu");
                 buyOrPrintBtn.setTextFill(Color.BLACK);
+                buttonsVBox.setPrefWidth(150);
+                buyOrPrintBtn.setPrefWidth(150);
                 buyOrPrintBtn.setOnAction(event -> {
                     printPDF(t);
                 });
             } else {
                 cancelBtn.setVisible(true);
+                buyOrPrintBtn.setText("Kupi");
+                buyOrPrintBtn.setTextFill(Color.WHITE);
                 buyOrPrintBtn.setOnAction(event -> {
                     Ticket karta = entityManager.find(Ticket.class, t.getId());
                     EntityTransaction entityTransaction = entityManager.getTransaction();
@@ -361,13 +367,15 @@ public class ProfileController implements Initializable {
                         notEnoughMoneyLabel.setVisible(true);
                         visibleMsg.play();
                     } else {
-                        karta.getKupac().setWallet(wallet - karta.getPrice());
+                        karta.getKupac().setWallet(wallet - (karta.getPrice() + karta.getDogadjaj().getBasePrice()));
                         karta.setReserved(false);
                         karta.setReservedTo(null);
                         karta.setBought(true);
+                        entityManager.persist(karta);
                         entityTransaction.commit();
                         --rezervisaneKarteLong;
                         ++kupljeneKarteLong;
+                        refreshWallet();
                         refreshTicketsPagination();
                         notEnoughMoneyLabel.setText("Uspješno ste kupili kartu.");
                         notEnoughMoneyLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
@@ -391,6 +399,7 @@ public class ProfileController implements Initializable {
         walletPanel.setVisible(false);
 
         state = ticketState.BOUGHT;
+        refreshTicketsPagination();
     }
 
     public void showBoughtTicketsPanel(MouseEvent mouseEvent) {
@@ -403,6 +412,7 @@ public class ProfileController implements Initializable {
         walletPanel.setVisible(false);
 
         state = ticketState.RESERVED;
+        refreshTicketsPagination();
     }
 
     public void showReservedTicketsPanel(MouseEvent mouseEvent) {

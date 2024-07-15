@@ -785,6 +785,7 @@
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Button>
+            <Label fx:id="msgLabel" layoutX="255.0" layoutY="633.0" />
          </children>
       </Pane>
    </children>

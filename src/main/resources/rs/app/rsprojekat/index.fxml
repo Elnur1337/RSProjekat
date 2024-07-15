@@ -335,6 +335,10 @@
                   </TextField>
                </children>
             </VBox>
+            <Label fx:id="msgLabel" alignment="CENTER" layoutX="85.0" layoutY="649.0" prefHeight="17.0" prefWidth="404.0" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
          </children>
       </Pane>
     </children>

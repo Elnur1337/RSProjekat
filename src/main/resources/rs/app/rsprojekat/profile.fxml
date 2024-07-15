@@ -289,6 +289,9 @@
                 </Label>
             </children>
         </VBox>
-      <Label fx:id="notEnoughMoneyLabel" layoutX="718.0" layoutY="733.0" />
+      <Label fx:id="notEnoughMoneyLabel" alignment="CENTER" layoutX="588.0" layoutY="733.0" prefHeight="17.0" prefWidth="263.0" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
     </children>
 </AnchorPane>
