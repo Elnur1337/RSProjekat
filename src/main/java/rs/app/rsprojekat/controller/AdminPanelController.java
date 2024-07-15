@@ -760,6 +760,11 @@ public class AdminPanelController implements Initializable {
             rejectBtn.setFont(Font.font("SansSerif Bold", 18.0));
             rejectBtn.setCursor(Cursor.HAND);
             rejectBtn.setOnAction(eventClick -> {
+                Path currDir = Paths.get("").toAbsolutePath();
+                Path imgToDelete = currDir.resolve("src/main/resources/rs/app/rsprojekat/controller/" + event.getImgPath());
+                try {
+                    Files.delete(imgToDelete);
+                } catch (IOException ignored) {}
                 Dogadjaj dogadjaj = entityManager.find(Dogadjaj.class, event.getId());
                 final EntityTransaction entityTransaction = entityManager.getTransaction();
                 TypedQuery<Ticket> ticketsQuery = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjajInput", Ticket.class);
