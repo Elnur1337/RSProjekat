@@ -164,6 +164,8 @@ public class OrganizerController implements Initializable {
 
     @FXML
     private Pane eventPane, coverPane;
+    @FXML
+    private ScrollPane sectorScrollPane;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -423,6 +425,7 @@ public class OrganizerController implements Initializable {
             HBox sectorHBox = new HBox();
             sectorHBox.setPrefHeight(50.0);
             sectorHBox.setAlignment(Pos.CENTER_LEFT);
+            sectorScrollPane.setVvalue(sectorScrollPane.getVvalue() + 36);
 
             Label nazivLabel = new Label(sector.getNaziv() + "(Kap. " + sector.getKapacitet() + ")");
             nazivLabel.setPrefWidth(250.0);

@@ -303,6 +303,7 @@ public class AdminPanelController implements Initializable {
             msgLabelLocation.setVisible(true);
             visibleMsg.play();
         }
+        placeInput.getItems().clear();
         placeInput.getItems().addAll(placesList);
         entityManager.close();
         entityManagerFactory.close();
@@ -326,6 +327,7 @@ public class AdminPanelController implements Initializable {
             msgLabelLocation.setVisible(true);
             visibleMsg.play();
         }
+        categoryInput.getItems().clear();
         categoryInput.getItems().addAll(categoriesList);
         entityManager.close();
         entityManagerFactory.close();
@@ -940,6 +942,7 @@ public class AdminPanelController implements Initializable {
     }
 
     public void getSectorLocations() {
+        sectorPlaceInput.getItems().clear();
         sectorLocationInput.getItems().clear();
         sectorContainer.getChildren().clear();
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
