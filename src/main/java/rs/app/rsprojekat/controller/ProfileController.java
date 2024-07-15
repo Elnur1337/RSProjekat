@@ -1,7 +1,11 @@
 package rs.app.rsprojekat.controller;
 
 // Imports for PDF
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -15,6 +19,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -60,6 +65,7 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import rs.app.rsprojekat.model.*;
 
+import javax.imageio.ImageIO;
 import javax.persistence.*;
 
 public class ProfileController implements Initializable {
@@ -227,6 +233,7 @@ public class ProfileController implements Initializable {
         else
             kartePagination.setPageCount(rezervisaneKarteLong.intValue() / 6 + 1);
 
+        loadTickets();
         kartePagination.setPageFactory(this::getTicketsPanel);
     }
 
@@ -639,25 +646,26 @@ public class ProfileController implements Initializable {
             addTicketDetail(document, "Sektor", ticket.getSjedalo().getSector().getNaziv());
             addTicketDetail(document, "Sjedalo", String.valueOf(ticket.getSjedalo().getBrojSjedala()));
 
-//            String barcodeData = ticket.getId() + " "
-//                    + ticket.getDogadjaj().getNaziv() + " "
-//                    + ticket.getSjedalo().getSector().getNaziv() + " "
-//                    + ticket.getSjedalo().getBrojSjedala() + " "
-//                    + ticket.getKupac().getEmail();
+            String QRCodeData = ticket.getId() + " "
+                    + ticket.getDogadjaj().getNaziv() + " "
+                    + ticket.getSjedalo().getSector().getNaziv() + " "
+                    + ticket.getSjedalo().getBrojSjedala() + " "
+                    + ticket.getKupac().getEmail();
 
-//            BitMatrix bitMatrix = new MultiFormatWriter().encode(barcodeData, BarcodeFormat.CODE_128, 200, 50);
-//            BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+            String charset = "UTF-8";
+            Map<EncodeHintType, ErrorCorrectionLevel> hashMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
+            hashMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
 
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            ImageIO.write(bufferedImage, "png", baos);
-//            byte[] barcodeBytes = baos.toByteArray();
+            String QRCodePath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")) + ".png";
+            generateQRcode(QRCodeData, QRCodePath, charset, hashMap, 200, 200);
+            ImageData imageData = ImageDataFactory.create(QRCodePath);
+            Image img = new Image(String.valueOf(imageData));
 
-//            Image barcodeImage = new Image(com.itextpdf.io.image.ImageDataFactory.create(barcodeBytes));
-//            document.add(barcodeImage);
-            
+            // Creating Image object from the imagedata
+//            doc.add(img);
+
             document.close();
         }
-
     }
 
     private void addTicketDetail(Document document, String label, String value) {
@@ -673,4 +681,13 @@ public class ProfileController implements Initializable {
         table.setMarginBottom(10);
         document.add(table);
     }
+
+    public static void generateQRcode(String data, String path, String charset, Map map, int h, int w) throws WriterException, IOException
+    {
+        String newPath = path.substring(0, path.lastIndexOf(".")) + ".png";
+        BitMatrix matrix = new MultiFormatWriter().encode(new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, w, h);
+        MatrixToImageWriter.writeToFile(matrix, "png", new File(newPath));
+    }
+
+
 }

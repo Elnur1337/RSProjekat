@@ -898,7 +898,7 @@ public class IndexController implements Initializable {
 
         for(Ticket ticket : tickets) {
             if(ticket.getReserved())
-                if(ticket.getReservedTo().toLocalDateTime().isAfter(LocalDateTime.now())) {
+                if(ticket.getReservedTo().toLocalDateTime().isBefore(LocalDateTime.now())) {
                     ticket.setReserved(false);
                     ticket.setKupac(null);
                 }
