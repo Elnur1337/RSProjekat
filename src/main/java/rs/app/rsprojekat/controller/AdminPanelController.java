@@ -449,7 +449,7 @@ public class AdminPanelController implements Initializable {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        TypedQuery<Dogadjaj> eventsQeury = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE approved = false AND available = false", Dogadjaj.class).setFirstResult(pageIndex).setMaxResults(1);
+        TypedQuery<Dogadjaj> eventsQeury = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE d.approved = false AND d.available = false", Dogadjaj.class).setFirstResult(pageIndex).setMaxResults(1);
         List<Dogadjaj> eventsList = eventsQeury.getResultList();
 
         VBox page = new VBox();
