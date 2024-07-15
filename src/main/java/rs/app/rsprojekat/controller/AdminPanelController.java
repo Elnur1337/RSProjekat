@@ -119,10 +119,10 @@ public class AdminPanelController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(u) FROM User u WHERE approved = 0", Long.class);
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(u) FROM User u WHERE approved = false", Long.class);
         usersReqNumberLong = query.getSingleResult();
 
-        TypedQuery<Long> eventsReqNumberQuery = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d WHERE approved = 0", Long.class);
+        TypedQuery<Long> eventsReqNumberQuery = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d WHERE approved = false AND available = false", Long.class);
         eventsReqNumberLong = eventsReqNumberQuery.getSingleResult();
         eventsReqNumber.setText(eventsReqNumberLong.toString());
 
@@ -154,7 +154,7 @@ public class AdminPanelController implements Initializable {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
         List<User> userList = new ArrayList<>();
-        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE approved = 0", User.class).setFirstResult(pageIndex * 5).setMaxResults(5);
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE approved = false", User.class).setFirstResult(pageIndex * 5).setMaxResults(5);
         try  {
             userList = query.getResultList();
         } catch (NoResultException ignored) {}
@@ -452,7 +452,7 @@ public class AdminPanelController implements Initializable {
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        TypedQuery<Dogadjaj> eventsQeury = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE approved = 0", Dogadjaj.class).setFirstResult(pageIndex).setMaxResults(1);
+        TypedQuery<Dogadjaj> eventsQeury = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE approved = false AND available = false", Dogadjaj.class).setFirstResult(pageIndex).setMaxResults(1);
         List<Dogadjaj> eventsList = eventsQeury.getResultList();
 
         VBox page = new VBox();
@@ -737,8 +737,28 @@ public class AdminPanelController implements Initializable {
                 Dogadjaj dogadjaj = entityManager.find(Dogadjaj.class, event.getId());
                 final EntityTransaction entityTransaction = entityManager.getTransaction();
                 entityTransaction.begin();
-                dogadjaj.setApproved(true);
-                dogadjaj.setAvailable(true);
+                if(dogadjaj.getOriginal() == null) {
+                    dogadjaj.setApproved(true);
+                    dogadjaj.setAvailable(true);
+                } else {
+                    dogadjaj.setApproved(true);
+                    dogadjaj.setAvailable(true);
+
+                    Path currDir = Paths.get("").toAbsolutePath();
+                    Path imgToDelete = currDir.resolve("src/main/resources/rs/app/rsprojekat/controller/" + dogadjaj.getOriginal().getImgPath());
+                    try {
+                        Files.delete(imgToDelete);
+                    } catch (IOException ignored) {}
+
+                    Path oldImgPath = currDir.resolve("src/main/resources/rs/app/rsprojekat/controller/" + dogadjaj.getImgPath());
+                    (new File(String.valueOf(oldImgPath))).renameTo((new File(String.valueOf(imgToDelete))));
+
+                    Dogadjaj dogadjajZaBrisanje = entityManager.find(Dogadjaj.class, dogadjaj.getOriginal().getId());
+                    dogadjaj.setOriginal(null);
+                    dogadjaj.setImgPath(dogadjajZaBrisanje.getImgPath());
+                    entityManager.remove(dogadjajZaBrisanje);
+                }
+
                 entityTransaction.commit();
                 --eventsReqNumberLong;
                 refreshEventsPagination();
@@ -759,16 +779,41 @@ public class AdminPanelController implements Initializable {
                 try {
                     Files.delete(imgToDelete);
                 } catch (IOException ignored) {}
+
                 Dogadjaj dogadjaj = entityManager.find(Dogadjaj.class, event.getId());
                 final EntityTransaction entityTransaction = entityManager.getTransaction();
-                TypedQuery<Ticket> ticketsQuery = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjajInput", Ticket.class);
-                ticketsQuery.setParameter("dogadjajInput", event);
-                List<Ticket> ticketsList = ticketsQuery.getResultList();
                 entityTransaction.begin();
-                for (Ticket ticket : ticketsList) {
-                    entityManager.remove(ticket);
+
+                if(dogadjaj.getOriginal() == null) {
+                    TypedQuery<Ticket> ticketsQuery = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjajInput", Ticket.class);
+                    ticketsQuery.setParameter("dogadjajInput", event);
+                    List<Ticket> ticketsList = ticketsQuery.getResultList();
+                    for (Ticket ticket : ticketsList) {
+                        entityManager.remove(ticket);
+                    }
+                    entityManager.remove(dogadjaj);
+                } else {
+                    currDir = Paths.get("").toAbsolutePath();
+                    imgToDelete = currDir.resolve("src/main/resources/rs/app/rsprojekat/controller/" + dogadjaj.getImgPath());
+                    try {
+                        Files.delete(imgToDelete);
+                    } catch (IOException ignored) {}
+
+                    dogadjaj.setNaziv(dogadjaj.getOriginal().getNaziv());
+                    dogadjaj.setOpis(dogadjaj.getOriginal().getOpis());
+                    dogadjaj.setImgPath(dogadjaj.getOriginal().getImgPath());
+                    dogadjaj.setStartDate(dogadjaj.getOriginal().getStartDate());
+                    dogadjaj.setEndDate(dogadjaj.getOriginal().getEndDate());
+                    dogadjaj.setBasePrice(dogadjaj.getOriginal().getBasePrice());
+                    dogadjaj.setOrganizator(dogadjaj.getOriginal().getOrganizator());
+                    dogadjaj.setPodkategorija(dogadjaj.getOriginal().getPodkategorija());
+                    dogadjaj.setLokacija(dogadjaj.getOriginal().getLokacija());
+                    dogadjaj.setApproved(true);
+                    dogadjaj.setAvailable(true);
+                    entityManager.remove(entityManager.find(Dogadjaj.class, dogadjaj.getOriginal().getId()));
+                    dogadjaj.setOriginal(null);
                 }
-                entityManager.remove(dogadjaj);
+
                 entityTransaction.commit();
                 --eventsReqNumberLong;
                 refreshEventsPagination();

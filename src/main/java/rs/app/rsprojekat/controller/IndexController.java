@@ -211,6 +211,9 @@ public class IndexController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        checkEvents();
+        checkTickets();
+
         try {
             FileReader rememberMeReader = new FileReader("rememberMe.txt");
             int i;
@@ -328,7 +331,7 @@ public class IndexController implements Initializable {
         TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d WHERE available = true AND approved = true ORDER BY d.naziv", Dogadjaj.class);
         try  {
             eventsList = query.getResultList();
-            eventsList = eventsList.stream().filter(event -> event.getStartDate().toLocalDateTime().isAfter(LocalDateTime.now())).toList();
+            eventsList = eventsList.stream().filter(event -> event.isApproved() && event.isAvailable()).toList();
             showList = eventsList;
         } catch (NoResultException ignored) {}
 
@@ -450,7 +453,7 @@ public class IndexController implements Initializable {
             VBox.setMargin(dogadjajBox, new Insets(0, 0, 10, 0));
 
             VBox titleAndDateVBox = new VBox();
-            titleAndDateVBox.setPrefWidth(200.0);
+            titleAndDateVBox.setPrefWidth(300.0);
 
             Label title = new Label();
             title.setText("Naziv: " + d.getNaziv());
@@ -488,15 +491,21 @@ public class IndexController implements Initializable {
 
             placeAndLocationVBox.getChildren().addAll(place, placeAndLocationRegion, location);
 
+            Region imageRegion = new Region();
+            HBox.setHgrow(imageRegion, Priority.ALWAYS);
+
             VBox imageBox = new VBox();
             imageBox.setPrefWidth(250.0);
 
             ImageView image = new ImageView();
-            image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("events.png"))));
+            image.setFitWidth(250);
+            image.setFitHeight(130);
+            image.setPreserveRatio(true);
+            image.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getImgPath()))));
 
             imageBox.getChildren().add(image);
 
-            dogadjajBox.getChildren().addAll(titleAndDateVBox, placeAndLocationVBox, imageBox);
+            dogadjajBox.getChildren().addAll(titleAndDateVBox, placeAndLocationVBox, imageRegion, imageBox);
             dogadjajBox.setOnMouseClicked(event -> showEventInfo(d));
             page.getChildren().add(dogadjajBox);
         }
@@ -557,7 +566,7 @@ public class IndexController implements Initializable {
                     query3.setParameter("nazivInput", newValue);
 
                     List<Ticket> karte = query3.getResultList();
-                    cijenaShow.setText((karte.get(0).getPrice() + d.getBasePrice()) + "KM");
+                    cijenaShow.setText(karte.get(0).getPrice() + "KM");
 
                     entityManager.close();
                     entityManagerFactory.close();
@@ -851,5 +860,52 @@ public class IndexController implements Initializable {
         }
         msgLabel.setVisible(true);
         visibleMsg.play();
+    }
+
+    private void checkEvents() {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Dogadjaj> query = entityManager.createQuery("SELECT d FROM Dogadjaj d", Dogadjaj.class);
+        List<Dogadjaj> events = query.getResultList();
+
+        if(events.isEmpty()) return;
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        for(Dogadjaj event : events) {
+            if(event.getStartDate().toLocalDateTime().isBefore(LocalDateTime.now()))
+                event.setAvailable(false);
+        }
+
+        entityTransaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private void checkTickets() {
+        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
+        final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        TypedQuery<Ticket> query = entityManager.createQuery("SELECT t FROM Ticket t", Ticket.class);
+        List<Ticket> tickets = query.getResultList();
+
+        if(tickets.isEmpty()) return;
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        for(Ticket ticket : tickets) {
+            if(ticket.getReserved())
+                if(ticket.getReservedTo().toLocalDateTime().isAfter(LocalDateTime.now())) {
+                    ticket.setReserved(false);
+                    ticket.setKupac(null);
+                }
+        }
+
+        entityTransaction.commit();
+        entityManager.close();
+        entityManagerFactory.close();
     }
 }

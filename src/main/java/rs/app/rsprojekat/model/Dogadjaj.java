@@ -54,11 +54,30 @@ public class Dogadjaj {
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
+    @OneToOne
+    @JoinColumn(name = "id_original", nullable = true)
+    private Dogadjaj original;
+
     public Dogadjaj() {
         id = 0;
         naziv = opis = "";
         available = approved = false;
         startDate = endDate = createdAt = Timestamp.valueOf(LocalDateTime.now());
+        original = null;
+    }
+
+    public Dogadjaj(Dogadjaj noviDogadjaj) {
+        this.naziv = noviDogadjaj.naziv;
+        this.opis = noviDogadjaj.opis;
+        this.imgPath = noviDogadjaj.imgPath;
+        this.startDate = noviDogadjaj.startDate;
+        this.endDate = noviDogadjaj.endDate;
+        this.basePrice = noviDogadjaj.basePrice;
+        this.available = this.approved = false;
+        this.organizator = noviDogadjaj.organizator;
+        this.podkategorija = noviDogadjaj.podkategorija;
+        this.lokacija = noviDogadjaj.lokacija;
+        this.createdAt = noviDogadjaj.createdAt;
     }
 
     public int getId() {
@@ -117,8 +136,12 @@ public class Dogadjaj {
 
     public Location getLokacija() { return lokacija; }
 
+    public void setOriginal(Dogadjaj d) { this.original = d; }
+
+    public Dogadjaj getOriginal() { return original; }
+
     @Override
     public String toString() {
-        return "ID: " + id + "\nNaziv: " + naziv + "\nMjesto: " + lokacija.getMjesto().getNaziv() + "\nLokacija: " + lokacija.getNaziv();
+        return "ID: " + id + "\nNaziv: " + naziv + "\nMjesto: " + lokacija.getMjesto().getNaziv() + "\nLokacija: " + lokacija.getNaziv() + "\nImage path: " + imgPath;
     }
 }

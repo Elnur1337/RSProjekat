@@ -589,11 +589,11 @@
                                     <Insets bottom="10.0" />
                                  </VBox.margin>
                               </Label>
-                              <ScrollPane prefHeight="157.0" prefWidth="438.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
+                              <ScrollPane fx:id="sectorScrollPane" prefHeight="157.0" prefWidth="438.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="422.0">
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="422.0">
                                        <children>
-                                          <VBox fx:id="sektorVBox" prefHeight="200.0" prefWidth="423.0" style="-fx-padding: 10;" />
+                                          <VBox fx:id="sektorVBox" prefHeight="400.0" prefWidth="423.0" style="-fx-padding: 10;" />
                                        </children>
                                     </AnchorPane>
                                 </content>
@@ -785,7 +785,7 @@
                   <Font name="SansSerif Regular" size="18.0" />
                </font>
             </Button>
-            <Label fx:id="msgLabel" layoutX="255.0" layoutY="633.0" />
+            <Label fx:id="msgEventInfoLabel" layoutX="255.0" layoutY="633.0" />
          </children>
       </Pane>
    </children>

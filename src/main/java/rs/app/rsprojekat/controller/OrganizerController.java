@@ -77,6 +77,8 @@ public class OrganizerController implements Initializable {
     private Button cancelEventBtn;
     @FXML
     private Button editEventBtn;
+    @FXML
+    private Button addEventBtn;
 
     @FXML
     private Pagination eventsPagination;
@@ -130,6 +132,8 @@ public class OrganizerController implements Initializable {
     @FXML
     private Label msgLabel;
     @FXML
+    private Label msgEventInfoLabel;
+    @FXML
     private Label activeEventsNumber;
     @FXML
     private Label inactiveEventsNumber;
@@ -166,6 +170,15 @@ public class OrganizerController implements Initializable {
     private Pane eventPane, coverPane;
     @FXML
     private ScrollPane sectorScrollPane;
+
+    public static String getKeyByValue(Map<String, Integer> map, Integer value) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -708,6 +721,7 @@ public class OrganizerController implements Initializable {
         eventsPagination.setManaged(false);
         newEventPanel.setVisible(true);
         newEventPanel.setManaged(true);
+        addEventBtn.setOnAction(event -> addEvent());
     }
 
     public void addEventImage() {
@@ -743,6 +757,7 @@ public class OrganizerController implements Initializable {
         endDateShow.setText(formattedDateTime);
         mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
         lokacijaShow.setText(d.getLokacija().getNaziv());
+        eventImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getImgPath()))));
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -767,7 +782,7 @@ public class OrganizerController implements Initializable {
                     prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getBought).count()));
                     prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getReserved).count()));
                     ukupnoKarataShow.setText(String.valueOf(karte.size()));
-                    cijenaShow.setText((karte.get(0).getPrice() + d.getBasePrice()) + "KM");
+                    cijenaShow.setText(karte.get(0).getPrice() + "KM");
 
                     entityManager.close();
                     entityManagerFactory.close();
@@ -809,14 +824,14 @@ public class OrganizerController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
         String formattedDateTime = time.format(formatter);
         pocetakGodinaBox.setValue(Integer.parseInt(formattedDateTime.substring(0, 4)));
-        pocetakMjesecBox.setValue(formattedDateTime.substring(5, 7));
+        pocetakMjesecBox.setValue(getKeyByValue(monthNameNumberMap, Integer.parseInt(formattedDateTime.substring(5, 7))));
         pocetakDanBox.setValue(Integer.parseInt(formattedDateTime.substring(8, 10)));
         pocetakSatiInput.setText(formattedDateTime.substring(11, 13));
         pocetakMinutiInput.setText(formattedDateTime.substring(14));
         baznaCijenaInput.setText(String.valueOf(d.getBasePrice()));
         formattedDateTime = d.getEndDate().toLocalDateTime().format(formatter);
         krajGodinaBox.setValue(Integer.parseInt(formattedDateTime.substring(0, 4)));
-        krajMjesecBox.setValue(formattedDateTime.substring(5, 7));
+        krajMjesecBox.setValue(getKeyByValue(monthNameNumberMap, Integer.parseInt(formattedDateTime.substring(5, 7))));
         krajDanBox.setValue(Integer.parseInt(formattedDateTime.substring(8, 10)));
         krajSatiInput.setText(formattedDateTime.substring(11, 13));
         krajMinutiInput.setText(formattedDateTime.substring(14));
@@ -832,8 +847,6 @@ public class OrganizerController implements Initializable {
         sectorQuery.setParameter("mjestoNameInput", mjestoBox.getValue());
         sectorsList = sectorQuery.getResultList();
         List<Ticket> karte = entityManager.createQuery("SELECT t FROM Ticket t WHERE t.dogadjaj = :dogadjaj", Ticket.class).setParameter("dogadjaj", d).getResultList();
-        entityManager.close();
-        entityManagerFactory.close();
 
         sektorVBox.getChildren().clear();
         int counter = 0;
@@ -855,12 +868,86 @@ public class OrganizerController implements Initializable {
             priceModifierTextField.setStyle("-fx-background-radius: 50; -fx-effect:  dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2);");
             priceModifierTextField.setFont(Font.font("SansSerif Regular", 18.0));
             priceModifierTextField.setText(String.valueOf(karte.stream().filter(karta -> karta.getSjedalo().getSector() == sector).toList().get(0).getPrice()));
+            sectorPriceModifier.add(String.valueOf(karte.stream().filter(karta -> karta.getSjedalo().getSector() == sector).toList().get(0).getPrice()));
 
             sectorHBox.getChildren().addAll(nazivLabel, priceModifierTextField);
             sektorVBox.getChildren().add(sectorHBox);
 
             ++counter;
         }
+
+        addEventBtn.setOnAction(event -> {
+            PauseTransition visibleMsg = new PauseTransition(Duration.millis(2000));
+            visibleMsg.setOnFinished(e -> msgLabel.setVisible(false));
+            if (!validate()) {
+                msgLabel.setText(msg);
+                msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #8a1313; -fx-border-color: #ad4c4c;");
+                msgLabel.setVisible(true);
+                visibleMsg.play();
+                return;
+            }
+
+            EntityTransaction entityTransaction = entityManager.getTransaction();
+            Dogadjaj stariDogadjaj = entityManager.find(Dogadjaj.class, d.getId());
+            entityTransaction.begin();
+
+            stariDogadjaj.setApproved(false);
+            stariDogadjaj.setAvailable(false);
+
+            Dogadjaj noviDogadjaj = new Dogadjaj(stariDogadjaj);
+            stariDogadjaj.setOriginal(noviDogadjaj);
+            noviDogadjaj.setApproved(false);
+            noviDogadjaj.setAvailable(true);
+            entityManager.persist(noviDogadjaj);
+
+            if(!imgPathShow.getText().isEmpty()) {
+                TypedQuery<Integer> maxEventIdQuery = entityManager.createQuery("SELECT MAX(id) FROM Dogadjaj", Integer.class);
+                int id;
+                if(maxEventIdQuery.getSingleResult() == null)
+                    id = 1;
+                else
+                    id = maxEventIdQuery.getSingleResult() + 1;
+
+                File currentDirFile = new File(".");
+                String targetPath = currentDirFile.getAbsolutePath().substring(0, currentDirFile.getAbsolutePath().length() - 1);
+                targetPath += "\\src\\main\\resources\\rs\\app\\rsprojekat\\controller";
+                Path targetDirectory = Paths.get(targetPath).toAbsolutePath();
+                Path destinationPath = targetDirectory.resolve(String.format("newEventImageN%d.%s", id, selectedImgExtension));
+                try {
+                    Files.copy(selectedImgFile.toPath(), destinationPath);
+                } catch (IOException ignored) {}
+
+                stariDogadjaj.setImgPath(String.format("newEventImageN%d.%s", id, selectedImgExtension));
+            }
+
+            TypedQuery<Subcategory> subcategoryQuery = entityManager.createQuery("SELECT s FROM Subcategory s WHERE s.naziv = :subcategoryNameInput", Subcategory.class);
+            subcategoryQuery.setParameter("subcategoryNameInput", podkategorijaBox.getValue());
+
+            TypedQuery<Location> locationQuery = entityManager.createQuery("SELECT l FROM Location l WHERE l.naziv = :locationNameInput AND l.mjesto.naziv = :mjestoNameInput", Location.class);
+            locationQuery.setParameter("locationNameInput", lokacijaBox.getValue());
+            locationQuery.setParameter("mjestoNameInput", mjestoBox.getValue());
+
+            stariDogadjaj.setNaziv(nazivInput.getText());
+            stariDogadjaj.setOpis(opisInput.getText());
+            System.out.println(String.format("%04d-%02d-%02d %02d:%02d:%02d", pocetakGodinaBox.getValue(), monthNameNumberMap.get(pocetakMjesecBox.getValue()), pocetakDanBox.getValue(), Integer.parseInt(pocetakSatiInput.getText()), Integer.parseInt(pocetakMinutiInput.getText()), 0));
+            stariDogadjaj.setStartDate(Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", pocetakGodinaBox.getValue(), monthNameNumberMap.get(pocetakMjesecBox.getValue()), pocetakDanBox.getValue(), Integer.parseInt(pocetakSatiInput.getText()), Integer.parseInt(pocetakMinutiInput.getText()), 0)));
+            stariDogadjaj.setEndDate(Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", krajGodinaBox.getValue(), monthNameNumberMap.get(krajMjesecBox.getValue()), krajDanBox.getValue(), Integer.parseInt(krajSatiInput.getText()), Integer.parseInt(krajMinutiInput.getText()), 0)));
+            stariDogadjaj.setBasePrice(Double.parseDouble(baznaCijenaInput.getText()));
+            stariDogadjaj.setOrganizator(IndexController.getCurrentUser());
+            stariDogadjaj.setPodkategorija(subcategoryQuery.getSingleResult());
+            stariDogadjaj.setLokacija(locationQuery.getSingleResult());
+
+            entityTransaction.commit();
+
+            msg = "Događaj uspješno dodan!";
+            msgLabel.setText(msg);
+            msgLabel.setStyle("-fx-background-radius: 50; -fx-border-width: 1; -fx-border-radius: 50; -fx-padding: 7; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0.0, 0, 4), dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0.0, 0, 2); -fx-background-color: #468847; -fx-border-color: #69A56A;");
+            msgLabel.setVisible(true);
+            visibleMsg.play();
+
+            refreshEventsNumber();
+            showNewEventPanel();
+        });
     }
 
     private void cancelEvent(Dogadjaj d) {
