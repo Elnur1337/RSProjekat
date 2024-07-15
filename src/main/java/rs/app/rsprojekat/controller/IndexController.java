@@ -50,6 +50,7 @@ public class IndexController implements Initializable {
     private String selektovanoMjesto;
     private String selektovanaLokacija;
     private String msg;
+    private boolean searched = false;
     private Dogadjaj selectedEvent;
 
     private List<Dogadjaj> eventsList = new ArrayList<>();
@@ -576,16 +577,13 @@ public class IndexController implements Initializable {
     }
 
     private void refreshEventsPagination(String filters) {
-        refreshNumOfEvents(filters);
+        refreshNumOfEvents();
         eventsPagination.setPageCount(numOfEvents.intValue() / 6 + 1);
         eventsPagination.setPageFactory(this::getEvents);
     }
 
-    private void refreshNumOfEvents(String filters) {
-        final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
-        final EntityManager entityManager = entityManagerFactory.createEntityManager();
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(d) FROM Dogadjaj d " + filters, Long.class);
-        numOfEvents = query.getSingleResult();
+    private void refreshNumOfEvents() {
+        numOfEvents = (long) showList.size();
     }
 
     private void showMenu(VBox menu) {
@@ -672,6 +670,7 @@ public class IndexController implements Initializable {
     public void clearFilters(ActionEvent actionEvent) {
         selektovanoMjesto = selektovanaLokacija = null;
 
+        searchInput.clear();
         placeBox.getSelectionModel().clearSelection();
         placeBox.setPromptText("Mjesto");
         locationBox.getSelectionModel().clearSelection();
@@ -697,8 +696,10 @@ public class IndexController implements Initializable {
         loadSubCategoryBox();
 
         String item = categoryBox.getSelectionModel().getSelectedItem();
-        if(item != null)
-            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(item)).toList();
+        if(item != null) {
+            if(!searchInput.getText().isEmpty()) showList = showList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(item)).toList();
+            else showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getKategorija().getNaziv().equals(item)).toList();
+        }
 
         placeBox.setPromptText("Mjesto");
         locationBox.setPromptText("Lokacija");
@@ -710,8 +711,10 @@ public class IndexController implements Initializable {
 
     public void changedSubCategory(ActionEvent actionEvent) {
         String item = subCategoryBox.getSelectionModel().getSelectedItem();
-        if(item != null)
-            showList = showList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getNaziv().equals(item)).toList();
+        if(item != null) {
+            if(!searchInput.getText().isEmpty()) showList = showList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getNaziv().equals(item)).toList();
+            else showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getPodkategorija().getNaziv().equals(item)).toList();
+        }
 
         placeBox.setPromptText("Mjesto");
         locationBox.setPromptText("Lokacija");
@@ -723,9 +726,9 @@ public class IndexController implements Initializable {
 
     public void searchEvents(ActionEvent actionEvent) {
         if(!showList.isEmpty())
-            showList = showList.stream().filter(dogadjaj -> dogadjaj.getNaziv().contains(searchInput.getText())).toList();
+            showList = showList.stream().filter(dogadjaj -> dogadjaj.getNaziv().toLowerCase().contains(searchInput.getText().toLowerCase())).toList();
         else
-            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getNaziv().contains(searchInput.getText())).toList();
+            showList = eventsList.stream().filter(dogadjaj -> dogadjaj.getNaziv().toLowerCase().contains(searchInput.getText().toLowerCase())).toList();
 
         refreshEventsPagination();
     }
