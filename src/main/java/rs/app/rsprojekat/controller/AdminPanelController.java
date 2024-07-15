@@ -26,7 +26,6 @@ import javafx.util.Duration;
 import rs.app.rsprojekat.model.*;
 
 import javax.persistence.*;
-import java.awt.event.HierarchyBoundsAdapter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -738,7 +737,7 @@ public class AdminPanelController implements Initializable {
 
     private void refreshEventsPagination() {
         eventsReqNumber.setText(eventsReqNumberLong.toString());
-        eventsPagination.setPageCount(eventsReqNumberLong.intValue() + 1);
+        eventsPagination.setPageCount(eventsReqNumberLong.intValue() == 0 ? 1 : eventsReqNumberLong.intValue());
         eventsPagination.setPageFactory(this::getEventPanel);
     }
 
