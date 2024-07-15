@@ -1,5 +1,16 @@
 package rs.app.rsprojekat.controller;
 
+// Imports for PDF
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.*;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -10,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
@@ -32,6 +44,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javafx.animation.TranslateTransition;
@@ -348,7 +361,12 @@ public class ProfileController implements Initializable {
                 buttonsVBox.setPrefWidth(150);
                 buyOrPrintBtn.setPrefWidth(150);
                 buyOrPrintBtn.setOnAction(event -> {
-                    printPDF(t);
+                    try {
+                        printPDF(t);
+                    } catch (Exception e) {
+                        msg = "Neuspjelo printanje karte.";
+                        printMessage(false);
+                    }
                 });
             } else {
                 cancelBtn.setVisible(true);
@@ -558,5 +576,46 @@ public class ProfileController implements Initializable {
         visibleMsg.play();
     }
 
-    private void printPDF(Ticket ticket) {}
+    private void printPDF(Ticket ticket) throws IOException, WriterException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            PdfWriter writer = new PdfWriter(file.getAbsolutePath());
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+            LocalDateTime time = ticket.getDogadjaj().getStartDate().toLocalDateTime();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            String formattedDateTime = time.format(formatter);
+
+            document.add(new Paragraph("Dogadjaj: " + ticket.getDogadjaj().getNaziv()));
+            document.add(new Paragraph("Vrijeme pocetka: " + formattedDateTime));
+            document.add(new Paragraph("Mjesto: " + ticket.getDogadjaj().getLokacija().getMjesto().getNaziv()));
+            document.add(new Paragraph("Lokacija: " + ticket.getDogadjaj().getLokacija().getNaziv()));
+            document.add(new Paragraph("Sektor: " + ticket.getSjedalo().getSector().getNaziv()));
+            document.add(new Paragraph("Sjedalo: " + ticket.getSjedalo().getBrojSjedala()));
+
+//            String barcodeData = ticket.getId() + " "
+//                    + ticket.getDogadjaj().getNaziv() + " "
+//                    + ticket.getSjedalo().getSector().getNaziv() + " "
+//                    + ticket.getSjedalo().getBrojSjedala() + " "
+//                    + ticket.getKupac().getEmail();
+
+//            BitMatrix bitMatrix = new MultiFormatWriter().encode(barcodeData, BarcodeFormat.CODE_128, 200, 50);
+//            BufferedImage bufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            ImageIO.write(bufferedImage, "png", baos);
+//            byte[] barcodeBytes = baos.toByteArray();
+
+//            Image barcodeImage = new Image(com.itextpdf.io.image.ImageDataFactory.create(barcodeBytes));
+//            document.add(barcodeImage);
+            
+            document.close();
+        }
+
+    }
 }
