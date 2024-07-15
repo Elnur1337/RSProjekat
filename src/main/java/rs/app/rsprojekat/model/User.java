@@ -49,6 +49,7 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
+    @Transient
     private boolean isLoggedIn;
 
     public User() {

@@ -566,6 +566,12 @@ public class OrganizerController implements Initializable {
             msg = "Vrijednost minuta kraja mora biti između -1 i 60!";
             return false;
         }
+        Timestamp startDate = Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", pocetakGodinaBox.getValue(), monthNameNumberMap.get(pocetakMjesecBox.getValue()), pocetakDanBox.getValue(), Integer.parseInt(pocetakSatiInput.getText()), Integer.parseInt(pocetakMinutiInput.getText()), 0));
+        Timestamp endDate = Timestamp.valueOf(String.format("%04d-%02d-%02d %02d:%02d:%02d", krajGodinaBox.getValue(), monthNameNumberMap.get(krajMjesecBox.getValue()), krajDanBox.getValue(), Integer.parseInt(krajSatiInput.getText()), Integer.parseInt(krajMinutiInput.getText()), 0));
+        if(startDate.compareTo(endDate) >= 0) {
+            msg = "Kraj događaja ne može biti prije početka!";
+            return false;
+        }
         try {
             podkategorijaBox.getValue().isEmpty();
         } catch (NullPointerException e) {

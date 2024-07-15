@@ -222,10 +222,8 @@ public class AdminPanelController implements Initializable {
 
             birthDateVBox.getChildren().add(birthDate);
 
-
             Region userBoxRegion = new Region();
             HBox.setHgrow(userBoxRegion, Priority.ALWAYS);
-
 
             VBox buttonsVBox = new VBox();
             buttonsVBox.setPrefWidth(100.0);
