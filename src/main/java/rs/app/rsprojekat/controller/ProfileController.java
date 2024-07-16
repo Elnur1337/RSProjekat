@@ -615,7 +615,7 @@ public class ProfileController implements Initializable {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
             String formattedDateTime = time.format(formatter);
 
-            Paragraph title = new Paragraph(ticket.getDogadjaj().getNaziv())
+            Paragraph title = new Paragraph(removeAfricates(ticket.getDogadjaj().getNaziv()))
                     .setFontSize(20)
                     .setBold()
                     .setTextAlignment(TextAlignment.CENTER)
@@ -656,8 +656,8 @@ public class ProfileController implements Initializable {
             addTicketDetail(document, "Sjedalo", String.valueOf(ticket.getSjedalo().getBrojSjedala()));
 
             String QRCodeData = ticket.getId() + " "
-                    + ticket.getDogadjaj().getNaziv() + " "
-                    + ticket.getSjedalo().getSector().getNaziv() + " "
+                    + removeAfricates(ticket.getDogadjaj().getNaziv()) + " "
+                    + removeAfricates(ticket.getSjedalo().getSector().getNaziv()) + " "
                     + ticket.getSjedalo().getBrojSjedala() + " "
                     + ticket.getKupac().getEmail();
 
@@ -689,7 +689,7 @@ public class ProfileController implements Initializable {
         table.setWidth(UnitValue.createPercentValue(100));
 
         Paragraph paragraphLabel = new Paragraph(label).setBold().setFontSize(12).setFontColor(ColorConstants.BLUE);
-        Paragraph paragraphValue = new Paragraph(value).setFontSize(12);
+        Paragraph paragraphValue = new Paragraph(removeAfricates(value)).setFontSize(12);
 
         table.addCell(new Cell().add(paragraphLabel).setWidth(UnitValue.createPercentValue(50)));
         table.addCell(new Cell().add(paragraphValue).setWidth(UnitValue.createPercentValue(50)));
