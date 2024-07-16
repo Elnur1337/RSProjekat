@@ -1262,11 +1262,4 @@ public class AdminPanelController implements Initializable {
         sectorNameInput.setText("");
         sectorCapacityInput.setText("");
     }
-
-        //NAPRAVITI PROMJENE ZA SEKTOR NAPRAVITI DVA INPUTA NA DNU I DA SE TAKO DODAJE NOVI A GORE PROMIJENITI U LABELE I NA KLIK KANTE DA SE BRISE
-        //Takodjer nakon promjene mjesta i lokacije ocistiti polje
-        //Odraditi refactor koda (kreirati funkciju za message display)
-        //Odraditi refactor koda (jedan objekat za insets a ne vise njih za svaki)
-        //Prebaciti style u application.css? Ako bude radilo
-
 }

@@ -571,6 +571,13 @@ public class ProfileController implements Initializable {
 
             msg = "Uspješno ste uplatili novac na račun.";
             printMessage(true);
+
+            imeInput.clear();
+            prezimeInput.clear();
+            brojKarticeInput.clear();
+            datumIstekaInput.clear();
+            cvvInput.clear();
+            iznosInput.clear();
         } else {
             printMessage(false);
         }
@@ -691,9 +698,48 @@ public class ProfileController implements Initializable {
         document.add(table);
     }
 
-    public static void generateQRcode(String data, String path, String charset, Map map, int h, int w) throws WriterException, IOException
+    private void generateQRcode(String data, String path, String charset, Map map, int h, int w) throws WriterException, IOException
     {
         BitMatrix matrix = new MultiFormatWriter().encode(new String(data.getBytes(charset), charset), BarcodeFormat.QR_CODE, w, h);
         MatrixToImageWriter.writeToFile(matrix, "png", new File(path));
+    }
+
+    private String removeAfricates(String input) {
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < input.length(); ++i) {
+            switch(input.charAt(i)) {
+                case 'č':
+                case 'ć':
+                    sb.append('c');
+                    break;
+                case 'ž':
+                    sb.append('z');
+                    break;
+                case 'đ':
+                    sb.append("dj");
+                    break;
+                case 'š':
+                    sb.append('s');
+                    break;
+                case 'Č':
+                case 'Ć':
+                    sb.append('C');
+                    break;
+                case 'Ž':
+                    sb.append('Z');
+                    break;
+                case 'Đ':
+                    sb.append("Dj");
+                    break;
+                case 'Š':
+                    sb.append('S');
+                    break;
+                default:
+                    sb.append(input.charAt(i));
+            }
+        }
+
+        return sb.toString();
     }
 }

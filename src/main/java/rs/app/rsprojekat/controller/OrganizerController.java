@@ -764,6 +764,10 @@ public class OrganizerController implements Initializable {
         mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
         lokacijaShow.setText(d.getLokacija().getNaziv());
         eventImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getImgPath()))));
+        cijenaShow.clear();
+        prodanoKarataShow.clear();
+        rezervisanoKarataShow.clear();
+        ukupnoKarataShow.clear();
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();

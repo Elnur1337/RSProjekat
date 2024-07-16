@@ -237,7 +237,7 @@ public class RegisterController implements Initializable {
     }
 
     public void register() {
-        PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+        PauseTransition visibleMsg = new PauseTransition(Duration.millis(1500));
 
         if (validate()) {
             msgLabel.setVisible(false);

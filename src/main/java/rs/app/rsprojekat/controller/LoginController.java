@@ -93,7 +93,7 @@ public class LoginController {
 
     public void login() throws IOException {
         if (validate()) {
-            PauseTransition visibleMsg = new PauseTransition(Duration.millis(3000));
+            PauseTransition visibleMsg = new PauseTransition(Duration.millis(1500));
 
             final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
             final EntityManager entityManager = entityManagerFactory.createEntityManager();
