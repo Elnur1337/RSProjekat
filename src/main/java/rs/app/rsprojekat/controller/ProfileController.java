@@ -264,7 +264,7 @@ public class ProfileController implements Initializable {
             VBox.setMargin(ticketBox, new Insets(0, 0, 10, 0));
 
             VBox titleAndDateVBox = new VBox();
-            titleAndDateVBox.setPrefWidth(200.0);
+            titleAndDateVBox.setPrefWidth(250.0);
 
             Label title = new Label();
             title.setText("Naziv: " + t.getDogadjaj().getNaziv());
@@ -402,7 +402,7 @@ public class ProfileController implements Initializable {
                         notEnoughMoneyLabel.setVisible(true);
                         visibleMsg.play();
                     } else {
-                        karta.getKupac().setWallet(wallet - (karta.getPrice() + karta.getDogadjaj().getBasePrice()));
+                        karta.getKupac().setWallet(wallet - karta.getPrice());
                         karta.setReserved(false);
                         karta.setReservedTo(null);
                         karta.setBought(true);

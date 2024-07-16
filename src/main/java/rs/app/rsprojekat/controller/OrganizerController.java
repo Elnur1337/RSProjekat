@@ -764,10 +764,11 @@ public class OrganizerController implements Initializable {
         mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
         lokacijaShow.setText(d.getLokacija().getNaziv());
         eventImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getImgPath()))));
-        cijenaShow.clear();
-        prodanoKarataShow.clear();
-        rezervisanoKarataShow.clear();
-        ukupnoKarataShow.clear();
+        sectorImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getLokacija().getImgPath()))));
+        cijenaShow.setText("");
+        prodanoKarataShow.setText("");
+        rezervisanoKarataShow.setText("");
+        ukupnoKarataShow.setText("");
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -790,7 +791,7 @@ public class OrganizerController implements Initializable {
                     List<Ticket> karte = query.getResultList();
 
                     prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getBought).count()));
-                    prodanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getReserved).count()));
+                    rezervisanoKarataShow.setText(String.valueOf(karte.stream().filter(Ticket::getReserved).count()));
                     ukupnoKarataShow.setText(String.valueOf(karte.size()));
                     cijenaShow.setText(karte.get(0).getPrice() + "KM");
 

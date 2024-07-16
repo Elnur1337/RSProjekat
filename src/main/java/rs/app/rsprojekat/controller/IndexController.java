@@ -540,11 +540,12 @@ public class IndexController implements Initializable {
         mjestoShow.setText(d.getLokacija().getMjesto().getNaziv());
         lokacijaShow.setText(d.getLokacija().getNaziv());
         organizatorShow.setText(d.getOrganizator().getIme() + " " + d.getOrganizator().getPrezime());
-        cijenaShow.clear();
-        slobodnoMjestaShow.clear();
-        brojKarataInput.clear();
+        cijenaShow.setText("");
+        slobodnoMjestaShow.setText("");
+        brojKarataInput.setText("");
 
         locationImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getLokacija().getImgPath()))));
+        eventImage.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(d.getImgPath()))));
 
         final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("rsprojekat");
         final EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -822,7 +823,7 @@ public class IndexController implements Initializable {
         query.setParameter("sector", sektorBox.getValue());
         List<Ticket> tickets = query.getResultList();
 
-        double cijenaKarata = (tickets.get(0).getPrice() + tickets.get(0).getDogadjaj().getBasePrice()) * brojKarata;
+        double cijenaKarata = tickets.get(0).getPrice() * brojKarata;
         if(user.getWallet() < cijenaKarata) {
             msg = "Nedovoljno sredstava na računu za kupovinu karata.";
             printMessage(false);
